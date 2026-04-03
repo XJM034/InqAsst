@@ -69,7 +69,7 @@ export default async function AdminHomePage() {
             </div>
           </section>
 
-          <section className="mt-3 rounded-[16px] bg-[#1E3A5F] p-4 text-white shadow-[0_14px_28px_rgba(30,58,95,0.18)]">
+          <section className="mt-2.5 rounded-[16px] bg-[#1E3A5F] p-4 text-white shadow-[0_14px_28px_rgba(30,58,95,0.18)]">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <div className="flex size-8 items-center justify-center rounded-full bg-white/15">
@@ -106,7 +106,7 @@ export default async function AdminHomePage() {
             </div>
           </section>
 
-          <section className="mt-3.5">
+          <section className="mt-3">
             <div className="mb-2 flex items-center gap-2">
               <div className="size-2 rounded-full bg-[var(--jp-accent)]" />
               <h2 className="text-sm font-semibold text-[var(--jp-text)]">常用入口</h2>
