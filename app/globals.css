@@ -45,6 +45,8 @@
 }
 
 :root {
+  --font-app: "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei",
+    "Segoe UI", sans-serif;
   --radius: var(--radius-m);
   --mobile-tabbar-height: 62px;
   --mobile-tabbar-total-height: calc(90px + env(safe-area-inset-bottom));

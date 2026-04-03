@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ChevronRight, Clock3, UserCheck, Users } from "lucide-react";
 
 import { MobileTabBar } from "@/components/app/mobile-tab-bar";
+import { PageTitleBlock } from "@/components/app/page-title-block";
 import { PageShell } from "@/components/app/page-shell";
 import { getAdminHomeData } from "@/lib/services/mobile-app";
 
@@ -12,13 +13,9 @@ export default async function AdminHomePage() {
     <PageShell>
       <div className="app-screen">
         <div className="app-scroll px-5 pt-4">
-          <header>
-            <h1 className="text-[20px] font-bold tracking-[-0.02em] text-[var(--jp-text)]">
-              {home.title}
-            </h1>
-          </header>
+          <PageTitleBlock title={home.title} />
 
-          <section className="mt-4 rounded-[14px] border border-[#E8E5E0] bg-white p-2.5">
+          <section className="mt-4 rounded-[16px] border border-[#E8E5E0] bg-white p-3 shadow-[0_10px_22px_rgba(28,28,28,0.04)]">
             <div className="flex items-center justify-between">
               <p className="text-sm font-semibold text-[var(--jp-text)]">今日生效规则</p>
               <span className="rounded-full bg-[#F5F3F0] px-2.5 py-1 text-[10px] font-semibold text-[var(--jp-text-muted)]">
@@ -64,7 +61,7 @@ export default async function AdminHomePage() {
             </div>
           </section>
 
-          <section className="mt-3 rounded-[16px] bg-[#1E3A5F] p-3 text-white">
+          <section className="mt-3.5 rounded-[16px] bg-[#1E3A5F] p-3.5 text-white shadow-[0_14px_28px_rgba(30,58,95,0.18)]">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <div className="flex size-[30px] items-center justify-center rounded-full bg-white/15">
@@ -101,12 +98,12 @@ export default async function AdminHomePage() {
             </div>
           </section>
 
-          <div className="mt-3 grid grid-cols-2 gap-2.5">
+          <div className="mt-3.5 grid grid-cols-2 gap-3">
             {home.entryCards.map((card) => (
               <Link
                 key={card.title}
                 href={card.href}
-                className="rounded-[14px] border border-[#E8E5E0] bg-white p-3"
+                className="rounded-[16px] border border-[#E8E5E0] bg-white p-3 shadow-[0_10px_22px_rgba(28,28,28,0.04)]"
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">

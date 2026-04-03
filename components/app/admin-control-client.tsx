@@ -5,6 +5,7 @@ import { useState } from "react";
 import { Copy, Search } from "lucide-react";
 
 import { MobileTabBar } from "@/components/app/mobile-tab-bar";
+import { PageTitleBlock } from "@/components/app/page-title-block";
 import { PageShell } from "@/components/app/page-shell";
 import type { AdminControlData } from "@/lib/domain/types";
 import { cn } from "@/lib/utils";
@@ -37,15 +38,10 @@ export function AdminControlClient({ data }: AdminControlClientProps) {
   return (
     <PageShell>
       <div className="app-screen">
-        <div className="app-scroll px-7">
-          <header className="space-y-2 pt-4">
-            <h1 className="text-[24px] font-medium tracking-[-0.02em] text-[var(--jp-text)]">
-              点名总控
-            </h1>
-            <p className="text-sm text-[var(--jp-text-secondary)]">{data.dateLabel}</p>
-          </header>
+        <div className="app-scroll px-5 pt-4">
+          <PageTitleBlock title="点名总控" subtitle={data.dateLabel} />
 
-          <div className="mt-4 flex flex-wrap gap-2">
+          <div className="mt-3.5 flex flex-wrap gap-2">
             <SummaryChip
               label="已完成"
               value={String(data.finishedCount)}
@@ -58,7 +54,7 @@ export function AdminControlClient({ data }: AdminControlClientProps) {
             />
           </div>
 
-          <div className="mt-4 grid grid-cols-2 gap-3">
+          <div className="mt-3.5 grid grid-cols-2 gap-3">
             <ActionButton
               label="复制未完成班级"
               onClick={() => copyText(unfinishedText, "未完成班级")}
@@ -82,7 +78,7 @@ export function AdminControlClient({ data }: AdminControlClientProps) {
             </div>
           </div>
 
-          <div className="mt-4 flex h-10 items-center gap-3 rounded-[12px] bg-[var(--jp-surface)] px-5 text-[13px] text-[var(--jp-text-muted)] ring-1 ring-[color:var(--jp-border)]">
+          <div className="mt-3.5 flex h-10 items-center gap-3 rounded-[12px] bg-[var(--jp-surface)] px-4 text-[13px] text-[var(--jp-text-muted)] ring-1 ring-[color:var(--jp-border)]">
             <Search className="size-4" />
             <span>搜索班级名称或老师</span>
           </div>
@@ -91,12 +87,12 @@ export function AdminControlClient({ data }: AdminControlClientProps) {
             <p className="mt-3 text-xs font-medium text-[var(--jp-accent)]">{feedback}</p>
           ) : null}
 
-          <div className="mt-4 grid grid-cols-2 gap-3">
+          <div className="mt-3.5 grid grid-cols-2 gap-3">
             {data.classes.map((item) => (
               <Link
                 key={item.id}
                 href={item.href}
-                className="rounded-[12px] bg-white p-2 shadow-[0_10px_22px_rgba(28,28,28,0.06)]"
+                className="rounded-[16px] border border-[#E8E5E0] bg-white p-3 shadow-[0_10px_22px_rgba(28,28,28,0.04)]"
               >
                 <div className="space-y-1">
                   <p className="text-[13px] font-medium text-[var(--jp-text)]">

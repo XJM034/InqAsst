@@ -76,8 +76,8 @@ export function TeacherHomeClient({ home }: TeacherHomeClientProps) {
     <PageShell>
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <div className="app-screen">
-          <div className="app-scroll px-7">
-            <header className="flex items-center gap-3 pt-4">
+          <div className="app-scroll px-5 pt-4">
+            <header className="flex items-center gap-3">
               <div className="flex size-10 items-center justify-center rounded-full bg-[var(--jp-surface-muted)] text-[var(--jp-text-muted)]">
                 <CircleUserRound className="size-6" />
               </div>
@@ -137,7 +137,7 @@ export function TeacherHomeClient({ home }: TeacherHomeClientProps) {
               tabIndex={0}
               onClick={() => openPendingAction(primaryAction)}
               onKeyDown={(event) => handleCardKeyDown(event, primaryAction)}
-              className="mt-4 cursor-pointer overflow-hidden rounded-[16px] transition-transform active:scale-[0.99]"
+              className="mt-3.5 cursor-pointer overflow-hidden rounded-[16px] border border-[#E8E5E0] shadow-[0_12px_26px_rgba(28,28,28,0.05)] transition-transform active:scale-[0.99]"
             >
               <div className="flex items-center gap-2 bg-[#2C2C2C] px-4 py-3 text-white">
                 <MapPin className="size-4" />
@@ -183,7 +183,7 @@ export function TeacherHomeClient({ home }: TeacherHomeClientProps) {
                 tabIndex={0}
                 onClick={() => openPendingAction(substituteAction)}
                 onKeyDown={(event) => handleCardKeyDown(event, substituteAction)}
-                className="mt-5 cursor-pointer rounded-[16px] bg-[#FFFDF8] px-3 py-3 text-left shadow-[0_12px_30px_rgba(28,28,28,0.04)] ring-1 ring-[#F0E1BD] transition-transform active:scale-[0.99]"
+                className="mt-4 cursor-pointer rounded-[16px] bg-[#FFFDF8] px-3 py-3 text-left shadow-[0_12px_26px_rgba(28,28,28,0.04)] ring-1 ring-[#F0E1BD] transition-transform active:scale-[0.99]"
               >
                 <div className="flex items-start justify-between gap-3">
                   <div className="min-w-0 space-y-2">
@@ -214,7 +214,7 @@ export function TeacherHomeClient({ home }: TeacherHomeClientProps) {
               </article>
             ) : null}
 
-            <article className="mt-4 flex items-center gap-3 rounded-[12px] bg-[var(--jp-surface)] px-3 py-3 shadow-[0_10px_24px_rgba(28,28,28,0.04)]">
+            <article className="mt-4 flex items-center gap-3 rounded-[16px] border border-[#E8E5E0] bg-[var(--jp-surface)] px-3 py-3 shadow-[0_10px_22px_rgba(28,28,28,0.04)]">
               <div className="flex size-8 items-center justify-center text-[var(--jp-accent)]">
                 <CalendarClock className="size-4" />
               </div>

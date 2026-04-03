@@ -5,6 +5,7 @@ import { useState } from "react";
 import { Copy, Search } from "lucide-react";
 
 import { MobileTabBar } from "@/components/app/mobile-tab-bar";
+import { PageTitleBlock } from "@/components/app/page-title-block";
 import { PageShell } from "@/components/app/page-shell";
 import type { AdminUnarrivedData } from "@/lib/domain/types";
 import { cn } from "@/lib/utils";
@@ -38,22 +39,17 @@ export function AdminUnarrivedClient({ data }: AdminUnarrivedClientProps) {
   return (
     <PageShell>
       <div className="app-screen">
-        <div className="app-scroll px-7">
-          <header className="space-y-2 pt-2">
-            <h1 className="text-[24px] font-medium tracking-[-0.02em] text-[var(--jp-text)]">
-              未到学生
-            </h1>
-            <p className="text-sm text-[var(--jp-text-secondary)]">{data.dateLabel}</p>
-          </header>
+        <div className="app-scroll px-5 pt-4">
+          <PageTitleBlock title="未到学生" subtitle={data.dateLabel} />
 
-          <div className="mt-4 flex flex-wrap gap-1.5">
+          <div className="mt-3.5 flex flex-wrap gap-1.5">
             <MetricChip label="应到" value={data.totals.expected} tone="info" />
             <MetricChip label="已到" value={data.totals.present} tone="success" />
             <MetricChip label="请假" value={data.totals.leave} tone="neutral" />
             <MetricChip label="未到" value={data.totals.absent} tone="danger" />
           </div>
 
-          <div className="mt-4 grid grid-cols-2 gap-3">
+          <div className="mt-3.5 grid grid-cols-2 gap-3">
             <ActionButton
               label="复制未完成班级"
               onClick={() => copyText(unfinishedText, "未完成班级")}
@@ -77,7 +73,7 @@ export function AdminUnarrivedClient({ data }: AdminUnarrivedClientProps) {
             </div>
           </div>
 
-          <div className="mt-4 flex h-10 items-center gap-3 rounded-[12px] bg-[var(--jp-surface)] px-4 text-sm text-[var(--jp-text-muted)] ring-1 ring-[color:var(--jp-border)]">
+          <div className="mt-3.5 flex h-10 items-center gap-3 rounded-[12px] bg-[var(--jp-surface)] px-4 text-sm text-[var(--jp-text-muted)] ring-1 ring-[color:var(--jp-border)]">
             <Search className="size-5" />
             <span>搜索学生姓名...</span>
           </div>
@@ -86,7 +82,7 @@ export function AdminUnarrivedClient({ data }: AdminUnarrivedClientProps) {
             <p className="mt-3 text-xs font-medium text-[var(--jp-accent)]">{feedback}</p>
           ) : null}
 
-          <div className="mt-4 space-y-5">
+          <div className="mt-3.5 space-y-5">
             {data.groups.map((group) => (
               <section key={group.id} className="space-y-3">
                 <div className="flex items-center justify-between">
@@ -117,7 +113,7 @@ export function AdminUnarrivedClient({ data }: AdminUnarrivedClientProps) {
                   {group.students.map((student) => (
                     <article
                       key={student.id}
-                      className="rounded-[12px] bg-[var(--jp-surface)] px-3 py-3 shadow-[0_10px_24px_rgba(28,28,28,0.04)]"
+                      className="rounded-[16px] border border-[#E8E5E0] bg-[var(--jp-surface)] px-3 py-3 shadow-[0_10px_22px_rgba(28,28,28,0.04)]"
                     >
                       <div className="space-y-1">
                         <p className="text-sm font-semibold text-[var(--jp-text)]">
