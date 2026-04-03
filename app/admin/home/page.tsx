@@ -23,41 +23,49 @@ export default async function AdminHomePage() {
               </span>
             </div>
             <div className="mt-2 grid grid-cols-3 gap-2">
-              {home.effectiveRules.map((item) => (
-                <div
-                  key={item.label}
-                  className={`rounded-[12px] px-2.5 py-2 ${
-                    item.tone === "warning"
-                      ? "bg-[#FFF3E8]"
-                      : item.tone === "success"
-                        ? "bg-[#EEF5EC]"
-                        : "bg-[#F5F3F0]"
-                  }`}
-                >
-                  <p
-                    className={`text-[9px] font-semibold ${
+              {home.effectiveRules.map((item) => {
+                const isCompactRule = item.label === "今日代课";
+
+                return (
+                  <div
+                    key={item.label}
+                    className={`flex min-h-[56px] flex-col rounded-[12px] px-2.5 py-2 ${
                       item.tone === "warning"
-                        ? "text-[#C46A1A]"
+                        ? "bg-[#FFF3E8]"
                         : item.tone === "success"
-                          ? "text-[#3D6B4F]"
-                          : "text-[var(--jp-text-muted)]"
+                          ? "bg-[#EEF5EC]"
+                          : "bg-[#F5F3F0]"
                     }`}
                   >
-                    {item.label}
-                  </p>
-                  <p
-                    className={`mt-1 text-sm font-bold ${
-                      item.tone === "warning"
-                        ? "text-[#C46A1A]"
-                        : item.tone === "success"
-                          ? "text-[#3D6B4F]"
-                          : "text-[var(--jp-text)]"
-                    }`}
-                  >
-                    {item.value}
-                  </p>
-                </div>
-              ))}
+                    <p
+                      className={`text-[9px] font-semibold ${
+                        item.tone === "warning"
+                          ? "text-[#C46A1A]"
+                          : item.tone === "success"
+                            ? "text-[#3D6B4F]"
+                            : "text-[var(--jp-text-muted)]"
+                      }`}
+                    >
+                      {item.label}
+                    </p>
+                    <p
+                      className={`mt-auto pt-1 font-bold ${
+                        isCompactRule
+                          ? "text-[11px] leading-[1.15] whitespace-nowrap tracking-[-0.01em]"
+                          : "text-sm leading-[1.15]"
+                      } ${
+                        item.tone === "warning"
+                          ? "text-[#C46A1A]"
+                          : item.tone === "success"
+                            ? "text-[#3D6B4F]"
+                            : "text-[var(--jp-text)]"
+                      }`}
+                    >
+                      {item.value}
+                    </p>
+                  </div>
+                );
+              })}
             </div>
           </section>
 
