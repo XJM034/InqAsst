@@ -103,7 +103,7 @@ export function AdminUnarrivedClient({ data }: AdminUnarrivedClientProps) {
                   {group.students.map((student) => (
                     <article
                       key={student.id}
-                      className="rounded-[14px] border border-[#E8E5E0] bg-[var(--jp-surface)] px-3 py-3 shadow-[0_8px_18px_rgba(28,28,28,0.03)]"
+                      className="flex min-h-[108px] flex-col rounded-[14px] border border-[#E8E5E0] bg-white px-3 py-3 shadow-[0_8px_18px_rgba(28,28,28,0.03)]"
                     >
                       <div className="space-y-1">
                         <p className="text-sm font-semibold text-[var(--jp-text)]">
@@ -113,7 +113,7 @@ export function AdminUnarrivedClient({ data }: AdminUnarrivedClientProps) {
                           {student.course}
                         </p>
                       </div>
-                      <div className="mt-3 inline-flex rounded-[8px] bg-[#FCEBEC] px-2.5 py-1 text-xs font-semibold text-[#D32F2F]">
+                      <div className="mt-auto flex h-8 items-center justify-center rounded-[8px] bg-[#FCEBEC] px-2.5 text-[11px] font-medium text-[#D32F2F]">
                         未到
                       </div>
                     </article>
