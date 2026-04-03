@@ -32,8 +32,8 @@ export default async function AdminTimePickerPage({
             }
           />
 
-          <div className="space-y-3 px-5 pt-3">
-            <section className="rounded-[14px] border border-[#E8E5E0] bg-white p-4">
+          <div className="space-y-3.5 px-5 pt-3">
+            <section className="rounded-[16px] border border-[#E8E5E0] bg-white p-4 shadow-[0_10px_22px_rgba(28,28,28,0.04)]">
               <h1 className="text-base font-semibold text-[var(--jp-text)]">{data.contextTitle}</h1>
               <p className="mt-2 text-xs font-medium text-[var(--jp-text-secondary)]">
                 {data.contextSubtitle}
@@ -43,9 +43,8 @@ export default async function AdminTimePickerPage({
               </p>
             </section>
 
-            <section className="rounded-[18px] bg-white p-4 shadow-[0_10px_24px_rgba(28,28,28,0.04)]">
-              <div className="mx-auto h-1.5 w-10 rounded-full bg-[#E8E5E0]" />
-              <h2 className="mt-4 text-base font-bold text-[var(--jp-text)]">设置时间范围</h2>
+            <section className="rounded-[16px] border border-[#E8E5E0] bg-white p-4 shadow-[0_10px_22px_rgba(28,28,28,0.04)]">
+              <h2 className="text-base font-bold text-[var(--jp-text)]">设置时间范围</h2>
 
               <div className="mt-4 grid grid-cols-2 gap-2">
                 <div className="flex h-9 items-center justify-center rounded-[10px] bg-[#1E3A5F] text-xs font-semibold text-white">
@@ -56,13 +55,13 @@ export default async function AdminTimePickerPage({
                 </div>
               </div>
 
-              <div className="mt-4 flex items-center justify-center gap-6 rounded-[14px] bg-[#F5F3F0] px-4 py-4">
+              <div className="mt-4 flex items-center justify-center gap-6 rounded-[14px] border border-[#E8E5E0] bg-[#F5F3F0] px-4 py-4">
                 <PickerColumn values={["14", "15", "16"]} activeIndex={1} />
                 <span className="text-xl font-bold text-[var(--jp-text)]">:</span>
                 <PickerColumn values={["35", "45", "55"]} activeIndex={1} />
               </div>
 
-              <div className="mt-4 flex items-center justify-between rounded-[12px] bg-[#F5F3F0] px-3 py-3">
+              <div className="mt-4 flex items-center justify-between rounded-[12px] border border-[#E8E5E0] bg-white px-3 py-3">
                 <span className="text-xs font-medium text-[var(--jp-text-secondary)]">
                   当前范围
                 </span>
