@@ -37,7 +37,7 @@ export default async function AdminEmergencyPage() {
             </div>
           </section>
 
-          <section className="mx-5 mt-3 rounded-[16px] border border-[#F2DEC2] bg-[#FFF7EA] p-3 shadow-[0_10px_22px_rgba(196,106,26,0.08)]">
+          <section className="mx-5 mt-2.5 rounded-[16px] border border-[#F2DEC2] bg-[#FFF7EA] p-3 shadow-[0_10px_22px_rgba(196,106,26,0.08)]">
             <div className="space-y-1">
               <h1 className="text-base font-bold text-[var(--jp-text)]">
                 {data.featuredDateLabel}
