@@ -15,7 +15,7 @@ export default async function AdminTimeSettingsPage() {
         <div className="app-scroll pb-4">
           <AdminSubpageHeader title="时间设置" backHref="/admin/home" />
 
-          <section className="mx-5 mt-3 rounded-[16px] border border-[#E8E5E0] bg-white p-3.5 shadow-[0_10px_22px_rgba(28,28,28,0.04)]">
+          <section className="mx-5 mt-2.5 rounded-[16px] border border-[#E8E5E0] bg-white p-3.5 shadow-[0_10px_22px_rgba(28,28,28,0.04)]">
             <div className="flex flex-wrap gap-2">
               {data.days.map((day) => (
                 <div
@@ -39,7 +39,7 @@ export default async function AdminTimeSettingsPage() {
 
           <Link
             href={data.actualHref}
-            className="mx-5 mt-3 block rounded-[16px] border border-[#E8E5E0] bg-white p-3.5 shadow-[0_10px_22px_rgba(28,28,28,0.04)]"
+            className="mx-5 mt-2.5 block rounded-[16px] border border-[#E8E5E0] bg-white p-3.5 shadow-[0_10px_22px_rgba(28,28,28,0.04)]"
           >
             <div className="flex items-center justify-between">
               <div>
@@ -54,7 +54,7 @@ export default async function AdminTimeSettingsPage() {
 
           <Link
             href={data.attendanceHref}
-            className="mx-5 mt-3 block rounded-[16px] border border-[#E8E5E0] bg-white p-3.5 shadow-[0_10px_22px_rgba(28,28,28,0.04)]"
+            className="mx-5 mt-2.5 block rounded-[16px] border border-[#E8E5E0] bg-white p-3.5 shadow-[0_10px_22px_rgba(28,28,28,0.04)]"
           >
             <div className="flex items-center justify-between">
               <div>
