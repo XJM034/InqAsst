@@ -47,6 +47,7 @@ export function AttendanceSessionClient({
     .map((item) => item.trim());
   const [campusLabel, locationLabel, timeLabel] = courseInfoParts;
   const dateLabel = displayMeta?.dateLabel ?? session.dateLabel;
+  const datePillLabel = dateLabel.replace(/\s*·\s*当前.*$/, "");
   const summary = getAttendanceSummary(students);
   const absentStudents = students.filter((student) => student.status === "absent");
   const leaveStudents = students.filter((student) => student.status === "leave");
@@ -119,7 +120,7 @@ export function AttendanceSessionClient({
                 </div>
 
                 <div className="flex flex-wrap gap-2">
-                  <MetaPill tone="neutral">{dateLabel}</MetaPill>
+                  <MetaPill tone="neutral">{datePillLabel}</MetaPill>
                   {locationLabel ? <MetaPill tone="accent">{locationLabel}</MetaPill> : null}
                 </div>
 
