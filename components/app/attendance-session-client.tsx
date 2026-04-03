@@ -100,11 +100,11 @@ export function AttendanceSessionClient({
             ) : null}
 
             <section
-              className={`${mode === "roster" ? "mt-3" : "mt-0"} overflow-hidden rounded-[16px] border border-[#E8E5E0] shadow-[0_10px_22px_rgba(28,28,28,0.04)]`}
+              className={`${mode === "roster" ? "mt-3" : "mt-0"} overflow-hidden rounded-[16px] border border-[#E8E5E0] shadow-[0_12px_26px_rgba(28,28,28,0.05)]`}
             >
               <div className="flex items-center gap-2 bg-[#2C2C2C] px-4 py-3 text-white">
                 <MapPin className="size-4" />
-                <p className="text-[14px] font-semibold">{campusLabel ?? "上课校区"}</p>
+                <p className="text-base font-semibold">{campusLabel ?? "上课校区"}</p>
               </div>
 
               <div className="space-y-3 bg-[var(--jp-surface)] px-4 py-4">
