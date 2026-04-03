@@ -26,8 +26,8 @@ export default async function AdminTimeSettingDetailPage({
         <div className="app-scroll pb-4">
           <AdminSubpageHeader title={detail.title} backHref="/admin/time-settings" />
 
-          <div className="space-y-3 px-5 pt-3">
-            <section className="rounded-[14px] border border-[#E8E5E0] bg-white p-4">
+          <div className="space-y-3.5 px-5 pt-3">
+            <section className="rounded-[16px] border border-[#E8E5E0] bg-white p-4 shadow-[0_10px_22px_rgba(28,28,28,0.04)]">
               <h1 className="text-base font-semibold text-[var(--jp-text)]">{detail.title}</h1>
               <p className="mt-2 text-xs font-medium text-[var(--jp-text-secondary)]">
                 {detail.subtitle}
@@ -35,7 +35,7 @@ export default async function AdminTimeSettingDetailPage({
               <p className="mt-3 text-xs text-[var(--jp-text-secondary)]">{detail.helperText}</p>
             </section>
 
-            <section className="rounded-[14px] border border-[#E8E5E0] bg-white p-4">
+            <section className="rounded-[16px] border border-[#E8E5E0] bg-white p-4 shadow-[0_10px_22px_rgba(28,28,28,0.04)]">
               <h2 className="text-[15px] font-semibold text-[var(--jp-text)]">
                 {detail.title === "设置点名时间" ? "点名时间范围" : "实际上课时间范围"}
               </h2>
@@ -54,7 +54,7 @@ export default async function AdminTimeSettingDetailPage({
               <p className="mt-3 text-xs text-[var(--jp-text-secondary)]">{detail.helperText}</p>
             </section>
 
-            <section className="rounded-[14px] bg-[#FFF6EC] p-3.5">
+            <section className="rounded-[16px] border border-[#F0E1BD] bg-[#FFF6EC] p-3.5 shadow-[0_8px_18px_rgba(196,106,26,0.08)]">
               <p className="text-xs font-semibold text-[#C46A1A]">
                 {detail.defaultLogicText}
               </p>

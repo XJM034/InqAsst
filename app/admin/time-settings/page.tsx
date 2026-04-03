@@ -15,8 +15,8 @@ export default async function AdminTimeSettingsPage() {
         <div className="app-scroll pb-4">
           <AdminSubpageHeader title="时间设置" backHref="/admin/home" />
 
-          <div className="space-y-3 px-5 pt-3">
-            <section className="rounded-[14px] border border-[#E8E5E0] bg-white p-3.5">
+          <div className="space-y-3.5 px-5 pt-3">
+            <section className="rounded-[16px] border border-[#E8E5E0] bg-white p-3.5 shadow-[0_10px_22px_rgba(28,28,28,0.04)]">
               <div className="flex flex-wrap gap-2">
                 {data.days.map((day) => (
                   <div
@@ -32,7 +32,7 @@ export default async function AdminTimeSettingsPage() {
                 ))}
               </div>
 
-              <div className="mt-3 flex h-[42px] items-center gap-2 rounded-[10px] bg-[#F5F3F0] px-3.5 text-xs text-[var(--jp-text-muted)]">
+              <div className="mt-3 flex h-[42px] items-center gap-2 rounded-[12px] border border-[#E8E5E0] bg-white px-3.5 text-xs text-[var(--jp-text-muted)] shadow-[0_8px_18px_rgba(28,28,28,0.03)]">
                 <Search className="size-4" />
                 <span>搜索时间规则 / 点名窗口</span>
               </div>
@@ -40,7 +40,7 @@ export default async function AdminTimeSettingsPage() {
 
             <Link
               href={data.actualHref}
-              className="block rounded-[14px] border border-[#E8E5E0] bg-white p-3.5"
+              className="block rounded-[16px] border border-[#E8E5E0] bg-white p-3.5 shadow-[0_10px_22px_rgba(28,28,28,0.04)]"
             >
               <div className="flex items-center justify-between">
                 <div>
@@ -55,7 +55,7 @@ export default async function AdminTimeSettingsPage() {
 
             <Link
               href={data.attendanceHref}
-              className="block rounded-[14px] border border-[#E8E5E0] bg-white p-3.5"
+              className="block rounded-[16px] border border-[#E8E5E0] bg-white p-3.5 shadow-[0_10px_22px_rgba(28,28,28,0.04)]"
             >
               <div className="flex items-center justify-between">
                 <div>

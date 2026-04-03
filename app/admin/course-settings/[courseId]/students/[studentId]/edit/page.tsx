@@ -33,15 +33,15 @@ export default async function AdminCourseStudentEditPage({
             }
           />
 
-          <div className="space-y-3 px-5 pt-3">
-            <section className="rounded-[14px] border border-[#E8E5E0] bg-white p-3">
+          <div className="space-y-3.5 px-5 pt-3">
+            <section className="rounded-[16px] border border-[#E8E5E0] bg-white p-3 shadow-[0_10px_22px_rgba(28,28,28,0.04)]">
               <h1 className="text-base font-bold text-[var(--jp-text)]">{data.nameValue}</h1>
               {data.courseContext ? (
                 <p className="mt-2 text-xs text-[var(--jp-text-secondary)]">{data.courseContext}</p>
               ) : null}
             </section>
 
-            <section className="rounded-[14px] border border-[#E8E5E0] bg-white p-3">
+            <section className="rounded-[16px] border border-[#E8E5E0] bg-white p-3 shadow-[0_10px_22px_rgba(28,28,28,0.04)]">
               <h2 className="text-sm font-bold text-[var(--jp-text)]">学生信息</h2>
               <div className="mt-3 space-y-3">
                 <Field label="姓名" defaultValue={data.nameValue} />
@@ -75,7 +75,7 @@ function Field({ label, defaultValue }: { label: string; defaultValue: string })
       <p className="text-[11px] font-semibold text-[var(--jp-text-secondary)]">{label}</p>
       <Input
         defaultValue={defaultValue}
-        className="h-10 rounded-[10px] border-0 bg-[#F5F3F0] px-3 text-sm text-[var(--jp-text)] shadow-none focus-visible:ring-0"
+        className="h-10 rounded-[10px] border border-[#E8E5E0] bg-white px-3 text-sm text-[var(--jp-text)] shadow-none focus-visible:ring-0"
       />
     </div>
   );
