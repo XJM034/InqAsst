@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { ChevronLeft } from "lucide-react";
 import { notFound } from "next/navigation";
 
+import { AdminSubpageHeader } from "@/components/app/admin-subpage-header";
 import { MobileTabBar } from "@/components/app/mobile-tab-bar";
 import { PageShell } from "@/components/app/page-shell";
 import { getAdminTimePicker } from "@/lib/services/mobile-app";
@@ -22,20 +22,15 @@ export default async function AdminTimePickerPage({
     <PageShell>
       <div className="app-screen">
         <div className="app-scroll pb-4">
-          <div className="flex items-center justify-between bg-white px-5 py-4">
-            <Link
-              href={`/admin/time-settings/${settingKey}`}
-              className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--jp-text)]"
-            >
-              <span className="flex size-8 items-center justify-center rounded-[8px] bg-[#F5F3F0]">
-                <ChevronLeft className="size-4" />
+          <AdminSubpageHeader
+            title={data.title}
+            backHref={`/admin/time-settings/${settingKey}`}
+            trailing={
+              <span className="rounded-full bg-[#FFF1DE] px-3 py-1.5 text-[11px] font-semibold text-[#C46A1A]">
+                {data.badge}
               </span>
-              <span>{data.title}</span>
-            </Link>
-            <span className="rounded-full bg-[#FFF1DE] px-3 py-1.5 text-[11px] font-semibold text-[#C46A1A]">
-              {data.badge}
-            </span>
-          </div>
+            }
+          />
 
           <div className="space-y-3 px-5 pt-3">
             <section className="rounded-[14px] border border-[#E8E5E0] bg-white p-4">

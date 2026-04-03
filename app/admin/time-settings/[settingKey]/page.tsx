@@ -1,7 +1,8 @@
 import Link from "next/link";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import { notFound } from "next/navigation";
 
+import { AdminSubpageHeader } from "@/components/app/admin-subpage-header";
 import { MobileTabBar } from "@/components/app/mobile-tab-bar";
 import { PageShell } from "@/components/app/page-shell";
 import { Button } from "@/components/ui/button";
@@ -23,17 +24,7 @@ export default async function AdminTimeSettingDetailPage({
     <PageShell>
       <div className="app-screen">
         <div className="app-scroll pb-4">
-          <div className="bg-white px-5 py-4">
-            <Link
-              href="/admin/time-settings"
-              className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--jp-text)]"
-            >
-              <span className="flex size-8 items-center justify-center rounded-[8px] bg-[#F5F3F0]">
-                <ChevronLeft className="size-4" />
-              </span>
-              <span>{detail.title}</span>
-            </Link>
-          </div>
+          <AdminSubpageHeader title={detail.title} backHref="/admin/time-settings" />
 
           <div className="space-y-3 px-5 pt-3">
             <section className="rounded-[14px] border border-[#E8E5E0] bg-white p-4">

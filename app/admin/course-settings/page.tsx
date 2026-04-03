@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { ChevronLeft, Search } from "lucide-react";
+import { Search } from "lucide-react";
 
+import { AdminSubpageHeader } from "@/components/app/admin-subpage-header";
 import { MobileTabBar } from "@/components/app/mobile-tab-bar";
 import { PageShell } from "@/components/app/page-shell";
 import { Button } from "@/components/ui/button";
@@ -14,17 +15,7 @@ export default async function AdminCourseSettingsPage() {
     <PageShell>
       <div className="app-screen">
         <div className="app-scroll pb-4">
-          <header className="flex items-center bg-white px-5 py-4">
-            <Link
-              href="/admin/home"
-              className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--jp-text)]"
-            >
-              <span className="flex size-8 items-center justify-center rounded-[8px] bg-[#F5F3F0]">
-                <ChevronLeft className="size-4" />
-              </span>
-              <span>返回首页</span>
-            </Link>
-          </header>
+          <AdminSubpageHeader title="课程设置" backHref="/admin/home" />
 
           <div className="space-y-3 px-5 pt-3">
             <section className="rounded-[14px] border border-[#E8E5E0] bg-white p-3.5">

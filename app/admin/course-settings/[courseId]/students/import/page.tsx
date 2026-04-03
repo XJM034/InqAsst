@@ -1,7 +1,6 @@
-import Link from "next/link";
-import { ChevronLeft } from "lucide-react";
 import { notFound } from "next/navigation";
 
+import { AdminSubpageHeader } from "@/components/app/admin-subpage-header";
 import { MobileTabBar } from "@/components/app/mobile-tab-bar";
 import { PageShell } from "@/components/app/page-shell";
 import { Button } from "@/components/ui/button";
@@ -23,20 +22,15 @@ export default async function AdminCourseStudentImportPage({
     <PageShell>
       <div className="app-screen">
         <div className="app-scroll pb-4">
-          <header className="flex items-center justify-between bg-white px-5 py-4">
-            <div className="flex items-center gap-3">
-              <Link
-                href={`/admin/course-settings/${courseId}/students`}
-                className="flex size-8 items-center justify-center rounded-[8px] bg-[#F5F3F0] text-[var(--jp-text)]"
-              >
-                <ChevronLeft className="size-4" />
-              </Link>
-              <span className="text-sm font-semibold text-[var(--jp-text)]">{data.title}</span>
-            </div>
-            <span className="rounded-full bg-[#E8F0FB] px-2.5 py-1 text-[11px] font-semibold text-[#1E3A5F]">
-              {data.badge}
-            </span>
-          </header>
+          <AdminSubpageHeader
+            title={data.title}
+            backHref={`/admin/course-settings/${courseId}/students`}
+            trailing={
+              <span className="rounded-full bg-[#E8F0FB] px-2.5 py-1 text-[11px] font-semibold text-[#1E3A5F]">
+                {data.badge}
+              </span>
+            }
+          />
 
           <div className="space-y-3 px-5 pt-3">
             <section className="rounded-[14px] border border-[#E8E5E0] bg-white p-3">

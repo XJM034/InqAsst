@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { ChevronLeft } from "lucide-react";
 import { notFound } from "next/navigation";
 
+import { AdminSubpageHeader } from "@/components/app/admin-subpage-header";
 import { MobileTabBar } from "@/components/app/mobile-tab-bar";
 import { PageShell } from "@/components/app/page-shell";
 import { Button } from "@/components/ui/button";
@@ -24,17 +24,10 @@ export default async function AdminExternalTeacherPage({
     <PageShell>
       <div className="app-screen">
         <div className="app-scroll pb-4">
-          <div className="bg-white px-5 py-4">
-            <Link
-              href={`/admin/emergency/course/${courseId}/select-teacher`}
-              className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--jp-text)]"
-            >
-              <span className="flex size-8 items-center justify-center rounded-[8px] bg-[#F5F3F0]">
-                <ChevronLeft className="size-4" />
-              </span>
-              <span>录入系统外老师</span>
-            </Link>
-          </div>
+          <AdminSubpageHeader
+            title="录入系统外老师"
+            backHref={`/admin/emergency/course/${courseId}/select-teacher`}
+          />
 
           <div className="space-y-3 px-5 pt-3">
             <section className="rounded-[14px] border border-[#E8E5E0] bg-white p-3.5">

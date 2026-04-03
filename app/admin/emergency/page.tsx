@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { ChevronLeft, ChevronRight, Search } from "lucide-react";
+import { ChevronRight, Search } from "lucide-react";
 
+import { AdminSubpageHeader } from "@/components/app/admin-subpage-header";
 import { MobileTabBar } from "@/components/app/mobile-tab-bar";
 import { PageShell } from "@/components/app/page-shell";
 import { getAdminEmergencyData } from "@/lib/services/mobile-app";
@@ -11,20 +12,10 @@ export default async function AdminEmergencyPage() {
   return (
     <PageShell>
       <div className="app-screen">
-        <div className="app-scroll px-5 pb-4 pt-0">
-          <div className="bg-white px-5 py-4">
-            <Link
-              href="/admin/home"
-              className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--jp-text)]"
-            >
-              <span className="flex size-8 items-center justify-center rounded-[8px] bg-[#F5F3F0]">
-                <ChevronLeft className="size-4" />
-              </span>
-              <span>返回首页</span>
-            </Link>
-          </div>
+        <div className="app-scroll pb-4">
+          <AdminSubpageHeader title="老师设置" backHref="/admin/home" />
 
-          <section className="mt-3 rounded-[14px] border border-[#E8E5E0] bg-white p-3.5">
+          <section className="mx-5 mt-3 rounded-[14px] border border-[#E8E5E0] bg-white p-3.5">
             <div className="flex flex-wrap gap-2">
               {data.days.map((day) => (
                 <div
@@ -46,7 +37,7 @@ export default async function AdminEmergencyPage() {
             </div>
           </section>
 
-          <section className="mt-3 rounded-[16px] border border-[#F2DEC2] bg-[#FFF7EA] p-3">
+          <section className="mx-5 mt-3 rounded-[16px] border border-[#F2DEC2] bg-[#FFF7EA] p-3">
             <div className="space-y-1">
               <h1 className="text-base font-bold text-[var(--jp-text)]">
                 {data.featuredDateLabel}
@@ -71,7 +62,7 @@ export default async function AdminEmergencyPage() {
             </Link>
           </section>
 
-          <section className="mt-3 rounded-[14px] border border-[#E8E5E0] bg-white p-3">
+          <section className="mx-5 mt-3 rounded-[14px] border border-[#E8E5E0] bg-white p-3">
             <h2 className="text-[15px] font-bold text-[var(--jp-text)]">全部课程</h2>
             <div className="mt-3 space-y-3">
               {data.allCourses.map((course) => (
