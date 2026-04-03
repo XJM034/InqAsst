@@ -15,30 +15,30 @@ export default async function AdminHomePage() {
         <div className="app-scroll px-5 pt-4">
           <PageTitleBlock title={home.title} />
 
-          <section className="mt-4 rounded-[16px] border border-[#E8E5E0] bg-[#FCFBF9] p-2.5 shadow-[0_8px_18px_rgba(28,28,28,0.03)]">
+          <section className="mt-4 rounded-[16px] border border-[#E8E5E0] bg-white p-3.5 shadow-[0_10px_22px_rgba(28,28,28,0.04)]">
             <div className="flex items-center justify-between">
               <p className="text-sm font-semibold text-[var(--jp-text)]">今日生效规则</p>
               <span className="rounded-full bg-[#F5F3F0] px-2.5 py-1 text-[10px] font-semibold text-[var(--jp-text-muted)]">
                 {home.ruleDateLabel}
               </span>
             </div>
-            <div className="mt-2 grid grid-cols-3 gap-1.5">
+            <div className="mt-3 grid grid-cols-3 gap-2">
               {home.effectiveRules.map((item) => {
                 const isCompactRule = item.label === "今日代课";
 
                 return (
                   <div
                     key={item.label}
-                    className={`flex min-h-[52px] flex-col rounded-[11px] px-2 py-1.5 ${
+                    className={`flex min-h-[58px] flex-col rounded-[12px] px-2.5 py-2 ${
                       item.tone === "warning"
                         ? "bg-[#FFF3E8]"
-                        : item.tone === "success"
+                      : item.tone === "success"
                           ? "bg-[#EEF5EC]"
                           : "bg-[#F5F3F0]"
                     }`}
                   >
                     <p
-                      className={`text-[9px] font-semibold ${
+                      className={`text-[10px] font-semibold ${
                         item.tone === "warning"
                           ? "text-[#C46A1A]"
                           : item.tone === "success"
