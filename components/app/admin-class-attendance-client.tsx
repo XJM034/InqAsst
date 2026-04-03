@@ -1,4 +1,5 @@
 "use client";
+
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 
@@ -60,32 +61,29 @@ export function AdminClassAttendanceClient({
             {students.map((student) => {
               const tone = student.managerUpdated
                 ? {
-                    card: "bg-[#FFFDF8] ring-[#E59A52]",
                     badge: "bg-[#FFF4EA] text-[#9A5A1F]",
-                    label: getStatusLabel(student.status),
                   }
                 : student.status === "present"
                     ? {
-                        card: "bg-white ring-transparent",
                         badge: "bg-[#EAF2EC] text-[#3D6B4F]",
-                        label: "已到",
                       }
                     : student.status === "leave"
                       ? {
-                          card: "bg-white ring-transparent",
                           badge: "bg-[#ECE8E1] text-[#1C1C1C]",
-                          label: "请假",
                         }
                       : {
-                          card: "bg-white ring-transparent",
                           badge: "bg-[#FCEBEC] text-[#D32F2F]",
-                          label: "未到",
                         };
 
               return (
                 <article
                   key={student.id}
-                  className={cn("flex min-h-[104px] flex-col rounded-[12px] p-2.5 ring-1", tone.card)}
+                  className={cn(
+                    "flex min-h-[108px] flex-col rounded-[14px] border p-2.5 shadow-[0_8px_18px_rgba(28,28,28,0.03)]",
+                    student.managerUpdated
+                      ? "border-[#E59A52] bg-[#FFFDF8]"
+                      : "border-[#E8E5E0] bg-white",
+                  )}
                 >
                   <div className="space-y-1">
                     <p className="text-[13px] font-semibold text-[var(--jp-text)]">
@@ -114,8 +112,6 @@ export function AdminClassAttendanceClient({
               );
             })}
           </div>
-        </div>
-
           <div className="app-bottom-safe border-t border-[color:var(--jp-border)] bg-white px-5 pb-8 pt-3">
             <p className="text-[11px] font-medium text-[var(--jp-text-muted)]">
               已选 0 人 · 批量完成点名
@@ -123,9 +119,10 @@ export function AdminClassAttendanceClient({
             <Button
               variant="outline"
               className="mt-2 h-12 w-full rounded-[12px] border-0 bg-[#F5F3F0] text-[15px] font-medium text-[var(--jp-text-secondary)] hover:bg-[#F5F3F0]"
-          >
-            批量完成点名
-          </Button>
+            >
+              批量完成点名
+            </Button>
+          </div>
         </div>
 
         <MobileTabBar
@@ -139,10 +136,6 @@ export function AdminClassAttendanceClient({
       </div>
     </PageShell>
   );
-}
-
-function getStatusLabel(status: AttendanceStatus) {
-  return status === "present" ? "已到" : status === "leave" ? "请假" : "未到";
 }
 
 function SummaryChip({

@@ -72,7 +72,7 @@ export function AdminControlClient({ data }: AdminControlClientProps) {
               <Link
                 key={item.id}
                 href={item.href}
-                className="rounded-[16px] border border-[#E8E5E0] bg-white p-3 shadow-[0_10px_22px_rgba(28,28,28,0.04)]"
+                className="rounded-[14px] border border-[#E8E5E0] bg-white p-3 shadow-[0_8px_18px_rgba(28,28,28,0.03)]"
               >
                 <div className="space-y-1">
                   <p className="text-[13px] font-medium text-[var(--jp-text)]">
@@ -80,8 +80,10 @@ export function AdminControlClient({ data }: AdminControlClientProps) {
                   </p>
                   <p className="text-xs text-[var(--jp-text-secondary)]">{item.teacher}</p>
                 </div>
-                <div className="mt-4 space-y-2">
-                  <p className="text-xs text-[var(--jp-text-muted)]">{item.progressLabel}</p>
+                <div className="mt-3.5 space-y-2">
+                  <div className="inline-flex rounded-full bg-[#F5F3F0] px-2.5 py-1 text-[11px] font-medium text-[var(--jp-text-secondary)]">
+                    {item.progressLabel}
+                  </div>
                   <div
                     className={cn(
                       "h-2 rounded-full bg-[#E8E5E0]",
