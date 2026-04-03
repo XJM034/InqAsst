@@ -8,6 +8,7 @@ import { getAttendanceSummary } from "@/lib/domain/attendance";
 import type { AttendanceSession, AttendanceStudent } from "@/lib/domain/types";
 import { AttendanceStudentCard } from "@/components/app/attendance-student-card";
 import { MobileTabBar } from "@/components/app/mobile-tab-bar";
+import { PageTitleBlock } from "@/components/app/page-title-block";
 import { PageShell } from "@/components/app/page-shell";
 import { Button } from "@/components/ui/button";
 import {
@@ -70,7 +71,7 @@ export function AttendanceSessionClient({
     <PageShell>
       <Dialog>
         <div className="app-screen">
-          <div className="app-scroll px-7">
+          <div className="app-scroll px-5">
             {mode === "roster" && backHref ? (
               <div className="space-y-3 pt-3">
                 <Button
@@ -94,17 +95,16 @@ export function AttendanceSessionClient({
             ) : null}
 
             {mode === "attendance" ? (
-              <header className="space-y-1 pt-2">
-                <h1 className="text-[24px] font-medium tracking-[-0.02em] text-[var(--jp-text)]">
-                  {displayMeta?.pageTitle ?? session.pageTitle}
-                </h1>
-                <p className="text-sm text-[var(--jp-text-secondary)]">
-                  {displayMeta?.dateLabel ?? session.dateLabel}
-                </p>
-              </header>
+              <PageTitleBlock
+                className="pt-4"
+                title={displayMeta?.pageTitle ?? session.pageTitle}
+                subtitle={displayMeta?.dateLabel ?? session.dateLabel}
+              />
             ) : null}
 
-            <section className={`${mode === "roster" ? "mt-3" : "mt-4"} rounded-[16px] bg-[var(--jp-surface)] p-3 shadow-[0_14px_30px_rgba(28,28,28,0.04)] ring-1 ring-[color:var(--jp-border)]`}>
+            <section
+              className={`${mode === "roster" ? "mt-3" : "mt-3.5"} rounded-[16px] border border-[#E8E5E0] bg-[var(--jp-surface)] p-3 shadow-[0_10px_22px_rgba(28,28,28,0.04)]`}
+            >
               <div className="space-y-1">
                 <h2 className="text-[15px] font-medium text-[var(--jp-text)]">
                   {displayMeta?.courseTitle ?? session.courseTitle}
@@ -120,21 +120,21 @@ export function AttendanceSessionClient({
 
             {mode === "attendance" ? (
               <>
-                <div className="mt-4 flex flex-wrap gap-2">
+                <div className="mt-3.5 flex flex-wrap gap-2">
                   <SummaryChip label="应到" value={summary.expected} tone="info" />
                   <SummaryChip label="已到" value={summary.present} tone="success" />
                   <SummaryChip label="请假" value={summary.leave} tone="neutral" />
                   <SummaryChip label="未到" value={summary.absent} tone="danger" />
                 </div>
 
-                <div className="mt-4 flex items-start gap-2 rounded-[16px] bg-[#E8F0FB] px-3.5 py-3 text-[#1E3A5F]">
+                <div className="mt-3.5 flex items-start gap-2 rounded-[16px] bg-[#E8F0FB] px-3.5 py-3 text-[#1E3A5F]">
                   <Info className="mt-0.5 size-3.5 shrink-0" />
                   <p className="text-[11px] font-medium leading-5">{session.tapHint}</p>
                 </div>
               </>
             ) : null}
 
-            <div className="mt-4 grid grid-cols-2 gap-2.5 pb-6">
+            <div className="mt-3.5 grid grid-cols-2 gap-2.5 pb-6">
               {students.map((student) => (
                 <AttendanceStudentCard
                   key={student.id}
