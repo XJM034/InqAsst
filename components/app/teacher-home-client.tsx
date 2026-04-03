@@ -183,7 +183,7 @@ export function TeacherHomeClient({ home }: TeacherHomeClientProps) {
                 tabIndex={0}
                 onClick={() => openPendingAction(substituteAction)}
                 onKeyDown={(event) => handleCardKeyDown(event, substituteAction)}
-                className="mt-5 cursor-pointer rounded-[16px] border-l-[3px] border-[#FF9800] bg-[var(--jp-surface)] px-3 py-3 text-left shadow-[0_12px_30px_rgba(28,28,28,0.04)] transition-transform active:scale-[0.99]"
+                className="mt-5 cursor-pointer rounded-[16px] bg-[#FFFDF8] px-3 py-3 text-left shadow-[0_12px_30px_rgba(28,28,28,0.04)] ring-1 ring-[#F0E1BD] transition-transform active:scale-[0.99]"
               >
                 <div className="flex items-start justify-between gap-3">
                   <div className="min-w-0 space-y-2">
