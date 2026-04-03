@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { Check, ChevronLeft, Info, MapPin } from "lucide-react";
+import { Check, ChevronLeft, Info, MapPin, Navigation } from "lucide-react";
 
 import { getAttendanceSummary } from "@/lib/domain/attendance";
 import type { AttendanceSession, AttendanceStudent } from "@/lib/domain/types";
@@ -103,21 +103,32 @@ export function AttendanceSessionClient({
               </div>
 
               <div className="space-y-3 bg-[var(--jp-surface)] px-4 py-4">
-                <div className="flex items-start justify-between gap-3">
-                  <h2 className="min-w-0 text-[17px] font-medium leading-6 tracking-[-0.02em] text-[var(--jp-text)]">
+                <div className="space-y-1.5">
+                  <div className="flex items-center justify-between gap-3">
+                    {timeLabel ? (
+                      <p className="text-[20px] font-medium tracking-[-0.03em] text-[var(--jp-text)]">
+                        {timeLabel}
+                      </p>
+                    ) : (
+                      <div />
+                    )}
+                    <MetaPill tone="neutral" className="shrink-0">
+                      {datePillLabel}
+                    </MetaPill>
+                  </div>
+                  <h2 className="text-[17px] font-medium tracking-[-0.02em] text-[var(--jp-text)]">
                     {displayMeta?.courseTitle ?? session.courseTitle}
                   </h2>
-                  {timeLabel ? (
-                    <MetaPill tone="accent" className="shrink-0">
-                      {timeLabel}
-                    </MetaPill>
-                  ) : null}
                 </div>
 
-                <div className="flex flex-wrap gap-2">
-                  <MetaPill tone="neutral">{datePillLabel}</MetaPill>
-                  {locationLabel ? <MetaPill tone="accent">{locationLabel}</MetaPill> : null}
-                </div>
+                {locationLabel ? (
+                  <div className="flex items-center justify-between rounded-[12px] border border-[color:var(--jp-border)] bg-white px-4 py-3">
+                    <p className="text-[16px] font-semibold tracking-[-0.02em] text-[var(--jp-text)]">
+                      {locationLabel}
+                    </p>
+                    <NavigationIcon />
+                  </div>
+                ) : null}
 
                 {mode === "attendance" ? (
                   <div className="rounded-[12px] bg-[#FFF3E8] px-3 py-2.5 text-xs font-medium text-[#C46A1A]">
@@ -319,4 +330,8 @@ function MetaPill({
       {children}
     </div>
   );
+}
+
+function NavigationIcon() {
+  return <Navigation className="size-5 text-[var(--jp-accent)]" />;
 }
