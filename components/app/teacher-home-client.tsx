@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import {
   CalendarClock,
-  ChevronRight,
   CircleUserRound,
   MapPin,
   Navigation,
@@ -200,14 +199,14 @@ export function TeacherHomeClient({ home }: TeacherHomeClientProps) {
                 tabIndex={0}
                 onClick={() => openPendingAction(substituteAction)}
                 onKeyDown={(event) => handleCardKeyDown(event, substituteAction)}
-                className="mt-3.5 cursor-pointer overflow-hidden rounded-[16px] border border-[#F0E1BD] text-left shadow-[0_10px_22px_rgba(196,106,26,0.08)] transition-transform active:scale-[0.99]"
+                className="mt-3 cursor-pointer overflow-hidden rounded-[16px] border border-[#F0E1BD] text-left shadow-[0_10px_22px_rgba(196,106,26,0.08)] transition-transform active:scale-[0.99]"
               >
-                <div className="flex items-center justify-between gap-3 bg-[#FFF3E0] px-3.5 py-2.5">
+                <div className="flex items-center justify-between gap-3 bg-[#FFF3E0] px-4 py-3">
                   <div className="flex min-w-0 items-center gap-2">
                     <span className="rounded-[4px] bg-white px-2 py-0.5 text-[10px] font-semibold text-[#A55B14]">
                       {selectedSchedule.substituteCourse.badge}
                     </span>
-                    <p className="truncate text-[15px] font-semibold text-[var(--jp-text)]">
+                    <p className="truncate text-[16px] font-semibold tracking-[-0.02em] text-[var(--jp-text)]">
                       {selectedSchedule.substituteCourse.title}
                     </p>
                   </div>
@@ -221,7 +220,7 @@ export function TeacherHomeClient({ home }: TeacherHomeClientProps) {
                   </div>
                 </div>
 
-                <div className="space-y-2.5 bg-[#FFFDF8] px-3.5 py-3">
+                <div className="space-y-3 bg-[#FFFDF8] px-4 py-4">
                   <div className="flex flex-wrap gap-2">
                     {substituteCampus ? (
                       <span className="rounded-full bg-white px-3 py-1.5 text-[11px] font-medium text-[var(--jp-text-secondary)] ring-1 ring-[#F0E1BD]">
@@ -235,11 +234,11 @@ export function TeacherHomeClient({ home }: TeacherHomeClientProps) {
                     ) : null}
                   </div>
 
-                  <div className="flex items-center justify-between rounded-[12px] border border-[#F0E1BD] bg-white px-3.5 py-3">
-                    <p className="text-[15px] font-semibold tracking-[-0.02em] text-[var(--jp-text)]">
+                  <div className="flex items-center justify-between rounded-[12px] border border-[#F0E1BD] bg-white px-4 py-3">
+                    <p className="text-[16px] font-semibold tracking-[-0.02em] text-[var(--jp-text)]">
                       {substituteLocation ?? selectedSchedule.substituteCourse.description}
                     </p>
-                    <ChevronRight className="size-4 shrink-0 text-[var(--jp-text-muted)]" />
+                    <Navigation className="size-5 shrink-0 text-[#C46A1A]" />
                   </div>
                 </div>
               </article>
