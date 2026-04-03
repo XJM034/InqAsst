@@ -71,6 +71,10 @@ export function TeacherHomeClient({ home }: TeacherHomeClientProps) {
             : selectedSchedule.substituteCourse.rosterHref,
       }
     : null;
+  const substituteDescriptionParts = selectedSchedule.substituteCourse?.description
+    .split(" | ")
+    .map((item) => item.trim());
+  const [substituteCampus, substituteLocation, substituteTime] = substituteDescriptionParts ?? [];
 
   return (
     <PageShell>
@@ -187,31 +191,45 @@ export function TeacherHomeClient({ home }: TeacherHomeClientProps) {
                 tabIndex={0}
                 onClick={() => openPendingAction(substituteAction)}
                 onKeyDown={(event) => handleCardKeyDown(event, substituteAction)}
-                className="mt-4 cursor-pointer rounded-[16px] bg-[#FFFDF8] px-3 py-3 text-left shadow-[0_12px_26px_rgba(28,28,28,0.04)] ring-1 ring-[#F0E1BD] transition-transform active:scale-[0.99]"
+                className="mt-4 cursor-pointer overflow-hidden rounded-[16px] border border-[#F0E1BD] text-left shadow-[0_10px_22px_rgba(196,106,26,0.08)] transition-transform active:scale-[0.99]"
               >
-                <div className="flex items-start justify-between gap-3">
-                  <div className="min-w-0 space-y-2">
-                    <div className="flex items-center gap-2">
-                      <span className="rounded-[4px] bg-[#FFF3E0] px-2 py-0.5 text-[10px] font-semibold text-[#A55B14]">
-                        {selectedSchedule.substituteCourse.badge}
-                      </span>
-                      <p className="truncate text-[15px] font-medium text-[var(--jp-text)]">
-                        {selectedSchedule.substituteCourse.title}
-                      </p>
-                    </div>
-                    <p className="text-[13px] text-[var(--jp-text-secondary)]">
-                      {selectedSchedule.substituteCourse.description}
+                <div className="flex items-center justify-between gap-3 bg-[#FFF3E0] px-3.5 py-2.5">
+                  <div className="flex min-w-0 items-center gap-2">
+                    <span className="rounded-[4px] bg-white px-2 py-0.5 text-[10px] font-semibold text-[#A55B14]">
+                      {selectedSchedule.substituteCourse.badge}
+                    </span>
+                    <p className="truncate text-[15px] font-semibold text-[var(--jp-text)]">
+                      {selectedSchedule.substituteCourse.title}
                     </p>
                   </div>
-                  <div className="flex items-center gap-2 pt-0.5">
-                    <div className="inline-flex items-center gap-1 rounded-full bg-[var(--jp-surface-muted)] px-2.5 py-1 text-[11px]">
-                      <span className="font-medium text-[var(--jp-text-secondary)]">
-                        {selectedSchedule.substituteCourse.expectedLabel.split(" ")[0]}
+                  <div className="inline-flex shrink-0 items-center gap-1 rounded-full bg-white px-2.5 py-1 text-[11px]">
+                    <span className="font-medium text-[var(--jp-text-secondary)]">
+                      {selectedSchedule.substituteCourse.expectedLabel.split(" ")[0]}
+                    </span>
+                    <span className="font-bold text-[var(--jp-accent)]">
+                      {selectedSchedule.substituteCourse.expectedLabel.split(" ")[1]}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="space-y-2.5 bg-[#FFFDF8] px-3.5 py-3">
+                  <div className="flex flex-wrap gap-2">
+                    {substituteCampus ? (
+                      <span className="rounded-full bg-white px-3 py-1.5 text-[11px] font-medium text-[var(--jp-text-secondary)] ring-1 ring-[#F0E1BD]">
+                        {substituteCampus}
                       </span>
-                      <span className="font-bold text-[var(--jp-accent)]">
-                        {selectedSchedule.substituteCourse.expectedLabel.split(" ")[1]}
+                    ) : null}
+                    {substituteTime ? (
+                      <span className="rounded-full bg-[#F9E7CA] px-3 py-1.5 text-[11px] font-semibold text-[#A55B14]">
+                        {substituteTime}
                       </span>
-                    </div>
+                    ) : null}
+                  </div>
+
+                  <div className="flex items-center justify-between rounded-[12px] border border-[#F0E1BD] bg-white px-3.5 py-3">
+                    <p className="text-[14px] font-medium text-[var(--jp-text)]">
+                      {substituteLocation ?? selectedSchedule.substituteCourse.description}
+                    </p>
                     <ChevronRight className="size-4 shrink-0 text-[var(--jp-text-muted)]" />
                   </div>
                 </div>
