@@ -27,30 +27,30 @@ export function AttendanceStudentCard({
 }: AttendanceStudentCardProps) {
   const tone = hideStatus
     ? {
-        card: "bg-[var(--jp-surface)] ring-[color:var(--jp-border)]",
+        card: "border border-[color:var(--jp-border)] bg-[var(--jp-surface)] shadow-[0_8px_18px_rgba(28,28,28,0.03)]",
         badge: "bg-[var(--jp-surface-muted)] text-[var(--jp-text-secondary)]",
         label: "",
       }
     : managerUpdated && overrideLabel
       ? {
-          card: "bg-[#FFFDF8] ring-[#E59A52]",
+          card: "border border-[#E59A52] bg-[#FFFDF8] shadow-[0_8px_18px_rgba(196,106,26,0.05)]",
           badge: "bg-[#FFF4EA] text-[#9A5A1F]",
           label: status === "present" ? "已到" : status === "leave" ? "请假" : "未到",
         }
       : status === "present"
         ? {
-            card: "bg-[#F7FBF8] ring-[#D9E8DD]",
+            card: "border border-[#D9E8DD] bg-[#F7FBF8]",
             badge: "bg-[#EAF2EC] text-[#3D6B4F]",
             label: "已到",
           }
         : status === "leave"
           ? {
-              card: "bg-[#F5F3F0] ring-[#E8E5E0]",
+              card: "border border-[#E8E5E0] bg-[#F5F3F0]",
               badge: "bg-[#ECE8E1] text-[#1C1C1C]",
               label: "请假",
             }
           : {
-              card: "bg-[#FFF8F8] ring-[#F0D2D2]",
+              card: "border border-[#F0D2D2] bg-[#FFF8F8]",
               badge: "bg-[#FCEBEC] text-[#D32F2F]",
               label: "未到",
             };
@@ -61,7 +61,7 @@ export function AttendanceStudentCard({
       onClick={editable ? onToggle : undefined}
       disabled={!editable}
       className={cn(
-        "min-h-[88px] rounded-[12px] px-3 py-3 text-left ring-1 transition-transform",
+        "min-h-[90px] rounded-[14px] px-3 py-3 text-left transition-transform",
         tone.card,
         editable ? "cursor-pointer active:translate-y-px" : "cursor-default",
       )}
