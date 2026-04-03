@@ -200,71 +200,71 @@ export function AttendanceSessionClient({
             overlayClassName="bg-[rgba(15,23,42,0.35)] backdrop-blur-0"
             className="max-w-[320px] gap-4 rounded-[16px] border-0 bg-white p-6 shadow-none ring-0"
           >
-          {hasAnyException ? (
-            <>
-              <div className="space-y-4">
-                <DialogTitle className="text-[18px] font-semibold text-[#1E3A5F]">
-                  确认提交点名
-                </DialogTitle>
-                <p className={`text-sm font-semibold ${statusToneClass}`}>
-                  {statusLabel} ({absentStudents.length > 0 ? summary.absent : summary.leave}人)
-                </p>
-                <DialogDescription className="text-sm text-[#666666]">
-                  {statusNames}
-                </DialogDescription>
-              </div>
-
-              <div className="grid grid-cols-2 gap-3">
-                <DialogClose asChild>
-                  <Button
-                    variant="outline"
-                    className="h-11 rounded-[8px] border-0 bg-[#F5F5F5] text-[15px] font-medium text-[var(--jp-text)] hover:bg-[#F5F5F5]"
-                  >
-                    返回修改
-                  </Button>
-                </DialogClose>
-                <Button
-                  asChild
-                  className="h-11 rounded-[8px] bg-[#1E3A5F] text-[15px] font-semibold text-white hover:bg-[#1E3A5F]/90"
-                >
-                  <Link href="/teacher/home">确认提交</Link>
-                </Button>
-              </div>
-            </>
-          ) : (
-            <>
-              <div className="flex flex-col items-center gap-4 text-center">
-                <div className="flex size-[52px] items-center justify-center rounded-full bg-[#E8F5E9]">
-                  <Check className="size-[22px] text-[#4CAF50]" strokeWidth={2.4} />
-                </div>
-                <div className="space-y-2">
+            {hasAnyException ? (
+              <>
+                <div className="space-y-2.5">
                   <DialogTitle className="text-[18px] font-semibold text-[#1E3A5F]">
-                    班级全勤
+                    确认提交点名
                   </DialogTitle>
-                  <DialogDescription className="text-sm text-[#666666]">
-                    本节课应到{summary.expected}人，实到{summary.present}人
+                  <p className={`text-sm font-semibold ${statusToneClass}`}>
+                    {statusLabel} ({absentStudents.length > 0 ? summary.absent : summary.leave}人)
+                  </p>
+                  <DialogDescription className="text-sm leading-6 text-[#666666]">
+                    {statusNames}
                   </DialogDescription>
                 </div>
-              </div>
 
-              <div className="grid grid-cols-2 gap-3">
-                <DialogClose asChild>
+                <div className="grid grid-cols-2 gap-3 pt-1">
+                  <DialogClose asChild>
+                    <Button
+                      variant="outline"
+                      className="h-11 rounded-[8px] border-0 bg-[#F5F5F5] text-[15px] font-medium text-[var(--jp-text)] hover:bg-[#F5F5F5]"
+                    >
+                      返回修改
+                    </Button>
+                  </DialogClose>
                   <Button
-                    variant="outline"
-                    className="h-11 rounded-[8px] border-0 bg-[#F5F5F5] text-[15px] font-medium text-[var(--jp-text)] hover:bg-[#F5F5F5]"
+                    asChild
+                    className="h-11 rounded-[8px] bg-[#1E3A5F] text-[15px] font-semibold text-white hover:bg-[#1E3A5F]/90"
                   >
-                    修改点名
+                    <Link href="/teacher/home">确认提交</Link>
                   </Button>
-                </DialogClose>
-                <Button
-                  asChild
-                  className="h-11 rounded-[8px] bg-[#1E3A5F] text-[15px] font-semibold text-white hover:bg-[#1E3A5F]/90"
-                >
-                  <Link href="/teacher/home">完成点名</Link>
-                </Button>
-              </div>
-            </>
-          )}
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="flex flex-col items-center gap-4 text-center">
+                  <div className="flex size-[52px] items-center justify-center rounded-full bg-[#E8F5E9]">
+                    <Check className="size-[22px] text-[#4CAF50]" strokeWidth={2.4} />
+                  </div>
+                  <div className="space-y-2.5">
+                    <DialogTitle className="text-[18px] font-semibold text-[#1E3A5F]">
+                      班级全勤
+                    </DialogTitle>
+                    <DialogDescription className="text-sm leading-6 text-[#666666]">
+                      本节课应到{summary.expected}人，实到{summary.present}人
+                    </DialogDescription>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-3 pt-1">
+                  <DialogClose asChild>
+                    <Button
+                      variant="outline"
+                      className="h-11 rounded-[8px] border-0 bg-[#F5F5F5] text-[15px] font-medium text-[var(--jp-text)] hover:bg-[#F5F5F5]"
+                    >
+                      修改点名
+                    </Button>
+                  </DialogClose>
+                  <Button
+                    asChild
+                    className="h-11 rounded-[8px] bg-[#1E3A5F] text-[15px] font-semibold text-white hover:bg-[#1E3A5F]/90"
+                  >
+                    <Link href="/teacher/home">完成点名</Link>
+                  </Button>
+                </div>
+              </>
+            )}
           </DialogContent>
         ) : null}
       </Dialog>
