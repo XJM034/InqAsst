@@ -106,16 +106,16 @@ export function AttendanceSessionClient({
                 <p className="text-[14px] font-semibold">{campusLabel ?? "上课校区"}</p>
               </div>
 
-              <div className="space-y-3.5 bg-[var(--jp-surface)] px-4 py-4">
-                <div className="space-y-1.5">
-                  {timeLabel ? (
-                    <p className="text-[21px] font-medium tracking-[-0.03em] text-[var(--jp-text)]">
-                      {timeLabel}
-                    </p>
-                  ) : null}
-                  <h2 className="text-[17px] font-medium tracking-[-0.02em] text-[var(--jp-text)]">
+              <div className="space-y-3 bg-[var(--jp-surface)] px-4 py-4">
+                <div className="flex items-start justify-between gap-3">
+                  <h2 className="min-w-0 text-[17px] font-medium leading-6 tracking-[-0.02em] text-[var(--jp-text)]">
                     {displayMeta?.courseTitle ?? session.courseTitle}
                   </h2>
+                  {timeLabel ? (
+                    <MetaPill tone="accent" className="shrink-0">
+                      {timeLabel}
+                    </MetaPill>
+                  ) : null}
                 </div>
 
                 <div className="flex flex-wrap gap-2">
@@ -293,17 +293,22 @@ function SummaryChip({
 function MetaPill({
   children,
   tone,
+  className,
 }: {
   children: string;
   tone: "neutral" | "accent";
+  className?: string;
 }) {
   return (
     <div
-      className={
+      className={[
         tone === "accent"
           ? "rounded-full bg-[#E8F0FB] px-3 py-1.5 text-[11px] font-semibold text-[#1E3A5F]"
-          : "rounded-full bg-white px-3 py-1.5 text-[11px] font-medium text-[var(--jp-text-secondary)] ring-1 ring-[color:var(--jp-border)]"
-      }
+          : "rounded-full bg-white px-3 py-1.5 text-[11px] font-medium text-[var(--jp-text-secondary)] ring-1 ring-[color:var(--jp-border)]",
+        className,
+      ]
+        .filter(Boolean)
+        .join(" ")}
     >
       {children}
     </div>
