@@ -34,8 +34,8 @@ export default async function AdminCourseRosterPage({
             }
           />
 
-          <div className="space-y-3 px-5 pt-3">
-            <section className="rounded-[14px] border border-[#E8E5E0] bg-white p-3">
+          <div className="space-y-3.5 px-5 pt-3">
+            <section className="rounded-[16px] border border-[#E8E5E0] bg-white p-3 shadow-[0_10px_22px_rgba(28,28,28,0.04)]">
               <h1 className="text-base font-bold text-[var(--jp-text)]">{data.courseTitle}</h1>
               <div className="mt-2 rounded-[12px] bg-[#F5F3F0] px-3 py-2">
                 <p className="text-xs font-medium text-[var(--jp-text-secondary)]">
@@ -44,9 +44,9 @@ export default async function AdminCourseRosterPage({
               </div>
             </section>
 
-            <section className="rounded-[14px] border border-[#E8E5E0] bg-white p-3">
+            <section className="rounded-[16px] border border-[#E8E5E0] bg-white p-3 shadow-[0_10px_22px_rgba(28,28,28,0.04)]">
               <div className="space-y-2">
-                <div className="flex h-10 items-center rounded-[10px] bg-[#F5F3F0] px-3.5 text-xs text-[var(--jp-text-muted)]">
+                <div className="flex h-10 items-center rounded-[12px] border border-[#E8E5E0] bg-white px-3.5 text-xs text-[var(--jp-text-muted)] shadow-[0_8px_18px_rgba(28,28,28,0.03)]">
                   {data.searchPlaceholder}
                 </div>
                 <div className="flex gap-2">
@@ -67,7 +67,7 @@ export default async function AdminCourseRosterPage({
               </div>
             </section>
 
-            <section className="rounded-[14px] border border-[#E8E5E0] bg-white p-2.5">
+            <section className="rounded-[16px] border border-[#E8E5E0] bg-white p-3 shadow-[0_10px_22px_rgba(28,28,28,0.04)]">
               <div className="flex items-center justify-between px-0.5 pb-2">
                 <h2 className="text-sm font-bold text-[var(--jp-text)]">学生名单</h2>
                 <span className="text-[10px] font-semibold text-[var(--jp-text-secondary)]">
@@ -80,9 +80,9 @@ export default async function AdminCourseRosterPage({
                   <article
                     key={student.id}
                     className={cn(
-                      "flex items-center justify-between rounded-[12px] p-2.5",
+                      "flex items-center justify-between rounded-[14px] p-3 shadow-[0_8px_18px_rgba(28,28,28,0.03)]",
                       student.highlighted
-                        ? "bg-[#F5F3F0]"
+                        ? "border border-[#E8E5E0] bg-[#F5F3F0]"
                         : "border border-[#E8E5E0] bg-white",
                     )}
                   >
