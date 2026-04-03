@@ -38,11 +38,13 @@ export function ProfilePage({
               </div>
             </section>
 
-            <section className="mt-8 space-y-8">
+            <section className="mt-8 flex flex-col items-center gap-8">
               <LogoutConfirmDialog
                 triggerClassName="h-12 w-full rounded-[12px] bg-white text-[15px] font-medium text-[#8B4049] shadow-none hover:bg-white"
               />
-              <p className="text-[12px] text-[var(--jp-text-muted)]">点击退出后将二次确认</p>
+              <p className="max-w-[220px] text-center text-[12px] leading-5 text-[var(--jp-text-muted)]">
+                点击退出后将二次确认
+              </p>
             </section>
           </div>
         </div>
