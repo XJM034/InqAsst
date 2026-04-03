@@ -61,6 +61,7 @@ export function TeacherHomeClient({ home }: TeacherHomeClientProps) {
         ? selectedSchedule.primaryCourse.actionHref
         : selectedSchedule.primaryCourse.rosterHref,
   };
+  const primaryDatePillLabel = selectedSchedule.dateLabel.replace(/\s*·\s*当前.*$/, "");
 
   const substituteAction = selectedSchedule.substituteCourse
     ? {
@@ -158,7 +159,7 @@ export function TeacherHomeClient({ home }: TeacherHomeClientProps) {
                       {selectedSchedule.primaryCourse.time}
                     </p>
                     <span className="rounded-full bg-white px-3 py-1.5 text-[11px] font-medium text-[var(--jp-text-secondary)] ring-1 ring-[color:var(--jp-border)]">
-                      {selectedSchedule.dateLabel}
+                      {primaryDatePillLabel}
                     </span>
                   </div>
                   <p className="text-[17px] font-medium tracking-[-0.02em] text-[var(--jp-text)]">
@@ -227,7 +228,7 @@ export function TeacherHomeClient({ home }: TeacherHomeClientProps) {
                   </div>
 
                   <div className="flex items-center justify-between rounded-[12px] border border-[#F0E1BD] bg-white px-3.5 py-3">
-                    <p className="text-[14px] font-medium text-[var(--jp-text)]">
+                    <p className="text-[15px] font-semibold tracking-[-0.02em] text-[var(--jp-text)]">
                       {substituteLocation ?? selectedSchedule.substituteCourse.description}
                     </p>
                     <ChevronRight className="size-4 shrink-0 text-[var(--jp-text-muted)]" />
@@ -236,19 +237,21 @@ export function TeacherHomeClient({ home }: TeacherHomeClientProps) {
               </article>
             ) : null}
 
-            <article className="mt-3 flex items-center gap-3 rounded-[16px] border border-[#E8E5E0] bg-[#FCFBF9] px-3 py-2.5 shadow-[0_8px_18px_rgba(28,28,28,0.03)]">
-              <div className="flex size-8 items-center justify-center rounded-full bg-white text-[var(--jp-accent)] ring-1 ring-[color:var(--jp-border)]">
-                <CalendarClock className="size-4" />
-              </div>
-              <div className="space-y-0.5">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.08em] text-[var(--jp-text-muted)]">
-                  明日行程
-                </p>
-                <p className="text-[13px] font-medium leading-5 text-[var(--jp-text)]">
-                  {home.tomorrowTrip}
-                </p>
-              </div>
-            </article>
+            {selectedDayKey === home.defaultDayKey ? (
+              <article className="mt-3 flex items-center gap-3 rounded-[16px] border border-[#E8E5E0] bg-[#FCFBF9] px-3 py-2.5 shadow-[0_8px_18px_rgba(28,28,28,0.03)]">
+                <div className="flex size-8 items-center justify-center rounded-full bg-white text-[var(--jp-accent)] ring-1 ring-[color:var(--jp-border)]">
+                  <CalendarClock className="size-4" />
+                </div>
+                <div className="space-y-0.5">
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.08em] text-[var(--jp-text-muted)]">
+                    明日行程
+                  </p>
+                  <p className="text-[13px] font-medium leading-5 text-[var(--jp-text)]">
+                    {home.tomorrowTrip}
+                  </p>
+                </div>
+              </article>
+            ) : null}
           </div>
 
           <MobileTabBar

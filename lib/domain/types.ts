@@ -121,8 +121,14 @@ export type AdminHomeData = {
 export type AdminCourseTeachersData = {
   title: string;
   searchPlaceholder: string;
+  days: Array<{
+    key: string;
+    label: string;
+  }>;
+  defaultDayKey: string;
   teachers: Array<{
     id: string;
+    dayKey: string;
     label: string;
     note: string;
     tone?: "default" | "substitute";

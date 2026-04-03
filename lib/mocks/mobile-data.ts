@@ -93,7 +93,7 @@ export const teacherHomeData: TeacherHomeData = {
       substituteCourse: {
         badge: "代课",
         title: "创意美术A班",
-        description: "嘉祥成华小学 | 美术教室301 | 16:00-17:30",
+        description: "嘉祥成华小学 | 美术楼>3层>301教室 | 16:00-17:30",
         expectedLabel: "应到 18",
         actionLabel: "开始点名",
         actionHref: "/teacher/attendance/demo?day=wed&course=substitute",
@@ -234,32 +234,57 @@ export const adminHomeData: AdminHomeData = {
 export const adminCourseTeachersData: AdminCourseTeachersData = {
   title: "查看课程老师",
   searchPlaceholder: "搜索老师姓名 / 手机号",
+  days: [
+    { key: "mon", label: "周一" },
+    { key: "tue", label: "周二" },
+    { key: "wed", label: "周三" },
+    { key: "thu", label: "周四" },
+    { key: "fri", label: "周五" },
+  ],
+  defaultDayKey: "wed",
   teachers: [
     {
       id: "course-teacher-01",
+      dayKey: "wed",
       label: "赵鹏 · 13800991200",
       note: "乐高竞赛班5-6 · 科技楼205 · 16:00-17:30 · 默认负责",
     },
     {
       id: "course-teacher-02",
+      dayKey: "tue",
       label: "王强 · 18140044661",
       note: "足球U8班 · 操场A区 · 16:00-17:30 · 默认负责",
     },
     {
       id: "course-teacher-03",
+      dayKey: "wed",
       label: "张文 · 13800224455",
       note: "创意美术A班 · 美术教室301 · 16:00-17:30 · 默认负责",
     },
     {
       id: "course-teacher-04",
+      dayKey: "thu",
       label: "周林 · 18140044670",
       note: "无人机飞行A班 · 实验楼402 · 17:40-18:40 · 默认负责",
     },
     {
       id: "course-teacher-05",
+      dayKey: "wed",
       label: "陈静 · 18140044665",
       note: "机器人快闪班 · 科技楼301 · 17:40-18:20 · 临时新增课程老师",
       tone: "substitute",
+    },
+    {
+      id: "course-teacher-06",
+      dayKey: "mon",
+      label: "许然 · 18140044668",
+      note: "少儿编程B班 · 科技楼201 · 15:50-17:00 · 默认负责",
+    },
+    {
+      id: "course-teacher-07",
+      dayKey: "fri",
+      label: "何青 · 18140044672",
+      note: "创客实验班 · 创客教室101 · 16:30-17:30 · 默认负责",
     },
   ],
 };
