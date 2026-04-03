@@ -164,7 +164,7 @@ export function AttendanceSessionClient({
               </>
             ) : null}
 
-            <div className="mt-3.5 grid grid-cols-2 gap-2.5 pb-6">
+            <div className="mt-3.5 grid grid-cols-3 gap-2 pb-6">
               {students.map((student) => (
                 <AttendanceStudentCard
                   key={student.id}

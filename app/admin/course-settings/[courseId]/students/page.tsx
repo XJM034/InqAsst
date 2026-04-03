@@ -81,31 +81,34 @@ export default async function AdminCourseRosterPage({
                 </span>
               </div>
 
-              <div className="space-y-2">
+              <div className="grid grid-cols-3 gap-2">
                 {data.students.map((student) => (
                   <article
                     key={student.id}
                     className={cn(
-                      "flex items-center justify-between rounded-[14px] p-3 shadow-[0_8px_18px_rgba(28,28,28,0.03)]",
+                      "flex min-h-[108px] flex-col rounded-[14px] p-2.5 shadow-[0_8px_18px_rgba(28,28,28,0.03)]",
                       student.highlighted
                         ? "border border-[#E8E5E0] bg-[#F5F3F0]"
                         : "border border-[#E8E5E0] bg-white",
                     )}
                   >
-                    <div className="min-w-0 flex-1">
-                      <p className="text-[13px] font-bold text-[var(--jp-text)]">
+                    <div className="space-y-1">
+                      <p className="text-[13px] font-semibold text-[var(--jp-text)]">
                         {student.name}
                       </p>
-                      <p className="mt-1 text-[10px] font-semibold text-[var(--jp-text-secondary)]">
-                        {student.studentCode} · {student.homeroomClass}
+                      <p className="text-[10px] leading-4 text-[var(--jp-text-secondary)]">
+                        {student.studentCode}
+                      </p>
+                      <p className="text-[10px] leading-4 text-[var(--jp-text-secondary)]">
+                        {student.homeroomClass}
                       </p>
                     </div>
                     <Button
                       variant="outline"
-                      className="h-auto rounded-full border-[#D4E1EF] bg-white px-2.5 py-1 text-[10px] font-bold text-[#1E3A5F] hover:bg-white"
+                      className="mt-auto h-7 rounded-full border-[#D4E1EF] bg-white px-2 py-0 text-[10px] font-semibold text-[#1E3A5F] hover:bg-white"
                       asChild
                     >
-                      <Link href={student.editHref}>编辑学生</Link>
+                      <Link href={student.editHref}>编辑</Link>
                     </Button>
                   </article>
                 ))}

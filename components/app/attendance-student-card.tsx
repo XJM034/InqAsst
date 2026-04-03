@@ -61,17 +61,20 @@ export function AttendanceStudentCard({
       onClick={editable ? onToggle : undefined}
       disabled={!editable}
       className={cn(
-        "min-h-[90px] rounded-[14px] px-3 py-3 text-left transition-transform",
+        hideStatus
+          ? "min-h-[76px] rounded-[14px] px-2.5 py-2.5"
+          : "min-h-[86px] rounded-[14px] px-2.5 py-2.5",
+        "text-left transition-transform",
         tone.card,
         editable ? "cursor-pointer active:translate-y-px" : "cursor-default",
       )}
     >
       <div className="space-y-1">
-        <p className="text-sm font-semibold text-[var(--jp-text)]">{name}</p>
-        <p className="text-xs text-[var(--jp-text-secondary)]">{homeroomClass}</p>
+        <p className="text-[13px] font-semibold text-[var(--jp-text)]">{name}</p>
+        <p className="text-[10px] leading-4 text-[var(--jp-text-secondary)]">{homeroomClass}</p>
       </div>
       {hideStatus ? null : (
-        <Badge className={cn("mt-3 rounded-full border-0 px-2.5 py-1 text-xs", tone.badge)}>
+        <Badge className={cn("mt-2.5 rounded-full border-0 px-2 py-1 text-[10px]", tone.badge)}>
           {tone.label}
         </Badge>
       )}
