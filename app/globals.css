@@ -80,7 +80,7 @@ html {
   }
 
   .app-shell {
-    @apply flex h-dvh w-full flex-col overflow-hidden md:mx-auto md:max-w-[402px];
+    @apply flex h-dvh w-full flex-col overflow-hidden;
   }
 
   .app-screen {
