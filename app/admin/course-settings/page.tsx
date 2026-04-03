@@ -19,9 +19,7 @@ export default async function AdminCourseSettingsPage() {
 
           <div className="space-y-3.5 px-5 pt-3">
             <section className="rounded-[16px] border border-[#E8E5E0] bg-white p-3.5 shadow-[0_10px_22px_rgba(28,28,28,0.04)]">
-              <h1 className="text-base font-semibold text-[var(--jp-text)]">
-                {data.ruleTitle}
-              </h1>
+              <p className="text-sm font-semibold text-[var(--jp-text)]">{data.ruleTitle}</p>
               <div className="mt-2 grid grid-cols-2 gap-2">
                 {data.modes.map((mode) => (
                   <button
@@ -38,12 +36,12 @@ export default async function AdminCourseSettingsPage() {
                   </button>
                 ))}
               </div>
-            </section>
 
-            <div className="flex h-[42px] items-center gap-2 rounded-[12px] border border-[#E8E5E0] bg-white px-3.5 text-xs text-[var(--jp-text-muted)] shadow-[0_8px_18px_rgba(28,28,28,0.03)]">
-              <Search className="size-4" />
-              <span>{data.searchPlaceholder}</span>
-            </div>
+              <div className="mt-3 flex h-[42px] items-center gap-2 rounded-[12px] border border-[#E8E5E0] bg-white px-3.5 text-xs text-[var(--jp-text-muted)] shadow-[0_8px_18px_rgba(28,28,28,0.03)]">
+                <Search className="size-4" />
+                <span>{data.searchPlaceholder}</span>
+              </div>
+            </section>
 
             <section className="rounded-[16px] border border-[#E8E5E0] bg-white p-3.5 shadow-[0_10px_22px_rgba(28,28,28,0.04)]">
               <div className="flex items-center justify-between">
