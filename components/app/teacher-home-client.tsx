@@ -62,6 +62,7 @@ export function TeacherHomeClient({ home }: TeacherHomeClientProps) {
         : selectedSchedule.primaryCourse.rosterHref,
   };
   const primaryDatePillLabel = selectedSchedule.dateLabel.replace(/\s*·\s*当前.*$/, "");
+  const selectedDaySummary = `${selectedSchedule.primaryCourse.title} · ${selectedSchedule.primaryCourse.time}`;
 
   const substituteAction = selectedSchedule.substituteCourse
     ? {
@@ -82,14 +83,21 @@ export function TeacherHomeClient({ home }: TeacherHomeClientProps) {
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <div className="app-screen">
           <div className="app-scroll px-5 pt-4">
-            <header className="flex items-center gap-3">
-              <div className="flex size-10 items-center justify-center rounded-full bg-[var(--jp-surface-muted)] text-[var(--jp-text-muted)]">
-                <CircleUserRound className="size-6" />
+            <header className="rounded-[16px] border border-[#E8E5E0] bg-white px-3.5 py-3 shadow-[0_8px_18px_rgba(28,28,28,0.03)]">
+              <div className="flex items-center gap-3">
+                <div className="flex size-10 items-center justify-center rounded-full bg-[var(--jp-surface-muted)] text-[var(--jp-text-muted)]">
+                  <CircleUserRound className="size-6" />
+                </div>
+                <div className="min-w-0">
+                  <p className="text-[15px] font-semibold text-[var(--jp-text)]">{home.greeting}</p>
+                  <p className="mt-1 truncate text-[12px] font-medium text-[var(--jp-text-secondary)]">
+                    {selectedDaySummary}
+                  </p>
+                </div>
               </div>
-              <p className="text-[15px] font-medium text-[var(--jp-text)]">{home.greeting}</p>
             </header>
 
-            <section className="mt-4 rounded-[16px] border border-[#E8E5E0] bg-white p-3 shadow-[0_10px_22px_rgba(28,28,28,0.04)]">
+            <section className="mt-3 rounded-[16px] border border-[#E8E5E0] bg-white p-3 shadow-[0_10px_22px_rgba(28,28,28,0.04)]">
               <div className="mb-3 flex items-center gap-2">
                 <div className="size-2 rounded-full bg-[var(--jp-accent)]" />
                 <h2 className="text-sm font-semibold text-[var(--jp-text)]">本周排课</h2>
@@ -144,7 +152,7 @@ export function TeacherHomeClient({ home }: TeacherHomeClientProps) {
               tabIndex={0}
               onClick={() => openPendingAction(primaryAction)}
               onKeyDown={(event) => handleCardKeyDown(event, primaryAction)}
-              className="mt-3 cursor-pointer overflow-hidden rounded-[16px] border border-[#E8E5E0] shadow-[0_12px_26px_rgba(28,28,28,0.05)] transition-transform active:scale-[0.99]"
+              className="mt-2.5 cursor-pointer overflow-hidden rounded-[16px] border border-[#E8E5E0] shadow-[0_12px_26px_rgba(28,28,28,0.05)] transition-transform active:scale-[0.99]"
             >
               <div className="flex items-center gap-2 bg-[#2C2C2C] px-4 py-3 text-white">
                 <MapPin className="size-4" />
