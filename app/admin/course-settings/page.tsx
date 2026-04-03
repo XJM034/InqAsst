@@ -62,7 +62,7 @@ export default async function AdminCourseSettingsPage() {
                 {data.courses.map((course) => (
                   <article
                     key={course.id}
-                    className="rounded-[14px] border border-[#E8E5E0] bg-white p-3 shadow-[0_8px_18px_rgba(28,28,28,0.03)]"
+                    className="rounded-[14px] border border-[#E8E5E0] bg-white p-2.5 shadow-[0_8px_18px_rgba(28,28,28,0.03)]"
                   >
                     <div className="flex items-center justify-between gap-3">
                       <p
@@ -86,22 +86,22 @@ export default async function AdminCourseSettingsPage() {
                         {course.badgeLabel}
                       </span>
                     </div>
-                    <div className="mt-2 rounded-[10px] bg-[#F5F3F0] px-3 py-2">
-                      <p className="text-xs text-[var(--jp-text-secondary)]">
+                    <div className="mt-2 rounded-[10px] bg-[#F5F3F0] px-2.5 py-1.5">
+                      <p className="text-[11px] text-[var(--jp-text-secondary)]">
                         {course.meta}
                       </p>
                     </div>
-                    <div className="mt-3 grid grid-cols-2 gap-2">
+                    <div className="mt-2.5 grid grid-cols-2 gap-2">
                       <Button
                         variant="outline"
-                        className="h-[34px] rounded-[10px] border-[#E8E5E0] bg-white text-[11px] font-semibold text-[var(--jp-text-secondary)] hover:bg-white"
+                        className="h-8 rounded-[10px] border-[#E8E5E0] bg-white text-[11px] font-semibold text-[var(--jp-text-secondary)] hover:bg-white"
                         asChild
                       >
                         <Link href={course.rosterHref}>进入学生名单</Link>
                       </Button>
                       <Button
                         className={cn(
-                          "h-[34px] rounded-[10px] text-[11px] font-semibold",
+                          "h-8 rounded-[10px] text-[11px] font-semibold",
                           course.secondaryActionTone === "accent"
                             ? "bg-[var(--jp-accent)] text-white hover:bg-[var(--jp-accent)]/90"
                             : "border border-[#E8E5E0] bg-white text-[var(--jp-text-secondary)] hover:bg-white",
@@ -114,7 +114,7 @@ export default async function AdminCourseSettingsPage() {
                 ))}
               </div>
 
-              <Button className="mt-3.5 h-10 w-full rounded-[10px] bg-[#1E3A5F] text-xs font-semibold text-white hover:bg-[#1E3A5F]/90">
+              <Button className="mt-3 h-10 w-full rounded-[10px] bg-[#1E3A5F] text-xs font-semibold text-white hover:bg-[#1E3A5F]/90">
                 {data.saveLabel}
               </Button>
             </section>
