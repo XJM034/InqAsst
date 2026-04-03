@@ -32,5 +32,12 @@ export default async function TeacherAttendanceDemoPage({
         }
       : undefined;
 
-  return <AttendanceSessionClient session={session} displayMeta={displayMeta} />;
+  return (
+    <AttendanceSessionClient
+      session={session}
+      displayMeta={displayMeta}
+      backHref="/teacher/home"
+      backLabel="返回主页"
+    />
+  );
 }

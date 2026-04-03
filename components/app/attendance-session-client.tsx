@@ -78,8 +78,8 @@ export function AttendanceSessionClient({
     <PageShell>
       <Dialog>
         <div className="app-screen">
-          <div className={`app-scroll px-5 ${mode === "attendance" ? "pt-4" : ""}`}>
-            {mode === "roster" && backHref ? (
+          <div className={`app-scroll px-5 ${backHref ? "" : mode === "attendance" ? "pt-4" : ""}`}>
+            {backHref ? (
               <div className="pt-3">
                 <Button
                   asChild
@@ -95,7 +95,7 @@ export function AttendanceSessionClient({
             ) : null}
 
             <section
-              className={`${mode === "roster" ? "mt-2.5" : "mt-0"} overflow-hidden rounded-[16px] border border-[#E8E5E0] shadow-[0_12px_26px_rgba(28,28,28,0.05)]`}
+              className={`${backHref ? "mt-2.5" : "mt-0"} overflow-hidden rounded-[16px] border border-[#E8E5E0] shadow-[0_12px_26px_rgba(28,28,28,0.05)]`}
             >
               <div className="flex items-center gap-2 bg-[#2C2C2C] px-4 py-3 text-white">
                 <MapPin className="size-4" />
