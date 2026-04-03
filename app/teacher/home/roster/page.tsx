@@ -41,11 +41,17 @@ export default async function TeacherHomeRosterPage({
           courseInfo: `${selectedSchedule.primaryCourse.campus} | ${selectedSchedule.primaryCourse.locationTrail} | ${selectedSchedule.primaryCourse.time}`,
         };
 
+  const rosterNotice =
+    course === "substitute" && selectedSchedule.substituteCourse
+      ? `${selectedSchedule.substituteCourse.title} 当前不在点名时间，可先查看学生名单。`
+      : `${selectedSchedule.primaryCourse.title} 当前不在点名时间，可先查看学生名单。`;
+
   return (
     <AttendanceSessionClient
       session={session}
       mode="roster"
       displayMeta={displayMeta}
+      rosterNotice={rosterNotice}
       tabActive="home"
       backHref="/teacher/home"
       backLabel="返回主页"

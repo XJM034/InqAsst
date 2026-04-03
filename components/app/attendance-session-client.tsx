@@ -31,6 +31,7 @@ type AttendanceSessionClientProps = {
   tabActive?: "home" | "attendance" | "profile";
   backHref?: string;
   backLabel?: string;
+  rosterNotice?: string;
 };
 
 export function AttendanceSessionClient({
@@ -40,6 +41,7 @@ export function AttendanceSessionClient({
   tabActive = mode === "roster" ? "home" : "attendance",
   backHref,
   backLabel = "返回首页",
+  rosterNotice,
 }: AttendanceSessionClientProps) {
   const [students, setStudents] = useState<AttendanceStudent[]>(session.students);
   const courseInfoParts = (displayMeta?.courseInfo ?? session.courseInfo)
@@ -92,9 +94,14 @@ export function AttendanceSessionClient({
 
                 <div className="flex items-start gap-2 rounded-[14px] bg-[#FFF7E7] px-3.5 py-3 text-[#7B5C1E] ring-1 ring-[#F0E1BD]">
                   <Info className="mt-0.5 size-3.5 shrink-0" />
-                  <p className="text-[12px] font-medium leading-5">
-                    {(displayMeta?.dateLabel ?? session.dateLabel).replace(" · ", "，")}
-                  </p>
+                  <div className="space-y-1">
+                    <p className="text-[12px] font-semibold leading-5">
+                      {rosterNotice ?? "当前不在点名时间，可先查看学生名单。"}
+                    </p>
+                    <p className="text-[11px] font-medium leading-5 text-[#8C6B28]">
+                      {datePillLabel}
+                    </p>
+                  </div>
                 </div>
               </div>
             ) : null}
