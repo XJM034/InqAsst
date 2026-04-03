@@ -147,21 +147,23 @@ export function TeacherHomeClient({ home }: TeacherHomeClientProps) {
                   {selectedSchedule.primaryCourse.campus}
                 </p>
               </div>
-              <div className="space-y-4 bg-[var(--jp-surface)] px-4 py-5">
-                <div className="space-y-2">
-                  <p className="text-[24px] font-medium tracking-[-0.03em] text-[var(--jp-text)]">
-                    {selectedSchedule.primaryCourse.time}
-                  </p>
-                  <p className="text-[18px] font-medium tracking-[-0.02em] text-[var(--jp-text)]">
+              <div className="space-y-3 bg-[var(--jp-surface)] px-4 py-4">
+                <div className="space-y-1.5">
+                  <div className="flex items-center justify-between gap-3">
+                    <p className="text-[20px] font-medium tracking-[-0.03em] text-[var(--jp-text)]">
+                      {selectedSchedule.primaryCourse.time}
+                    </p>
+                    <span className="rounded-full bg-white px-3 py-1.5 text-[11px] font-medium text-[var(--jp-text-secondary)] ring-1 ring-[color:var(--jp-border)]">
+                      {selectedSchedule.dateLabel}
+                    </span>
+                  </div>
+                  <p className="text-[17px] font-medium tracking-[-0.02em] text-[var(--jp-text)]">
                     {selectedSchedule.primaryCourse.title}
-                  </p>
-                  <p className="text-[12px] font-medium text-[var(--jp-text-secondary)]">
-                    {selectedSchedule.dateLabel}
                   </p>
                 </div>
 
-                <div className="flex items-center justify-between rounded-[12px] border border-[color:var(--jp-border)] bg-white px-4 py-3.5">
-                  <p className="text-[18px] font-semibold tracking-[-0.02em] text-[var(--jp-text)]">
+                <div className="flex items-center justify-between rounded-[12px] border border-[color:var(--jp-border)] bg-white px-4 py-3">
+                  <p className="text-[16px] font-semibold tracking-[-0.02em] text-[var(--jp-text)]">
                     {selectedSchedule.primaryCourse.locationTrail}
                   </p>
                   <Navigation className="size-5 text-[var(--jp-accent)]" />
