@@ -159,7 +159,7 @@ export function TeacherHomeClient({ home }: TeacherHomeClientProps) {
                   {selectedSchedule.primaryCourse.campus}
                 </p>
               </div>
-              <div className="space-y-3 bg-[var(--jp-surface)] px-4 py-4">
+              <div className="space-y-2.5 bg-[var(--jp-surface)] px-4 py-3.5">
                 <div className="space-y-1.5">
                   <div className="flex items-center justify-between gap-3">
                     <p className="text-[20px] font-medium tracking-[-0.03em] text-[var(--jp-text)]">
@@ -174,7 +174,7 @@ export function TeacherHomeClient({ home }: TeacherHomeClientProps) {
                   </p>
                 </div>
 
-                <div className="flex items-center justify-between rounded-[12px] border border-[color:var(--jp-border)] bg-white px-4 py-3">
+                <div className="flex items-center justify-between rounded-[12px] border border-[color:var(--jp-border)] bg-white px-4 py-2.5">
                   <p className="text-[16px] font-semibold tracking-[-0.02em] text-[var(--jp-text)]">
                     {selectedSchedule.primaryCourse.locationTrail}
                   </p>
@@ -186,7 +186,7 @@ export function TeacherHomeClient({ home }: TeacherHomeClientProps) {
                     event.stopPropagation();
                     openPendingAction(primaryAction);
                   }}
-                  className="h-11 w-full rounded-[12px] bg-[var(--jp-accent)] text-[var(--jp-bg)] hover:bg-[var(--jp-accent)]/90"
+                  className="h-10 w-full rounded-[12px] bg-[var(--jp-accent)] text-[var(--jp-bg)] hover:bg-[var(--jp-accent)]/90"
                 >
                   {selectedSchedule.primaryCourse.actionLabel}
                 </Button>
@@ -201,7 +201,7 @@ export function TeacherHomeClient({ home }: TeacherHomeClientProps) {
                 onKeyDown={(event) => handleCardKeyDown(event, substituteAction)}
                 className="mt-2 cursor-pointer overflow-hidden rounded-[16px] border border-[#F0E1BD] text-left shadow-[0_10px_22px_rgba(196,106,26,0.08)] transition-transform active:scale-[0.99]"
               >
-                <div className="flex items-center justify-between gap-3 bg-[#FFF3E0] px-4 py-3">
+                <div className="flex items-center justify-between gap-3 bg-[#FFF3E0] px-4 py-2.5">
                   <div className="flex min-w-0 items-center gap-2">
                     <span className="rounded-[4px] bg-white px-2 py-0.5 text-[10px] font-semibold text-[#A55B14]">
                       {selectedSchedule.substituteCourse.badge}
@@ -220,7 +220,7 @@ export function TeacherHomeClient({ home }: TeacherHomeClientProps) {
                   </div>
                 </div>
 
-                <div className="space-y-3 bg-[#FFFDF8] px-4 py-4">
+                <div className="space-y-2.5 bg-[#FFFDF8] px-4 py-3.5">
                   <div className="flex items-center justify-between gap-3">
                     {substituteTime ? (
                       <p className="text-[20px] font-medium tracking-[-0.03em] text-[var(--jp-text)]">
@@ -236,7 +236,7 @@ export function TeacherHomeClient({ home }: TeacherHomeClientProps) {
                     ) : null}
                   </div>
 
-                  <div className="flex items-center justify-between rounded-[12px] border border-[#F0E1BD] bg-white px-4 py-3">
+                  <div className="flex items-center justify-between rounded-[12px] border border-[#F0E1BD] bg-white px-4 py-2.5">
                     <p className="text-[16px] font-semibold tracking-[-0.02em] text-[var(--jp-text)]">
                       {substituteLocation ?? selectedSchedule.substituteCourse.description}
                     </p>
