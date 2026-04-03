@@ -59,7 +59,7 @@ export default async function AdminCourseStudentCreatePage({
               </div>
             </section>
 
-            <Button className="h-10 w-full rounded-[10px] bg-[#1E3A5F] text-xs font-bold text-white hover:bg-[#1E3A5F]/90">
+            <Button className="h-11 w-full rounded-[12px] bg-[#1E3A5F] text-[13px] font-semibold text-white hover:bg-[#1E3A5F]/90">
               {data.submitLabel}
             </Button>
           </div>

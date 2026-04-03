@@ -55,11 +55,11 @@ export default async function AdminCourseStudentImportPage({
               <div className="space-y-2">
                 <Button
                   variant="outline"
-                  className="h-10 w-full rounded-[10px] border border-[#E8E5E0] bg-white text-xs font-bold text-[var(--jp-text)] hover:bg-white"
+                  className="h-11 w-full rounded-[12px] border border-[#E8E5E0] bg-white text-[13px] font-semibold text-[var(--jp-text-secondary)] hover:bg-white"
                 >
                   {data.downloadLabel}
                 </Button>
-                <Button className="h-10 w-full rounded-[10px] bg-[#1E3A5F] text-xs font-bold text-white hover:bg-[#1E3A5F]/90">
+                <Button className="h-11 w-full rounded-[12px] bg-[#1E3A5F] text-[13px] font-semibold text-white hover:bg-[#1E3A5F]/90">
                   {data.uploadLabel}
                 </Button>
               </div>

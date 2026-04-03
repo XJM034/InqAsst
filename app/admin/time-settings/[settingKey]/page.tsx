@@ -61,10 +61,13 @@ export default async function AdminTimeSettingDetailPage({
             </section>
 
             <div className="grid grid-cols-2 gap-3">
-              <Button variant="outline" className="h-11 rounded-[12px]">
+              <Button
+                variant="outline"
+                className="h-11 rounded-[12px] border border-[#E8E5E0] bg-white text-[13px] font-semibold text-[var(--jp-text-secondary)] hover:bg-white"
+              >
                 {detail.resetLabel}
               </Button>
-              <Button className="h-11 rounded-[12px] bg-[#1E3A5F] text-white hover:bg-[#1E3A5F]/90">
+              <Button className="h-11 rounded-[12px] bg-[#1E3A5F] text-[13px] font-semibold text-white hover:bg-[#1E3A5F]/90">
                 {detail.saveLabel}
               </Button>
             </div>
