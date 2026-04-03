@@ -1,11 +1,10 @@
 "use client";
-
-import Link from "next/link";
 import { useState } from "react";
-import { ChevronDown, ChevronLeft, Maximize2 } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 
 import { getAttendanceSummary } from "@/lib/domain/attendance";
 import type { AdminClassAttendanceData, AttendanceStatus } from "@/lib/domain/types";
+import { AdminSubpageHeader } from "@/components/app/admin-subpage-header";
 import { MobileTabBar } from "@/components/app/mobile-tab-bar";
 import { PageShell } from "@/components/app/page-shell";
 import { Button } from "@/components/ui/button";
@@ -46,22 +45,9 @@ export function AdminClassAttendanceClient({
     <PageShell>
       <div className="app-screen">
         <div className="app-scroll">
-          <header className="flex items-center justify-between bg-white px-5 py-4">
-            <div className="flex items-center gap-3">
-              <Link
-                href="/admin/control"
-                className="flex size-8 items-center justify-center rounded-[8px] bg-[#F5F3F0] text-[var(--jp-text)]"
-              >
-                <ChevronLeft className="size-4" />
-              </Link>
-              <h1 className="text-base font-semibold text-[var(--jp-text)]">{data.title}</h1>
-            </div>
-            <div className="flex size-8 items-center justify-center rounded-[8px] text-[var(--jp-text-muted)]">
-              <Maximize2 className="size-4" />
-            </div>
-          </header>
+          <AdminSubpageHeader title={data.title} backHref="/admin/control" />
 
-          <div className="px-5 py-1">
+          <div className="px-5 pb-1 pt-3">
             <div className="flex flex-wrap gap-1.5">
               <SummaryChip label="应到" value={summary.expected} tone="info" />
               <SummaryChip label="已到" value={summary.present} tone="success" />
@@ -70,7 +56,7 @@ export function AdminClassAttendanceClient({
             </div>
           </div>
 
-          <div className="grid grid-cols-3 gap-3 px-5 py-4">
+          <div className="grid grid-cols-3 gap-3 px-5 py-3.5">
             {students.map((student) => {
               const tone = student.managerUpdated
                 ? {
@@ -130,11 +116,13 @@ export function AdminClassAttendanceClient({
           </div>
         </div>
 
-        <div className="app-bottom-safe bg-white px-5 pb-8 pt-4">
-          <p className="text-xs text-[var(--jp-text-muted)]">已选 0 人 · 批量完成点名</p>
-          <Button
-            variant="outline"
-            className="mt-2 h-12 w-full rounded-[12px] border-0 bg-[#F5F3F0] text-[15px] font-medium text-[var(--jp-text-secondary)] hover:bg-[#F5F3F0]"
+          <div className="app-bottom-safe border-t border-[color:var(--jp-border)] bg-white px-5 pb-8 pt-3">
+            <p className="text-[11px] font-medium text-[var(--jp-text-muted)]">
+              已选 0 人 · 批量完成点名
+            </p>
+            <Button
+              variant="outline"
+              className="mt-2 h-12 w-full rounded-[12px] border-0 bg-[#F5F3F0] text-[15px] font-medium text-[var(--jp-text-secondary)] hover:bg-[#F5F3F0]"
           >
             批量完成点名
           </Button>
