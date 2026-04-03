@@ -8,7 +8,6 @@ import { getAttendanceSummary } from "@/lib/domain/attendance";
 import type { AttendanceSession, AttendanceStudent } from "@/lib/domain/types";
 import { AttendanceStudentCard } from "@/components/app/attendance-student-card";
 import { MobileTabBar } from "@/components/app/mobile-tab-bar";
-import { PageTitleBlock } from "@/components/app/page-title-block";
 import { PageShell } from "@/components/app/page-shell";
 import { Button } from "@/components/ui/button";
 import {
@@ -71,7 +70,7 @@ export function AttendanceSessionClient({
     <PageShell>
       <Dialog>
         <div className="app-screen">
-          <div className="app-scroll px-5">
+          <div className={`app-scroll px-5 ${mode === "attendance" ? "pt-4" : ""}`}>
             {mode === "roster" && backHref ? (
               <div className="space-y-3 pt-3">
                 <Button
@@ -94,16 +93,8 @@ export function AttendanceSessionClient({
               </div>
             ) : null}
 
-            {mode === "attendance" ? (
-              <PageTitleBlock
-                className="pt-4"
-                title={displayMeta?.pageTitle ?? session.pageTitle}
-                subtitle={displayMeta?.dateLabel ?? session.dateLabel}
-              />
-            ) : null}
-
             <section
-              className={`${mode === "roster" ? "mt-3" : "mt-3.5"} rounded-[16px] border border-[#E8E5E0] bg-[var(--jp-surface)] p-3 shadow-[0_10px_22px_rgba(28,28,28,0.04)]`}
+              className={`${mode === "roster" ? "mt-3" : "mt-0"} rounded-[16px] border border-[#E8E5E0] bg-[var(--jp-surface)] p-3 shadow-[0_10px_22px_rgba(28,28,28,0.04)]`}
             >
               <div className="space-y-1">
                 <h2 className="text-[15px] font-medium text-[var(--jp-text)]">
