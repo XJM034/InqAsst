@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { Check, ChevronLeft, Info } from "lucide-react";
+import { Check, ChevronLeft, Info, MapPin } from "lucide-react";
 
 import { getAttendanceSummary } from "@/lib/domain/attendance";
 import type { AttendanceSession, AttendanceStudent } from "@/lib/domain/types";
@@ -42,6 +42,11 @@ export function AttendanceSessionClient({
   backLabel = "返回首页",
 }: AttendanceSessionClientProps) {
   const [students, setStudents] = useState<AttendanceStudent[]>(session.students);
+  const courseInfoParts = (displayMeta?.courseInfo ?? session.courseInfo)
+    .split(" | ")
+    .map((item) => item.trim());
+  const [campusLabel, locationLabel, timeLabel] = courseInfoParts;
+  const dateLabel = displayMeta?.dateLabel ?? session.dateLabel;
   const summary = getAttendanceSummary(students);
   const absentStudents = students.filter((student) => student.status === "absent");
   const leaveStudents = students.filter((student) => student.status === "leave");
@@ -94,19 +99,36 @@ export function AttendanceSessionClient({
             ) : null}
 
             <section
-              className={`${mode === "roster" ? "mt-3" : "mt-0"} rounded-[16px] border border-[#E8E5E0] bg-[var(--jp-surface)] p-3 shadow-[0_10px_22px_rgba(28,28,28,0.04)]`}
+              className={`${mode === "roster" ? "mt-3" : "mt-0"} overflow-hidden rounded-[16px] border border-[#E8E5E0] shadow-[0_10px_22px_rgba(28,28,28,0.04)]`}
             >
-              <div className="space-y-1">
-                <h2 className="text-[15px] font-medium text-[var(--jp-text)]">
-                  {displayMeta?.courseTitle ?? session.courseTitle}
-                </h2>
-                <p className="text-[13px] text-[var(--jp-text-secondary)]">
-                  {displayMeta?.courseInfo ?? session.courseInfo}
-                </p>
+              <div className="flex items-center gap-2 bg-[#2C2C2C] px-4 py-3 text-white">
+                <MapPin className="size-4" />
+                <p className="text-[14px] font-semibold">{campusLabel ?? "上课校区"}</p>
               </div>
-              {mode === "attendance" ? (
-                <p className="mt-3 text-xs text-[#D32F2F]">{session.deadlineHint}</p>
-              ) : null}
+
+              <div className="space-y-3.5 bg-[var(--jp-surface)] px-4 py-4">
+                <div className="space-y-1.5">
+                  {timeLabel ? (
+                    <p className="text-[21px] font-medium tracking-[-0.03em] text-[var(--jp-text)]">
+                      {timeLabel}
+                    </p>
+                  ) : null}
+                  <h2 className="text-[17px] font-medium tracking-[-0.02em] text-[var(--jp-text)]">
+                    {displayMeta?.courseTitle ?? session.courseTitle}
+                  </h2>
+                </div>
+
+                <div className="flex flex-wrap gap-2">
+                  <MetaPill tone="neutral">{dateLabel}</MetaPill>
+                  {locationLabel ? <MetaPill tone="accent">{locationLabel}</MetaPill> : null}
+                </div>
+
+                {mode === "attendance" ? (
+                  <div className="rounded-[12px] bg-[#FFF3E8] px-3 py-2.5 text-xs font-medium text-[#C46A1A]">
+                    {session.deadlineHint}
+                  </div>
+                ) : null}
+              </div>
             </section>
 
             {mode === "attendance" ? (
@@ -264,6 +286,26 @@ function SummaryChip({
     <div className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 ${toneClass}`}>
       <span className="text-[13px] font-medium">{label}</span>
       <span className="text-[13px] font-bold">{value}</span>
+    </div>
+  );
+}
+
+function MetaPill({
+  children,
+  tone,
+}: {
+  children: string;
+  tone: "neutral" | "accent";
+}) {
+  return (
+    <div
+      className={
+        tone === "accent"
+          ? "rounded-full bg-[#E8F0FB] px-3 py-1.5 text-[11px] font-semibold text-[#1E3A5F]"
+          : "rounded-full bg-white px-3 py-1.5 text-[11px] font-medium text-[var(--jp-text-secondary)] ring-1 ring-[color:var(--jp-border)]"
+      }
+    >
+      {children}
     </div>
   );
 }
