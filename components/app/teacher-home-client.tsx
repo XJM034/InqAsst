@@ -221,15 +221,17 @@ export function TeacherHomeClient({ home }: TeacherHomeClientProps) {
                 </div>
 
                 <div className="space-y-3 bg-[#FFFDF8] px-4 py-4">
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex items-center justify-between gap-3">
+                    {substituteTime ? (
+                      <p className="text-[20px] font-medium tracking-[-0.03em] text-[var(--jp-text)]">
+                        {substituteTime}
+                      </p>
+                    ) : (
+                      <div />
+                    )}
                     {substituteCampus ? (
                       <span className="rounded-full bg-white px-3 py-1.5 text-[11px] font-medium text-[var(--jp-text-secondary)] ring-1 ring-[#F0E1BD]">
                         {substituteCampus}
-                      </span>
-                    ) : null}
-                    {substituteTime ? (
-                      <span className="rounded-full bg-[#F9E7CA] px-3 py-1.5 text-[11px] font-semibold text-[#A55B14]">
-                        {substituteTime}
                       </span>
                     ) : null}
                   </div>
