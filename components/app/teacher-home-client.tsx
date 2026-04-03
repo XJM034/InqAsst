@@ -84,60 +84,62 @@ export function TeacherHomeClient({ home }: TeacherHomeClientProps) {
               <p className="text-[15px] font-medium text-[var(--jp-text)]">{home.greeting}</p>
             </header>
 
-            <section className="mt-4 grid grid-cols-5 gap-2">
-              {home.weekCalendar.map((day) => {
-                const isSelected = day.key === selectedDayKey;
-                const caption =
-                  day.key === home.defaultDayKey ? day.caption : isSelected && day.hasClass ? "排课" : undefined;
+            <section className="mt-4 rounded-[16px] border border-[#E8E5E0] bg-white p-3 shadow-[0_10px_22px_rgba(28,28,28,0.04)]">
+              <div className="mb-3 flex items-center gap-2">
+                <div className="size-2 rounded-full bg-[var(--jp-accent)]" />
+                <h2 className="text-sm font-semibold text-[var(--jp-text)]">本周排课</h2>
+              </div>
 
-                return (
-                  <button
-                    key={day.key}
-                    type="button"
-                    disabled={!day.hasClass}
-                    onClick={() => day.hasClass && setSelectedDayKey(day.key)}
-                    className={
-                      isSelected
-                        ? "flex flex-col items-center rounded-[12px] bg-[var(--jp-surface)] px-4 py-2"
-                        : "flex flex-col items-center gap-2 py-2"
-                    }
-                  >
-                    <span
+              <div className="grid grid-cols-5 gap-1.5">
+                {home.weekCalendar.map((day) => {
+                  const isSelected = day.key === selectedDayKey;
+                  const caption =
+                    day.key === home.defaultDayKey ? day.caption : isSelected && day.hasClass ? "排课" : undefined;
+
+                  return (
+                    <button
+                      key={day.key}
+                      type="button"
+                      disabled={!day.hasClass}
+                      onClick={() => day.hasClass && setSelectedDayKey(day.key)}
                       className={
                         isSelected
-                          ? "text-[13px] font-semibold text-[var(--jp-accent)]"
-                          : "text-[13px] text-[var(--jp-text-secondary)]"
+                          ? "flex min-h-[58px] flex-col items-center rounded-[12px] bg-[var(--jp-surface)] px-2 py-2"
+                          : "flex min-h-[58px] flex-col items-center justify-center gap-2 rounded-[12px] px-2 py-2"
                       }
                     >
-                      {day.label}
-                    </span>
-                    {caption ? (
-                      <span className="mt-1 text-[11px] font-medium text-[var(--jp-accent)]">
-                        {caption}
-                      </span>
-                    ) : (
                       <span
-                        className={`size-1.5 rounded-full ${
-                          day.hasClass ? "bg-[var(--jp-accent)]" : "bg-[var(--jp-border)]"
-                        }`}
-                      />
-                    )}
-                  </button>
-                );
-              })}
+                        className={
+                          isSelected
+                            ? "text-[13px] font-semibold text-[var(--jp-accent)]"
+                            : "text-[13px] text-[var(--jp-text-secondary)]"
+                        }
+                      >
+                        {day.label}
+                      </span>
+                      {caption ? (
+                        <span className="mt-1 text-[11px] font-medium text-[var(--jp-accent)]">
+                          {caption}
+                        </span>
+                      ) : (
+                        <span
+                          className={`size-1.5 rounded-full ${
+                            day.hasClass ? "bg-[var(--jp-accent)]" : "bg-[var(--jp-border)]"
+                          }`}
+                        />
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
             </section>
-
-            <div className="mt-5 flex items-center gap-2">
-              <div className="size-2 rounded-full bg-[var(--jp-accent)]" />
-              <h2 className="text-base font-bold text-[var(--jp-text)]">本周排课</h2>
-            </div>
 
             <article
               role="button"
               tabIndex={0}
               onClick={() => openPendingAction(primaryAction)}
               onKeyDown={(event) => handleCardKeyDown(event, primaryAction)}
-              className="mt-3.5 cursor-pointer overflow-hidden rounded-[16px] border border-[#E8E5E0] shadow-[0_12px_26px_rgba(28,28,28,0.05)] transition-transform active:scale-[0.99]"
+              className="mt-3 cursor-pointer overflow-hidden rounded-[16px] border border-[#E8E5E0] shadow-[0_12px_26px_rgba(28,28,28,0.05)] transition-transform active:scale-[0.99]"
             >
               <div className="flex items-center gap-2 bg-[#2C2C2C] px-4 py-3 text-white">
                 <MapPin className="size-4" />
