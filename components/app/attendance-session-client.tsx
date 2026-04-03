@@ -80,7 +80,7 @@ export function AttendanceSessionClient({
         <div className="app-screen">
           <div className={`app-scroll px-5 ${mode === "attendance" ? "pt-4" : ""}`}>
             {mode === "roster" && backHref ? (
-              <div className="space-y-3 pt-3">
+              <div className="pt-3">
                 <Button
                   asChild
                   variant="outline"
@@ -91,23 +91,11 @@ export function AttendanceSessionClient({
                     {backLabel}
                   </Link>
                 </Button>
-
-                <div className="flex items-start gap-2 rounded-[14px] bg-[#FFF7E7] px-3.5 py-3 text-[#7B5C1E] ring-1 ring-[#F0E1BD]">
-                  <Info className="mt-0.5 size-3.5 shrink-0" />
-                  <div className="space-y-1">
-                    <p className="text-[12px] font-semibold leading-5">
-                      {rosterNotice ?? "当前不在点名时间，可先查看学生名单。"}
-                    </p>
-                    <p className="text-[11px] font-medium leading-5 text-[#8C6B28]">
-                      {datePillLabel}
-                    </p>
-                  </div>
-                </div>
               </div>
             ) : null}
 
             <section
-              className={`${mode === "roster" ? "mt-3" : "mt-0"} overflow-hidden rounded-[16px] border border-[#E8E5E0] shadow-[0_12px_26px_rgba(28,28,28,0.05)]`}
+              className={`${mode === "roster" ? "mt-2.5" : "mt-0"} overflow-hidden rounded-[16px] border border-[#E8E5E0] shadow-[0_12px_26px_rgba(28,28,28,0.05)]`}
             >
               <div className="flex items-center gap-2 bg-[#2C2C2C] px-4 py-3 text-white">
                 <MapPin className="size-4" />
@@ -134,6 +122,16 @@ export function AttendanceSessionClient({
                 {mode === "attendance" ? (
                   <div className="rounded-[12px] bg-[#FFF3E8] px-3 py-2.5 text-xs font-medium text-[#C46A1A]">
                     {session.deadlineHint}
+                  </div>
+                ) : rosterNotice ? (
+                  <div className="flex items-start gap-2 rounded-[12px] bg-[#FFF7E7] px-3 py-2.5 text-[#7B5C1E] ring-1 ring-[#F0E1BD]">
+                    <Info className="mt-0.5 size-3.5 shrink-0" />
+                    <div className="space-y-1">
+                      <p className="text-[12px] font-semibold leading-5">{rosterNotice}</p>
+                      <p className="text-[11px] font-medium leading-5 text-[#8C6B28]">
+                        {datePillLabel}
+                      </p>
+                    </div>
                   </div>
                 ) : null}
               </div>
