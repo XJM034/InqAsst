@@ -82,9 +82,12 @@ export function AdminUnarrivedClient({ data }: AdminUnarrivedClientProps) {
             <p className="mt-3 text-xs font-medium text-[var(--jp-accent)]">{feedback}</p>
           ) : null}
 
-          <div className="mt-3.5 space-y-5">
+          <div className="mt-3.5 space-y-4">
             {data.groups.map((group) => (
-              <section key={group.id} className="space-y-3">
+              <section
+                key={group.id}
+                className="rounded-[16px] border border-[#E8E5E0] bg-white p-3 shadow-[0_10px_22px_rgba(28,28,28,0.04)]"
+              >
                 <div className="flex items-center justify-between">
                   <h2 className="text-sm font-semibold text-[var(--jp-text)]">
                     {group.label}
@@ -109,11 +112,11 @@ export function AdminUnarrivedClient({ data }: AdminUnarrivedClientProps) {
                     </button>
                   </div>
                 </div>
-                <div className="grid grid-cols-2 gap-3">
+                <div className="mt-3 grid grid-cols-2 gap-3">
                   {group.students.map((student) => (
                     <article
                       key={student.id}
-                      className="rounded-[16px] border border-[#E8E5E0] bg-[var(--jp-surface)] px-3 py-3 shadow-[0_10px_22px_rgba(28,28,28,0.04)]"
+                      className="rounded-[14px] border border-[#E8E5E0] bg-[var(--jp-surface)] px-3 py-3 shadow-[0_8px_18px_rgba(28,28,28,0.03)]"
                     >
                       <div className="space-y-1">
                         <p className="text-sm font-semibold text-[var(--jp-text)]">
