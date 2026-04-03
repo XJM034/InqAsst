@@ -35,7 +35,7 @@ export function AttendanceStudentCard({
       ? {
           card: "bg-[#FFFDF8] ring-[#E59A52]",
           badge: "bg-[#FFF4EA] text-[#9A5A1F]",
-          label: overrideLabel,
+          label: status === "present" ? "已到" : status === "leave" ? "请假" : "未到",
         }
       : status === "present"
         ? {
