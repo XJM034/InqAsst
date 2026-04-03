@@ -25,16 +25,16 @@ export default async function AdminTeacherCoursePage({
         <div className="app-scroll pb-4">
           <AdminSubpageHeader title="设置课程老师" backHref="/admin/emergency" />
 
-          <div className="space-y-3 px-5 pt-3">
-            <section className="rounded-[14px] border border-[#E8E5E0] bg-white p-3.5">
+          <div className="space-y-3.5 px-5 pt-3">
+            <section className="rounded-[16px] border border-[#E8E5E0] bg-white p-3.5 shadow-[0_10px_22px_rgba(28,28,28,0.04)]">
               <h1 className="text-base font-bold text-[var(--jp-text)]">{course.title}</h1>
               <p className="mt-2 text-xs text-[var(--jp-text-secondary)]">{course.meta}</p>
             </section>
 
-            <section className="rounded-[14px] border border-[#E8E5E0] bg-white p-3">
+            <section className="rounded-[16px] border border-[#E8E5E0] bg-white p-3 shadow-[0_10px_22px_rgba(28,28,28,0.04)]">
               <h2 className="text-[15px] font-bold text-[var(--jp-text)]">当前点名老师</h2>
               {course.currentTeacherMode === "temporary" ? (
-                <div className="mt-3 flex items-center justify-between rounded-[12px] bg-[#FFF7ED] px-3 py-3">
+                <div className="mt-3 flex items-center justify-between rounded-[14px] border border-[#F2DEC2] bg-[#FFF7ED] px-3 py-3 shadow-[0_8px_18px_rgba(196,106,26,0.08)]">
                   <p className="text-sm font-bold text-[#1E3A5F]">
                     {course.currentTeacherLabel}
                   </p>
@@ -46,7 +46,7 @@ export default async function AdminTeacherCoursePage({
                   </button>
                 </div>
               ) : (
-                <div className="mt-3 rounded-[12px] bg-[#F5F3F0] px-3 py-3">
+                <div className="mt-3 rounded-[14px] border border-[#E8E5E0] bg-white px-3 py-3 shadow-[0_8px_18px_rgba(28,28,28,0.03)]">
                   <p className="text-sm font-bold text-[var(--jp-text)]">
                     {course.currentTeacherLabel}
                   </p>
