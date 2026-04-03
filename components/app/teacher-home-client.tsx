@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import {
   CalendarClock,
+  ChevronRight,
   CircleUserRound,
   MapPin,
   Navigation,
@@ -185,38 +186,31 @@ export function TeacherHomeClient({ home }: TeacherHomeClientProps) {
                 className="mt-5 cursor-pointer rounded-[16px] border-l-[3px] border-[#FF9800] bg-[var(--jp-surface)] px-3 py-3 text-left shadow-[0_12px_30px_rgba(28,28,28,0.04)] transition-transform active:scale-[0.99]"
               >
                 <div className="flex items-start justify-between gap-3">
-                  <div className="flex items-center gap-2">
-                    <span className="rounded-[4px] bg-[#FFF3E0] px-2 py-0.5 text-[10px] font-semibold text-[#A55B14]">
-                      {selectedSchedule.substituteCourse.badge}
-                    </span>
-                    <p className="text-[15px] font-medium text-[var(--jp-text)]">
-                      {selectedSchedule.substituteCourse.title}
+                  <div className="min-w-0 space-y-2">
+                    <div className="flex items-center gap-2">
+                      <span className="rounded-[4px] bg-[#FFF3E0] px-2 py-0.5 text-[10px] font-semibold text-[#A55B14]">
+                        {selectedSchedule.substituteCourse.badge}
+                      </span>
+                      <p className="truncate text-[15px] font-medium text-[var(--jp-text)]">
+                        {selectedSchedule.substituteCourse.title}
+                      </p>
+                    </div>
+                    <p className="text-[13px] text-[var(--jp-text-secondary)]">
+                      {selectedSchedule.substituteCourse.description}
                     </p>
                   </div>
-                  <span className="rounded-full bg-[#FFF3E0] px-2 py-1 text-[11px] font-semibold text-[#A55B14]">
-                    点击进入
-                  </span>
-                </div>
-                  <p className="mt-2 text-[13px] text-[var(--jp-text-secondary)]">
-                    {selectedSchedule.substituteCourse.description}
-                  </p>
-                  <div className="mt-3 inline-flex items-center gap-1 rounded-full bg-[var(--jp-surface-muted)] px-2.5 py-1 text-[11px]">
-                    <span className="font-medium text-[var(--jp-text-secondary)]">
-                      {selectedSchedule.substituteCourse.expectedLabel.split(" ")[0]}
-                    </span>
-                    <span className="font-bold text-[var(--jp-accent)]">
-                      {selectedSchedule.substituteCourse.expectedLabel.split(" ")[1]}
-                    </span>
+                  <div className="flex items-center gap-2 pt-0.5">
+                    <div className="inline-flex items-center gap-1 rounded-full bg-[var(--jp-surface-muted)] px-2.5 py-1 text-[11px]">
+                      <span className="font-medium text-[var(--jp-text-secondary)]">
+                        {selectedSchedule.substituteCourse.expectedLabel.split(" ")[0]}
+                      </span>
+                      <span className="font-bold text-[var(--jp-accent)]">
+                        {selectedSchedule.substituteCourse.expectedLabel.split(" ")[1]}
+                      </span>
+                    </div>
+                    <ChevronRight className="size-4 shrink-0 text-[var(--jp-text-muted)]" />
                   </div>
-                  <Button
-                    onClick={(event) => {
-                      event.stopPropagation();
-                      openPendingAction(substituteAction);
-                    }}
-                    className="mt-3 h-10 w-full rounded-[12px] bg-[var(--jp-accent)] text-[var(--jp-bg)] hover:bg-[var(--jp-accent)]/90"
-                  >
-                    {selectedSchedule.substituteCourse.actionLabel}
-                  </Button>
+                </div>
               </article>
             ) : null}
 
