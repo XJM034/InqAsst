@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 
+import { AdminContextCard } from "@/components/app/admin-context-card";
 import { AdminSubpageHeader } from "@/components/app/admin-subpage-header";
 import { MobileTabBar } from "@/components/app/mobile-tab-bar";
 import { PageShell } from "@/components/app/page-shell";
@@ -34,12 +35,7 @@ export default async function AdminCourseStudentEditPage({
           />
 
           <div className="space-y-3.5 px-5 pt-3">
-            <section className="rounded-[16px] border border-[#E8E5E0] bg-white p-3 shadow-[0_10px_22px_rgba(28,28,28,0.04)]">
-              <h1 className="text-base font-bold text-[var(--jp-text)]">{data.nameValue}</h1>
-              {data.courseContext ? (
-                <p className="mt-2 text-xs text-[var(--jp-text-secondary)]">{data.courseContext}</p>
-              ) : null}
-            </section>
+            <AdminContextCard title={data.nameValue} description={data.courseContext} />
 
             <section className="rounded-[16px] border border-[#E8E5E0] bg-white p-3 shadow-[0_10px_22px_rgba(28,28,28,0.04)]">
               <h2 className="text-sm font-bold text-[var(--jp-text)]">学生信息</h2>
