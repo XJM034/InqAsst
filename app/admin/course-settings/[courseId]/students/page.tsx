@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Plus, Search, Upload } from "lucide-react";
 import { notFound } from "next/navigation";
 
 import { AdminSubpageHeader } from "@/components/app/admin-subpage-header";
@@ -45,32 +46,37 @@ export default async function AdminCourseRosterPage({
             </section>
 
             <section className="rounded-[16px] border border-[#E8E5E0] bg-white p-3 shadow-[0_10px_22px_rgba(28,28,28,0.04)]">
-              <div className="space-y-2">
-                <div className="flex h-10 items-center rounded-[12px] border border-[#E8E5E0] bg-white px-3.5 text-xs text-[var(--jp-text-muted)] shadow-[0_8px_18px_rgba(28,28,28,0.03)]">
-                  {data.searchPlaceholder}
-                </div>
-                <div className="flex gap-2">
-                  <Button
-                    className="h-9 flex-1 rounded-[10px] bg-[#1E3A5F] text-xs font-bold text-white hover:bg-[#1E3A5F]/90"
-                    asChild
-                  >
-                    <Link href={data.addHref}>新增学生</Link>
-                  </Button>
-                  <Button
-                    variant="outline"
-                    className="h-9 w-[114px] rounded-[10px] border-[#E8E5E0] bg-white text-xs font-semibold text-[var(--jp-text)] hover:bg-white"
-                    asChild
-                  >
-                    <Link href={data.importHref}>批量导入</Link>
-                  </Button>
-                </div>
+              <div className="flex h-10 items-center gap-3 rounded-[12px] bg-[var(--jp-surface-muted)] px-4 text-[13px] text-[var(--jp-text-muted)]">
+                <Search className="size-4" />
+                <span>{data.searchPlaceholder}</span>
+              </div>
+              <div className="mt-3 grid grid-cols-2 gap-3">
+                <Button
+                  className="h-11 rounded-[12px] bg-[#1E3A5F] text-xs font-semibold text-white hover:bg-[#1E3A5F]/90"
+                  asChild
+                >
+                  <Link className="inline-flex items-center justify-center gap-2" href={data.addHref}>
+                    <Plus className="size-4" />
+                    新增学生
+                  </Link>
+                </Button>
+                <Button
+                  variant="outline"
+                  className="h-11 rounded-[12px] border-[#E8E5E0] bg-white text-xs font-semibold text-[var(--jp-text)] hover:bg-white"
+                  asChild
+                >
+                  <Link className="inline-flex items-center justify-center gap-2" href={data.importHref}>
+                    <Upload className="size-4" />
+                    批量导入
+                  </Link>
+                </Button>
               </div>
             </section>
 
             <section className="rounded-[16px] border border-[#E8E5E0] bg-white p-3 shadow-[0_10px_22px_rgba(28,28,28,0.04)]">
-              <div className="flex items-center justify-between px-0.5 pb-2">
+              <div className="flex items-center justify-between px-0.5 pb-2.5">
                 <h2 className="text-sm font-bold text-[var(--jp-text)]">学生名单</h2>
-                <span className="text-[10px] font-semibold text-[var(--jp-text-secondary)]">
+                <span className="rounded-full bg-[var(--jp-surface-muted)] px-2.5 py-1 text-[10px] font-semibold text-[var(--jp-text-secondary)]">
                   共 {data.students.length} 人
                 </span>
               </div>
