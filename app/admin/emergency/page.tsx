@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ChevronRight, Search } from "lucide-react";
+import { ChevronRight, Search, UserCheck } from "lucide-react";
 
 import { AdminSubpageHeader } from "@/components/app/admin-subpage-header";
 import { MobileTabBar } from "@/components/app/mobile-tab-bar";
@@ -47,13 +47,18 @@ export default async function AdminEmergencyPage() {
               href={data.featuredCourse.href}
               className="mt-3 flex items-center justify-between rounded-[14px] border border-[#F2DEC2] bg-white p-3 shadow-[0_8px_18px_rgba(28,28,28,0.03)]"
             >
-              <div className="space-y-1">
-                <p className="text-sm font-bold text-[var(--jp-text)]">
-                  {data.featuredCourse.title}
-                </p>
-                <p className="text-xs text-[var(--jp-text-secondary)]">
-                  {data.featuredCourse.meta}
-                </p>
+              <div className="flex min-w-0 items-start gap-2.5">
+                <div className="mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-full bg-[#FFF3E0] text-[#A55B14]">
+                  <UserCheck className="size-4" />
+                </div>
+                <div className="space-y-1">
+                  <p className="text-sm font-semibold text-[var(--jp-text)]">
+                    {data.featuredCourse.title}
+                  </p>
+                  <p className="text-xs text-[var(--jp-text-secondary)]">
+                    {data.featuredCourse.meta}
+                  </p>
+                </div>
               </div>
               <div className="flex items-center gap-1 text-xs font-semibold text-[#1E3A5F]">
                 <span>老师设置</span>
@@ -71,13 +76,18 @@ export default async function AdminEmergencyPage() {
                   href={course.href}
                   className="flex items-center justify-between rounded-[14px] border border-[#E8E5E0] bg-white p-3 shadow-[0_8px_18px_rgba(28,28,28,0.03)]"
                 >
-                  <div className="space-y-1 pr-3">
-                    <p className="text-sm font-bold text-[var(--jp-text)]">
-                      {course.title}
-                    </p>
-                    <p className="text-xs text-[var(--jp-text-secondary)]">
-                      {course.meta}
-                    </p>
+                  <div className="flex min-w-0 items-start gap-2.5 pr-3">
+                    <div className="mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-full bg-[#EEF4FA] text-[#1E3A5F]">
+                      <UserCheck className="size-4" />
+                    </div>
+                    <div className="space-y-1">
+                      <p className="text-sm font-semibold text-[var(--jp-text)]">
+                        {course.title}
+                      </p>
+                      <p className="text-xs text-[var(--jp-text-secondary)]">
+                        {course.meta}
+                      </p>
+                    </div>
                   </div>
                   <div className="flex shrink-0 items-center gap-1 text-xs font-semibold text-[#1E3A5F]">
                     <span>老师设置</span>
