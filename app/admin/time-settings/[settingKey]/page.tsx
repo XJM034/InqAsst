@@ -1,0 +1,94 @@
+import Link from "next/link";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { notFound } from "next/navigation";
+
+import { MobileTabBar } from "@/components/app/mobile-tab-bar";
+import { PageShell } from "@/components/app/page-shell";
+import { Button } from "@/components/ui/button";
+import { getAdminTimeSettingDetail } from "@/lib/services/mobile-app";
+
+export default async function AdminTimeSettingDetailPage({
+  params,
+}: {
+  params: Promise<{ settingKey: string }>;
+}) {
+  const { settingKey } = await params;
+  const detail = await getAdminTimeSettingDetail(settingKey);
+
+  if (!detail) {
+    notFound();
+  }
+
+  return (
+    <PageShell>
+      <div className="app-screen">
+        <div className="app-scroll pb-4">
+          <div className="bg-white px-5 py-4">
+            <Link
+              href="/admin/time-settings"
+              className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--jp-text)]"
+            >
+              <span className="flex size-8 items-center justify-center rounded-[8px] bg-[#F5F3F0]">
+                <ChevronLeft className="size-4" />
+              </span>
+              <span>{detail.title}</span>
+            </Link>
+          </div>
+
+          <div className="space-y-3 px-5 pt-3">
+            <section className="rounded-[14px] border border-[#E8E5E0] bg-white p-4">
+              <h1 className="text-base font-semibold text-[var(--jp-text)]">{detail.title}</h1>
+              <p className="mt-2 text-xs font-medium text-[var(--jp-text-secondary)]">
+                {detail.subtitle}
+              </p>
+              <p className="mt-3 text-xs text-[var(--jp-text-secondary)]">{detail.helperText}</p>
+            </section>
+
+            <section className="rounded-[14px] border border-[#E8E5E0] bg-white p-4">
+              <h2 className="text-[15px] font-semibold text-[var(--jp-text)]">
+                {detail.title === "设置点名时间" ? "点名时间范围" : "实际上课时间范围"}
+              </h2>
+              <Link
+                href={detail.pickerHref}
+                className="mt-3 flex items-center justify-between rounded-[12px] border border-[#E8E5E0] bg-[#F5F3F0] px-3.5 py-3"
+              >
+                <span className="text-[13px] font-medium text-[var(--jp-text-secondary)]">
+                  时间范围
+                </span>
+                <span className="flex items-center gap-1.5 text-[17px] font-semibold text-[var(--jp-text)]">
+                  {detail.currentRange}
+                  <ChevronRight className="size-4 text-[var(--jp-text-muted)]" />
+                </span>
+              </Link>
+              <p className="mt-3 text-xs text-[var(--jp-text-secondary)]">{detail.helperText}</p>
+            </section>
+
+            <section className="rounded-[14px] bg-[#FFF6EC] p-3.5">
+              <p className="text-xs font-semibold text-[#C46A1A]">
+                {detail.defaultLogicText}
+              </p>
+            </section>
+
+            <div className="grid grid-cols-2 gap-3">
+              <Button variant="outline" className="h-11 rounded-[12px]">
+                {detail.resetLabel}
+              </Button>
+              <Button className="h-11 rounded-[12px] bg-[#1E3A5F] text-white hover:bg-[#1E3A5F]/90">
+                {detail.saveLabel}
+              </Button>
+            </div>
+          </div>
+        </div>
+
+        <MobileTabBar
+          active="home"
+          items={[
+            { key: "home", href: "/admin/home" },
+            { key: "attendance", href: "/admin/control" },
+            { key: "profile", href: "/admin/me" },
+          ]}
+        />
+      </div>
+    </PageShell>
+  );
+}

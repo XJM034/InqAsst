@@ -1,0 +1,112 @@
+import Link from "next/link";
+import { ChevronLeft, ChevronRight, Search } from "lucide-react";
+
+import { MobileTabBar } from "@/components/app/mobile-tab-bar";
+import { PageShell } from "@/components/app/page-shell";
+import { getAdminEmergencyData } from "@/lib/services/mobile-app";
+
+export default async function AdminEmergencyPage() {
+  const data = await getAdminEmergencyData();
+
+  return (
+    <PageShell>
+      <div className="app-screen">
+        <div className="app-scroll px-5 pb-4 pt-0">
+          <div className="bg-white px-5 py-4">
+            <Link
+              href="/admin/home"
+              className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--jp-text)]"
+            >
+              <span className="flex size-8 items-center justify-center rounded-[8px] bg-[#F5F3F0]">
+                <ChevronLeft className="size-4" />
+              </span>
+              <span>返回首页</span>
+            </Link>
+          </div>
+
+          <section className="mt-3 rounded-[14px] border border-[#E8E5E0] bg-white p-3.5">
+            <div className="flex flex-wrap gap-2">
+              {data.days.map((day) => (
+                <div
+                  key={day.label}
+                  className={`flex h-9 min-w-[60px] items-center justify-center rounded-full border px-4 text-xs font-semibold ${
+                    day.active
+                      ? "border-transparent bg-[#1E3A5F] text-white"
+                      : "border-[#E8E5E0] bg-[#F5F3F0] text-[var(--jp-text)]"
+                  }`}
+                >
+                  {day.label}
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-3 flex h-[42px] items-center gap-2 rounded-[10px] bg-[#F5F3F0] px-3.5 text-xs text-[var(--jp-text-muted)]">
+              <Search className="size-4" />
+              <span>搜索课程名 / 默认负责老师</span>
+            </div>
+          </section>
+
+          <section className="mt-3 rounded-[16px] border border-[#F2DEC2] bg-[#FFF7EA] p-3">
+            <div className="space-y-1">
+              <h1 className="text-base font-bold text-[var(--jp-text)]">
+                {data.featuredDateLabel}
+              </h1>
+            </div>
+            <Link
+              href={data.featuredCourse.href}
+              className="mt-3 flex items-center justify-between rounded-[12px] border border-[#F2DEC2] bg-white p-3"
+            >
+              <div className="space-y-1">
+                <p className="text-sm font-bold text-[var(--jp-text)]">
+                  {data.featuredCourse.title}
+                </p>
+                <p className="text-xs text-[var(--jp-text-secondary)]">
+                  {data.featuredCourse.meta}
+                </p>
+              </div>
+              <div className="flex items-center gap-1 text-xs font-semibold text-[#1E3A5F]">
+                <span>老师设置</span>
+                <ChevronRight className="size-3.5" />
+              </div>
+            </Link>
+          </section>
+
+          <section className="mt-3 rounded-[14px] border border-[#E8E5E0] bg-white p-3">
+            <h2 className="text-[15px] font-bold text-[var(--jp-text)]">全部课程</h2>
+            <div className="mt-3 space-y-3">
+              {data.allCourses.map((course) => (
+                <Link
+                  key={course.id}
+                  href={course.href}
+                  className="flex items-center justify-between rounded-[12px] border border-[#E8E5E0] bg-white p-3"
+                >
+                  <div className="space-y-1 pr-3">
+                    <p className="text-sm font-bold text-[var(--jp-text)]">
+                      {course.title}
+                    </p>
+                    <p className="text-xs text-[var(--jp-text-secondary)]">
+                      {course.meta}
+                    </p>
+                  </div>
+                  <div className="flex shrink-0 items-center gap-1 text-xs font-semibold text-[#1E3A5F]">
+                    <span>老师设置</span>
+                    <ChevronRight className="size-3.5" />
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </section>
+        </div>
+
+        <MobileTabBar
+          active="home"
+          items={[
+            { key: "home", href: "/admin/home" },
+            { key: "attendance", href: "/admin/control" },
+            { key: "profile", href: "/admin/me" },
+          ]}
+        />
+      </div>
+    </PageShell>
+  );
+}

@@ -1,8 +1,11 @@
 {
-  "name": "app",
+  "name": "inqasst",
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "sync:tokens": "node scripts/sync-pencil-tokens.mjs",
+    "predev": "npm run sync:tokens",
+    "prebuild": "npm run sync:tokens",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
