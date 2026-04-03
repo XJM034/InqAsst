@@ -15,7 +15,7 @@ export default async function AdminEmergencyPage() {
         <div className="app-scroll pb-4">
           <AdminSubpageHeader title="老师设置" backHref="/admin/home" />
 
-          <section className="mx-5 mt-3 rounded-[16px] border border-[#E8E5E0] bg-white p-3.5 shadow-[0_10px_22px_rgba(28,28,28,0.04)]">
+          <section className="mx-5 mt-2.5 rounded-[16px] border border-[#E8E5E0] bg-white p-3.5 shadow-[0_10px_22px_rgba(28,28,28,0.04)]">
             <div className="flex flex-wrap gap-2">
               {data.days.map((day) => (
                 <div
