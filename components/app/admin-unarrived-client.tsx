@@ -99,21 +99,21 @@ export function AdminUnarrivedClient({ data }: AdminUnarrivedClientProps) {
                     </button>
                   </div>
                 </div>
-                <div className="mt-3 grid grid-cols-2 gap-3">
+                <div className="mt-3 space-y-2">
                   {group.students.map((student) => (
                     <article
                       key={student.id}
-                      className="flex min-h-[108px] flex-col rounded-[14px] border border-[#E8E5E0] bg-white px-3 py-3 shadow-[0_8px_18px_rgba(28,28,28,0.03)]"
+                      className="flex items-center justify-between rounded-[14px] border border-[#E8E5E0] bg-white px-3 py-3 shadow-[0_8px_18px_rgba(28,28,28,0.03)]"
                     >
-                      <div className="space-y-1">
-                        <p className="text-sm font-semibold text-[var(--jp-text)]">
+                      <div className="min-w-0 flex-1 pr-3">
+                        <p className="text-[13px] font-bold text-[var(--jp-text)]">
                           {student.name}
                         </p>
-                        <p className="text-xs text-[var(--jp-text-secondary)]">
+                        <p className="mt-1 text-[11px] font-medium text-[var(--jp-text-secondary)]">
                           {student.course}
                         </p>
                       </div>
-                      <div className="mt-auto flex h-8 items-center justify-center rounded-[8px] bg-[#FCEBEC] px-2.5 text-[11px] font-medium text-[#D32F2F]">
+                      <div className="flex h-8 shrink-0 items-center justify-center rounded-full bg-[#FCEBEC] px-3 text-[11px] font-semibold text-[#D32F2F]">
                         未到
                       </div>
                     </article>
