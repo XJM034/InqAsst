@@ -191,7 +191,7 @@ export function TeacherHomeClient({ home }: TeacherHomeClientProps) {
                 tabIndex={0}
                 onClick={() => openPendingAction(substituteAction)}
                 onKeyDown={(event) => handleCardKeyDown(event, substituteAction)}
-                className="mt-4 cursor-pointer overflow-hidden rounded-[16px] border border-[#F0E1BD] text-left shadow-[0_10px_22px_rgba(196,106,26,0.08)] transition-transform active:scale-[0.99]"
+                className="mt-3.5 cursor-pointer overflow-hidden rounded-[16px] border border-[#F0E1BD] text-left shadow-[0_10px_22px_rgba(196,106,26,0.08)] transition-transform active:scale-[0.99]"
               >
                 <div className="flex items-center justify-between gap-3 bg-[#FFF3E0] px-3.5 py-2.5">
                   <div className="flex min-w-0 items-center gap-2">
@@ -236,7 +236,7 @@ export function TeacherHomeClient({ home }: TeacherHomeClientProps) {
               </article>
             ) : null}
 
-            <article className="mt-4 flex items-center gap-3 rounded-[16px] border border-[#E8E5E0] bg-[#FCFBF9] px-3 py-2.5 shadow-[0_8px_18px_rgba(28,28,28,0.03)]">
+            <article className="mt-3 flex items-center gap-3 rounded-[16px] border border-[#E8E5E0] bg-[#FCFBF9] px-3 py-2.5 shadow-[0_8px_18px_rgba(28,28,28,0.03)]">
               <div className="flex size-8 items-center justify-center rounded-full bg-white text-[var(--jp-accent)] ring-1 ring-[color:var(--jp-border)]">
                 <CalendarClock className="size-4" />
               </div>
