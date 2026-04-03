@@ -69,11 +69,11 @@ export default async function AdminHomePage() {
             </div>
           </section>
 
-          <section className="mt-3 rounded-[16px] bg-[#1E3A5F] p-3.5 text-white shadow-[0_14px_28px_rgba(30,58,95,0.18)]">
+          <section className="mt-3 rounded-[16px] bg-[#1E3A5F] p-4 text-white shadow-[0_14px_28px_rgba(30,58,95,0.18)]">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <div className="flex size-[30px] items-center justify-center rounded-full bg-white/15">
-                  <UserCheck className="size-4" />
+                <div className="flex size-8 items-center justify-center rounded-full bg-white/15">
+                  <UserCheck className="size-4.5" />
                 </div>
                 <div>
                   <p className="text-base font-bold">老师设置</p>
@@ -82,23 +82,23 @@ export default async function AdminHomePage() {
                   </p>
                 </div>
               </div>
-              <span className="rounded-full bg-white/10 px-2 py-1 text-[10px] font-bold">
+              <span className="rounded-full bg-white/12 px-2.5 py-1 text-[10px] font-semibold text-[#E6EEF8]">
                 今日启用
               </span>
             </div>
-            <p className="mt-3 text-[11px] font-medium leading-5 text-[#E6EEF8]">
+            <p className="mt-3.5 text-[11px] font-medium leading-[1.6] text-[#E6EEF8]">
               {home.heroDescription}
             </p>
-            <div className="mt-3 flex gap-2">
+            <div className="mt-3.5 flex gap-2">
               <Link
                 href={home.heroPrimaryHref}
-                className="flex h-9 flex-1 items-center justify-center rounded-[10px] bg-white text-xs font-bold text-[#1E3A5F]"
+                className="flex h-10 flex-1 items-center justify-center rounded-[10px] bg-white text-xs font-bold text-[#1E3A5F]"
               >
                 进入老师设置
               </Link>
               <Link
                 href={home.heroSecondaryHref}
-                className="flex h-9 w-[110px] items-center justify-center gap-1 rounded-[10px] border border-white/20 bg-white/8 text-[11px] font-semibold text-white"
+                className="flex h-10 w-[116px] items-center justify-center gap-1 rounded-[10px] border border-white/20 bg-white/8 text-[11px] font-semibold text-white"
               >
                 <span>查看课程老师</span>
                 <ChevronRight className="size-3.5" />
@@ -117,19 +117,19 @@ export default async function AdminHomePage() {
                 <Link
                   key={card.title}
                   href={card.href}
-                  className="rounded-[16px] border border-[#E8E5E0] bg-[#FCFBF9] p-3 shadow-[0_8px_18px_rgba(28,28,28,0.03)]"
+                  className="rounded-[16px] border border-[#E8E5E0] bg-white p-3.5 shadow-[0_8px_18px_rgba(28,28,28,0.03)]"
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <div
-                        className={`flex size-7 items-center justify-center rounded-full ${
+                        className={`flex size-8 items-center justify-center rounded-full ${
                           card.tone === "success" ? "bg-[#EEF5EC]" : "bg-[#E8F0FB]"
                         }`}
                       >
                         {card.tone === "success" ? (
-                          <Users className="size-3.5 text-[#3D6B4F]" />
+                          <Users className="size-4 text-[#3D6B4F]" />
                         ) : (
-                          <Clock3 className="size-3.5 text-[#1E3A5F]" />
+                          <Clock3 className="size-4 text-[#1E3A5F]" />
                         )}
                       </div>
                       <span className="text-[13px] font-semibold text-[var(--jp-text)]">
@@ -139,10 +139,10 @@ export default async function AdminHomePage() {
                     <ChevronRight className="size-4 text-[var(--jp-text-muted)]" />
                   </div>
                   <div
-                    className={`mt-2.5 inline-flex rounded-full px-2 py-1 text-[10px] font-semibold ${
+                    className={`mt-3 inline-flex rounded-full border px-2.5 py-1 text-[10px] font-semibold ${
                       card.tone === "success"
-                        ? "bg-[#EEF5EC] text-[#3D6B4F]"
-                        : "bg-[#E8F0FB] text-[#1E3A5F]"
+                        ? "border-[#D8E8D7] bg-[#EEF5EC] text-[#3D6B4F]"
+                        : "border-[#D7E4F5] bg-[#E8F0FB] text-[#1E3A5F]"
                     }`}
                   >
                     {card.badge}
