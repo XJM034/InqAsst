@@ -106,44 +106,51 @@ export default async function AdminHomePage() {
             </div>
           </section>
 
-          <div className="mt-3.5 grid grid-cols-2 gap-3">
-            {home.entryCards.map((card) => (
-              <Link
-                key={card.title}
-                href={card.href}
-                className="rounded-[16px] border border-[#E8E5E0] bg-white p-3 shadow-[0_10px_22px_rgba(28,28,28,0.04)]"
-              >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <div
-                      className={`flex size-7 items-center justify-center rounded-full ${
-                        card.tone === "success" ? "bg-[#EEF5EC]" : "bg-[#E8F0FB]"
-                      }`}
-                    >
-                      {card.tone === "success" ? (
-                        <Users className="size-3.5 text-[#3D6B4F]" />
-                      ) : (
-                        <Clock3 className="size-3.5 text-[#1E3A5F]" />
-                      )}
-                    </div>
-                    <span className="text-[13px] font-bold text-[var(--jp-text)]">
-                      {card.title}
-                    </span>
-                  </div>
-                  <ChevronRight className="size-4 text-[var(--jp-text-muted)]" />
-                </div>
-                <div
-                  className={`mt-3 inline-flex rounded-full px-2 py-1 text-[10px] font-bold ${
-                    card.tone === "success"
-                      ? "bg-[#EEF5EC] text-[#3D6B4F]"
-                      : "bg-[#E8F0FB] text-[#1E3A5F]"
-                  }`}
+          <section className="mt-3.5">
+            <div className="mb-2 flex items-center gap-2">
+              <div className="size-2 rounded-full bg-[var(--jp-accent)]" />
+              <h2 className="text-sm font-semibold text-[var(--jp-text)]">常用入口</h2>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              {home.entryCards.map((card) => (
+                <Link
+                  key={card.title}
+                  href={card.href}
+                  className="rounded-[16px] border border-[#E8E5E0] bg-[#FCFBF9] p-3 shadow-[0_8px_18px_rgba(28,28,28,0.03)]"
                 >
-                  {card.badge}
-                </div>
-              </Link>
-            ))}
-          </div>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <div
+                        className={`flex size-7 items-center justify-center rounded-full ${
+                          card.tone === "success" ? "bg-[#EEF5EC]" : "bg-[#E8F0FB]"
+                        }`}
+                      >
+                        {card.tone === "success" ? (
+                          <Users className="size-3.5 text-[#3D6B4F]" />
+                        ) : (
+                          <Clock3 className="size-3.5 text-[#1E3A5F]" />
+                        )}
+                      </div>
+                      <span className="text-[13px] font-semibold text-[var(--jp-text)]">
+                        {card.title}
+                      </span>
+                    </div>
+                    <ChevronRight className="size-4 text-[var(--jp-text-muted)]" />
+                  </div>
+                  <div
+                    className={`mt-2.5 inline-flex rounded-full px-2 py-1 text-[10px] font-semibold ${
+                      card.tone === "success"
+                        ? "bg-[#EEF5EC] text-[#3D6B4F]"
+                        : "bg-[#E8F0FB] text-[#1E3A5F]"
+                    }`}
+                  >
+                    {card.badge}
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </section>
         </div>
 
         <MobileTabBar
