@@ -214,13 +214,15 @@ export function TeacherHomeClient({ home }: TeacherHomeClientProps) {
               </article>
             ) : null}
 
-            <article className="mt-4 flex items-center gap-3 rounded-[16px] border border-[#E8E5E0] bg-[var(--jp-surface)] px-3 py-3 shadow-[0_10px_22px_rgba(28,28,28,0.04)]">
-              <div className="flex size-8 items-center justify-center text-[var(--jp-accent)]">
+            <article className="mt-4 flex items-center gap-3 rounded-[16px] border border-[#E8E5E0] bg-[#FCFBF9] px-3 py-2.5 shadow-[0_8px_18px_rgba(28,28,28,0.03)]">
+              <div className="flex size-8 items-center justify-center rounded-full bg-white text-[var(--jp-accent)] ring-1 ring-[color:var(--jp-border)]">
                 <CalendarClock className="size-4" />
               </div>
               <div className="space-y-0.5">
-                <p className="text-[11px] font-medium text-[var(--jp-text-muted)]">明日行程</p>
-                <p className="text-[13px] font-medium text-[var(--jp-text)]">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.08em] text-[var(--jp-text-muted)]">
+                  明日行程
+                </p>
+                <p className="text-[13px] font-medium leading-5 text-[var(--jp-text)]">
                   {home.tomorrowTrip}
                 </p>
               </div>
