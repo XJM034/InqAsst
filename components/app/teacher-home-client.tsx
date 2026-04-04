@@ -199,9 +199,9 @@ export function TeacherHomeClient({ home }: TeacherHomeClientProps) {
                 tabIndex={0}
                 onClick={() => openPendingAction(substituteAction)}
                 onKeyDown={(event) => handleCardKeyDown(event, substituteAction)}
-                className="mt-2 cursor-pointer overflow-hidden rounded-[16px] border border-[#F0E1BD] text-left shadow-[0_10px_22px_rgba(196,106,26,0.08)] transition-transform active:scale-[0.99]"
+                className="mt-2 cursor-pointer overflow-hidden rounded-[16px] border border-[#EFD8BB] text-left shadow-[0_10px_22px_rgba(196,106,26,0.07)] transition-transform active:scale-[0.99]"
               >
-                <div className="flex items-center justify-between gap-3 bg-[#FFF3E0] px-3.5 py-2.5">
+                <div className="flex items-center justify-between gap-3 bg-[#FFF5E8] px-3.5 py-2.5">
                   <div className="flex min-w-0 items-center gap-2">
                     <span className="rounded-[4px] bg-white px-2 py-0.5 text-[10px] font-semibold text-[#A55B14]">
                       {selectedSchedule.substituteCourse.badge}
@@ -220,7 +220,7 @@ export function TeacherHomeClient({ home }: TeacherHomeClientProps) {
                   </div>
                 </div>
 
-                <div className="space-y-2.5 bg-[#FFFDF8] px-3.5 py-3.5">
+                <div className="space-y-2.5 bg-[#FFFCF7] px-3.5 py-3.5">
                   <div className="flex items-center justify-between gap-3">
                     {substituteTime ? (
                       <p className="text-[19px] font-medium tracking-[-0.03em] text-[var(--jp-text)]">
@@ -236,7 +236,7 @@ export function TeacherHomeClient({ home }: TeacherHomeClientProps) {
                     ) : null}
                   </div>
 
-                  <div className="flex items-center justify-between rounded-[12px] border border-[#F0E1BD] bg-white px-3.5 py-2.5">
+                  <div className="flex items-center justify-between rounded-[12px] border border-[#EFD8BB] bg-white px-3.5 py-2.5">
                     <p className="text-[15px] font-semibold tracking-[-0.02em] text-[var(--jp-text)]">
                       {substituteLocation ?? selectedSchedule.substituteCourse.description}
                     </p>
@@ -248,14 +248,14 @@ export function TeacherHomeClient({ home }: TeacherHomeClientProps) {
 
             {selectedDayKey === home.defaultDayKey ? (
               <article className="mt-2 flex items-center gap-3 rounded-[16px] border border-[#E8E5E0] bg-[#FCFBF9] px-3.5 py-2.5 shadow-[0_8px_18px_rgba(28,28,28,0.03)]">
-                <div className="flex size-8 items-center justify-center rounded-full bg-white text-[var(--jp-accent)] ring-1 ring-[color:var(--jp-border)]">
-                  <CalendarClock className="size-4" />
+                <div className="flex size-7.5 items-center justify-center rounded-full bg-white text-[var(--jp-text-muted)] ring-1 ring-[color:var(--jp-border)]">
+                  <CalendarClock className="size-3.5" />
                 </div>
                 <div className="space-y-0.5">
                   <p className="text-[10px] font-semibold uppercase tracking-[0.08em] text-[var(--jp-text-muted)]">
                     明日行程
                   </p>
-                  <p className="text-[13px] font-medium leading-5 text-[var(--jp-text)]">
+                  <p className="text-[12px] font-medium leading-5 text-[var(--jp-text-secondary)]">
                     {home.tomorrowTrip}
                   </p>
                 </div>
