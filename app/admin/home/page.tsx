@@ -15,9 +15,9 @@ export default async function AdminHomePage() {
         <div className="app-scroll px-5 pt-4">
           <PageTitleBlock title={home.title} />
 
-          <section className="mt-3 rounded-[16px] border border-[#E8E5E0] bg-white p-3.5 shadow-[0_10px_22px_rgba(28,28,28,0.04)]">
+          <section className="mt-3 rounded-[16px] border border-[#E8E5E0] bg-white p-3 shadow-[0_10px_22px_rgba(28,28,28,0.04)]">
             <div className="flex items-center justify-between">
-              <p className="text-sm font-semibold text-[var(--jp-text)]">今日生效规则</p>
+              <p className="text-[13px] font-semibold text-[var(--jp-text)]">今日生效规则</p>
               <span className="rounded-full bg-[#F5F3F0] px-2.5 py-1 text-[10px] font-semibold text-[var(--jp-text-muted)]">
                 {home.ruleDateLabel}
               </span>
@@ -29,7 +29,7 @@ export default async function AdminHomePage() {
                 return (
                   <div
                     key={item.label}
-                    className={`flex min-h-[58px] flex-col rounded-[12px] px-2.5 py-2 ${
+                    className={`flex min-h-[56px] flex-col rounded-[12px] px-2.5 py-2 ${
                       item.tone === "warning"
                         ? "bg-[#FFF3E8]"
                       : item.tone === "success"
@@ -51,8 +51,8 @@ export default async function AdminHomePage() {
                     <p
                       className={`mt-auto pt-1 font-bold ${
                         isCompactRule
-                          ? "text-[11px] leading-[1.15] whitespace-nowrap tracking-[-0.01em]"
-                          : "text-[13px] leading-[1.15]"
+                          ? "text-[10px] leading-[1.15] whitespace-nowrap tracking-[-0.01em]"
+                          : "text-[12px] leading-[1.15]"
                       } ${
                         item.tone === "warning"
                           ? "text-[#C46A1A]"
@@ -69,15 +69,15 @@ export default async function AdminHomePage() {
             </div>
           </section>
 
-          <section className="mt-2.5 rounded-[16px] bg-[#1E3A5F] p-4 text-white shadow-[0_14px_28px_rgba(30,58,95,0.18)]">
+          <section className="mt-2.5 rounded-[16px] bg-[#1E3A5F] p-3.5 text-white shadow-[0_14px_28px_rgba(30,58,95,0.18)]">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <div className="flex size-8 items-center justify-center rounded-full bg-white/15">
+                <div className="flex size-7.5 items-center justify-center rounded-full bg-white/15">
                   <UserCheck className="size-4.5" />
                 </div>
                 <div>
-                  <p className="text-base font-bold">老师设置</p>
-                  <p className="text-[11px] font-medium text-[#D7E3F2]">
+                  <p className="text-[15px] font-bold">老师设置</p>
+                  <p className="text-[10px] font-medium text-[#D7E3F2]">
                     默认同步与代课管理
                   </p>
                 </div>
@@ -86,19 +86,19 @@ export default async function AdminHomePage() {
                 今日启用
               </span>
             </div>
-            <p className="mt-3.5 text-[11px] font-medium leading-[1.6] text-[#E6EEF8]">
+            <p className="mt-3 text-[10.5px] font-medium leading-[1.6] text-[#E6EEF8]">
               {home.heroDescription}
             </p>
-            <div className="mt-3.5 flex gap-2">
+            <div className="mt-3 flex gap-2">
               <Link
                 href={home.heroPrimaryHref}
-                className="flex h-10 flex-1 items-center justify-center rounded-[10px] bg-white text-xs font-bold text-[#1E3A5F]"
+                className="flex h-9 flex-1 items-center justify-center rounded-[10px] bg-white text-[11px] font-bold text-[#1E3A5F]"
               >
                 进入老师设置
               </Link>
               <Link
                 href={home.heroSecondaryHref}
-                className="flex h-10 w-[116px] items-center justify-center gap-1 rounded-[10px] border border-white/20 bg-white/8 text-[11px] font-semibold text-white"
+                className="flex h-9 w-[112px] items-center justify-center gap-1 rounded-[10px] border border-white/20 bg-white/8 text-[10px] font-semibold text-white"
               >
                 <span>查看课程老师</span>
                 <ChevronRight className="size-3.5" />
