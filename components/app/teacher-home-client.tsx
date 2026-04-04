@@ -82,13 +82,13 @@ export function TeacherHomeClient({ home }: TeacherHomeClientProps) {
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <div className="app-screen">
           <div className="app-scroll px-5 pt-4">
-            <header className="rounded-[16px] border border-[#E8E5E0] bg-white px-3 py-2.5 shadow-[0_8px_18px_rgba(28,28,28,0.03)]">
+            <header className="rounded-[16px] border border-[#E8E5E0] bg-white px-3.5 py-2.5 shadow-[0_8px_18px_rgba(28,28,28,0.03)]">
               <div className="flex items-center gap-3">
                 <div className="flex size-9 items-center justify-center rounded-full bg-[var(--jp-surface-muted)] text-[var(--jp-text-muted)]">
                   <CircleUserRound className="size-5.5" />
                 </div>
                 <div className="min-w-0">
-                  <p className="text-[14px] font-semibold text-[var(--jp-text)]">{home.greeting}</p>
+                  <p className="text-[15px] font-semibold text-[var(--jp-text)]">{home.greeting}</p>
                   <p className="mt-0.5 truncate text-[11px] font-medium text-[var(--jp-text-secondary)]">
                     {selectedDaySummary}
                   </p>
@@ -96,7 +96,7 @@ export function TeacherHomeClient({ home }: TeacherHomeClientProps) {
               </div>
             </header>
 
-            <section className="mt-2 rounded-[16px] border border-[#E8E5E0] bg-white p-2.5 shadow-[0_10px_22px_rgba(28,28,28,0.04)]">
+            <section className="mt-2 rounded-[16px] border border-[#E8E5E0] bg-white p-3 shadow-[0_10px_22px_rgba(28,28,28,0.04)]">
               <div className="mb-2.5 flex items-center gap-2">
                 <div className="size-2 rounded-full bg-[var(--jp-accent)]" />
                 <h2 className="text-sm font-semibold text-[var(--jp-text)]">本周排课</h2>
@@ -153,29 +153,29 @@ export function TeacherHomeClient({ home }: TeacherHomeClientProps) {
               onKeyDown={(event) => handleCardKeyDown(event, primaryAction)}
               className="mt-2 cursor-pointer overflow-hidden rounded-[16px] border border-[#E8E5E0] shadow-[0_12px_26px_rgba(28,28,28,0.05)] transition-transform active:scale-[0.99]"
             >
-              <div className="flex items-center gap-2 bg-[#2C2C2C] px-4 py-3 text-white">
+              <div className="flex items-center gap-2 bg-[#2C2C2C] px-3.5 py-3 text-white">
                 <MapPin className="size-4" />
                 <p className="text-base font-semibold">
                   {selectedSchedule.primaryCourse.campus}
                 </p>
               </div>
-              <div className="space-y-2.5 bg-[var(--jp-surface)] px-4 py-3.5">
+              <div className="space-y-2.5 bg-[var(--jp-surface)] px-3.5 py-3.5">
                 <div className="space-y-1.5">
                   <div className="flex items-center justify-between gap-3">
-                    <p className="text-[20px] font-medium tracking-[-0.03em] text-[var(--jp-text)]">
+                    <p className="text-[19px] font-medium tracking-[-0.03em] text-[var(--jp-text)]">
                       {selectedSchedule.primaryCourse.time}
                     </p>
                     <span className="rounded-full bg-white px-3 py-1.5 text-[11px] font-medium text-[var(--jp-text-secondary)] ring-1 ring-[color:var(--jp-border)]">
                       {primaryDatePillLabel}
                     </span>
                   </div>
-                  <p className="text-[17px] font-medium tracking-[-0.02em] text-[var(--jp-text)]">
+                  <p className="text-[16px] font-medium tracking-[-0.02em] text-[var(--jp-text)]">
                     {selectedSchedule.primaryCourse.title}
                   </p>
                 </div>
 
-                <div className="flex items-center justify-between rounded-[12px] border border-[color:var(--jp-border)] bg-white px-4 py-2.5">
-                  <p className="text-[16px] font-semibold tracking-[-0.02em] text-[var(--jp-text)]">
+                <div className="flex items-center justify-between rounded-[12px] border border-[color:var(--jp-border)] bg-white px-3.5 py-2.5">
+                  <p className="text-[15px] font-semibold tracking-[-0.02em] text-[var(--jp-text)]">
                     {selectedSchedule.primaryCourse.locationTrail}
                   </p>
                   <Navigation className="size-5 text-[var(--jp-accent)]" />
@@ -201,12 +201,12 @@ export function TeacherHomeClient({ home }: TeacherHomeClientProps) {
                 onKeyDown={(event) => handleCardKeyDown(event, substituteAction)}
                 className="mt-2 cursor-pointer overflow-hidden rounded-[16px] border border-[#F0E1BD] text-left shadow-[0_10px_22px_rgba(196,106,26,0.08)] transition-transform active:scale-[0.99]"
               >
-                <div className="flex items-center justify-between gap-3 bg-[#FFF3E0] px-4 py-2.5">
+                <div className="flex items-center justify-between gap-3 bg-[#FFF3E0] px-3.5 py-2.5">
                   <div className="flex min-w-0 items-center gap-2">
                     <span className="rounded-[4px] bg-white px-2 py-0.5 text-[10px] font-semibold text-[#A55B14]">
                       {selectedSchedule.substituteCourse.badge}
                     </span>
-                    <p className="truncate text-[16px] font-semibold tracking-[-0.02em] text-[var(--jp-text)]">
+                    <p className="truncate text-[15px] font-semibold tracking-[-0.02em] text-[var(--jp-text)]">
                       {selectedSchedule.substituteCourse.title}
                     </p>
                   </div>
@@ -220,10 +220,10 @@ export function TeacherHomeClient({ home }: TeacherHomeClientProps) {
                   </div>
                 </div>
 
-                <div className="space-y-2.5 bg-[#FFFDF8] px-4 py-3.5">
+                <div className="space-y-2.5 bg-[#FFFDF8] px-3.5 py-3.5">
                   <div className="flex items-center justify-between gap-3">
                     {substituteTime ? (
-                      <p className="text-[20px] font-medium tracking-[-0.03em] text-[var(--jp-text)]">
+                      <p className="text-[19px] font-medium tracking-[-0.03em] text-[var(--jp-text)]">
                         {substituteTime}
                       </p>
                     ) : (
@@ -236,8 +236,8 @@ export function TeacherHomeClient({ home }: TeacherHomeClientProps) {
                     ) : null}
                   </div>
 
-                  <div className="flex items-center justify-between rounded-[12px] border border-[#F0E1BD] bg-white px-4 py-2.5">
-                    <p className="text-[16px] font-semibold tracking-[-0.02em] text-[var(--jp-text)]">
+                  <div className="flex items-center justify-between rounded-[12px] border border-[#F0E1BD] bg-white px-3.5 py-2.5">
+                    <p className="text-[15px] font-semibold tracking-[-0.02em] text-[var(--jp-text)]">
                       {substituteLocation ?? selectedSchedule.substituteCourse.description}
                     </p>
                     <Navigation className="size-5 shrink-0 text-[#C46A1A]" />
@@ -247,7 +247,7 @@ export function TeacherHomeClient({ home }: TeacherHomeClientProps) {
             ) : null}
 
             {selectedDayKey === home.defaultDayKey ? (
-              <article className="mt-2 flex items-center gap-3 rounded-[16px] border border-[#E8E5E0] bg-[#FCFBF9] px-3 py-2.5 shadow-[0_8px_18px_rgba(28,28,28,0.03)]">
+              <article className="mt-2 flex items-center gap-3 rounded-[16px] border border-[#E8E5E0] bg-[#FCFBF9] px-3.5 py-2.5 shadow-[0_8px_18px_rgba(28,28,28,0.03)]">
                 <div className="flex size-8 items-center justify-center rounded-full bg-white text-[var(--jp-accent)] ring-1 ring-[color:var(--jp-border)]">
                   <CalendarClock className="size-4" />
                 </div>
