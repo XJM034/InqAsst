@@ -106,13 +106,13 @@ export default async function AdminHomePage() {
             </div>
           </section>
 
-          <section className="mt-3">
-            <div className="mb-2 flex items-center gap-1.5">
+          <section className="mt-2.5">
+            <div className="mb-1.5 flex items-center gap-1.5">
               <div className="size-1.5 rounded-full bg-[var(--jp-accent)]" />
               <h2 className="text-[13px] font-semibold text-[var(--jp-text)]">常用入口</h2>
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 gap-2.5">
               {home.entryCards.map((card) => (
                 <Link
                   key={card.title}
