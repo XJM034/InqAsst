@@ -135,11 +135,11 @@ export function AttendanceSessionClient({
                     {session.deadlineHint}
                   </div>
                 ) : rosterNotice ? (
-                  <div className="flex items-start gap-2 rounded-[12px] bg-[#FFF7E7] px-3 py-2.5 text-[#7B5C1E] ring-1 ring-[#F0E1BD]">
-                    <Info className="mt-0.5 size-3.5 shrink-0" />
-                    <div className="space-y-1">
-                      <p className="text-[12px] font-semibold leading-5">{rosterNotice}</p>
-                      <p className="text-[11px] font-medium leading-5 text-[#8C6B28]">
+                  <div className="flex items-start gap-2 rounded-[12px] bg-[#FCF7EE] px-3 py-2 text-[#7B5C1E] ring-1 ring-[#F0E1BD]/80">
+                    <Info className="mt-0.5 size-3 shrink-0" />
+                    <div className="space-y-0.5">
+                      <p className="text-[11px] font-medium leading-5">{rosterNotice}</p>
+                      <p className="text-[10px] font-medium leading-4 text-[#8C6B28]">
                         {datePillLabel}
                       </p>
                     </div>
