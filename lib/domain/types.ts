@@ -171,6 +171,9 @@ export type AdminUnarrivedGroupStudent = {
   id: string;
   name: string;
   course: string;
+  status: AttendanceStatus;
+  managerUpdated?: boolean;
+  overrideLabel?: string;
 };
 
 export type AdminUnarrivedGroup = {
