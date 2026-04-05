@@ -107,9 +107,9 @@ export default async function AdminHomePage() {
           </section>
 
           <section className="mt-3">
-            <div className="mb-2 flex items-center gap-2">
-              <div className="size-2 rounded-full bg-[var(--jp-accent)]" />
-              <h2 className="text-sm font-semibold text-[var(--jp-text)]">常用入口</h2>
+            <div className="mb-2 flex items-center gap-1.5">
+              <div className="size-1.5 rounded-full bg-[var(--jp-accent)]" />
+              <h2 className="text-[13px] font-semibold text-[var(--jp-text)]">常用入口</h2>
             </div>
 
             <div className="grid grid-cols-2 gap-3">
@@ -117,12 +117,12 @@ export default async function AdminHomePage() {
                 <Link
                   key={card.title}
                   href={card.href}
-                  className="rounded-[16px] border border-[#E8E5E0] bg-white p-3 shadow-[0_8px_18px_rgba(28,28,28,0.03)]"
+                  className="rounded-[16px] border border-[#E8E5E0] bg-white p-2.5 shadow-[0_8px_18px_rgba(28,28,28,0.03)]"
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <div
-                        className={`flex size-7.5 items-center justify-center rounded-full ${
+                        className={`flex size-7 items-center justify-center rounded-full ${
                           card.tone === "success" ? "bg-[#EEF5EC]" : "bg-[#E8F0FB]"
                         }`}
                       >
@@ -132,14 +132,14 @@ export default async function AdminHomePage() {
                           <Clock3 className="size-3.5 text-[#1E3A5F]" />
                         )}
                       </div>
-                      <span className="text-[12px] font-semibold text-[var(--jp-text)]">
+                      <span className="text-[11.5px] font-semibold text-[var(--jp-text)]">
                         {card.title}
                       </span>
                     </div>
-                      <ChevronRight className="size-4 text-[var(--jp-text-muted)]" />
+                    <ChevronRight className="size-4 text-[var(--jp-text-muted)]" />
                   </div>
                   <div
-                    className={`mt-2.5 inline-flex rounded-full border px-2.5 py-0.5 text-[10px] font-semibold ${
+                    className={`mt-2 inline-flex rounded-full border px-2.5 py-0.5 text-[10px] font-semibold ${
                       card.tone === "success"
                         ? "border-[#D8E8D7] bg-[#EEF5EC] text-[#3D6B4F]"
                         : "border-[#D7E4F5] bg-[#E8F0FB] text-[#1E3A5F]"
