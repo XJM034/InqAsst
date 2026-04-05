@@ -97,16 +97,16 @@ export function AttendanceSessionClient({
             <section
               className={`${backHref ? "mt-2.5" : "mt-0"} overflow-hidden rounded-[16px] border border-[#E8E5E0] shadow-[0_12px_26px_rgba(28,28,28,0.05)]`}
             >
-              <div className="flex items-center gap-2 bg-[#2C2C2C] px-4 py-3 text-white">
+              <div className="flex items-center gap-2 bg-[#2C2C2C] px-3.5 py-3 text-white">
                 <MapPin className="size-4" />
                 <p className="text-base font-semibold">{campusLabel ?? "上课校区"}</p>
               </div>
 
-              <div className="space-y-3 bg-[var(--jp-surface)] px-4 py-4">
+              <div className="space-y-2.5 bg-[var(--jp-surface)] px-3.5 py-3.5">
                 <div className="space-y-1.5">
                   <div className="flex items-center justify-between gap-3">
                     {timeLabel ? (
-                      <p className="text-[20px] font-medium tracking-[-0.03em] text-[var(--jp-text)]">
+                      <p className="text-[19px] font-medium tracking-[-0.03em] text-[var(--jp-text)]">
                         {timeLabel}
                       </p>
                     ) : (
@@ -116,14 +116,14 @@ export function AttendanceSessionClient({
                       {datePillLabel}
                     </MetaPill>
                   </div>
-                  <h2 className="text-[17px] font-medium tracking-[-0.02em] text-[var(--jp-text)]">
+                  <h2 className="text-[16px] font-medium tracking-[-0.02em] text-[var(--jp-text)]">
                     {displayMeta?.courseTitle ?? session.courseTitle}
                   </h2>
                 </div>
 
                 {locationLabel ? (
-                  <div className="flex items-center justify-between rounded-[12px] border border-[color:var(--jp-border)] bg-white px-4 py-3">
-                    <p className="text-[16px] font-semibold tracking-[-0.02em] text-[var(--jp-text)]">
+                  <div className="flex items-center justify-between rounded-[12px] border border-[color:var(--jp-border)] bg-white px-3.5 py-2.5">
+                    <p className="text-[15px] font-semibold tracking-[-0.02em] text-[var(--jp-text)]">
                       {locationLabel}
                     </p>
                     <NavigationIcon />
