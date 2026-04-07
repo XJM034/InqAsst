@@ -11,9 +11,10 @@
 1. `设计文档_v1.9_开发指导.md`
 2. `移动端开发计划_v1.md`
 3. `design.pen`
-4. `app/`
-5. `components/`
-6. `CLAUDE.md` 和 `AGENTS.md`
+4. 若存在最新 `./*-handoff.md`，将其作为补充上下文一并阅读
+5. `app/`
+6. `components/`
+7. `CLAUDE.md` 和 `AGENTS.md`
 
 ## 当前现实
 
@@ -50,6 +51,10 @@
 - 已建立 `lib/domain/`、`lib/services/`、`lib/mocks/` 分层。
 - `design.pen` 的变量通过 `scripts/sync-pencil-tokens.mjs` 生成到 `app/pencil-tokens.css`。
 - 登录页、老师首页、点名页、管理首页、点名总控、未到学生、老师设置页、课程与班级设置页及学生名单子页面已按 `design.pen` 结构做过一轮高保真重构，不再是单纯骨架卡片页。
+- 当前管理端点名相关已实现能力：
+  - 班级名单页支持单个学生状态切换
+  - 未到学生列表支持直接修改学生状态
+  - 班级名单页支持“先选择一批学生，再批量修改状态”的批量操作闭环
 
 ## 目标状态
 
@@ -87,6 +92,7 @@
 ## 校验规则
 
 - 在声称某项能力已实现前，必须先在代码中验证。
+- fresh session 若读取了 `./*-handoff.md`，只能把它视为补充上下文，不能替代代码与文档核验。
 - UI 变更至少经过：
   - `npm run sync:tokens`
   - `npm run lint`
@@ -123,4 +129,6 @@
 - 路由骨架已落地：登录、老师首页/无课态/点名/只读学生名单/我的、管理首页/课程老师列表/总控学生名单、课程与班级设置、课程学生名单/新增/批量导入/编辑、老师设置、时间设置、未到、我的。
 - 页面数据入口：`lib/services/`，mock 数据源：`lib/mocks/`，领域规则：`lib/domain/`。
 - 设计 token 来源：`design.pen` -> `scripts/sync-pencil-tokens.mjs` -> `app/pencil-tokens.css`。
+- 管理端点名相关当前已支持：班级名单单个状态切换、未到学生列表状态切换、选择式批量修改学生状态。
+- 若存在最新 `./*-handoff.md`，先读它恢复上下文；但任何结论仍要回到仓库代码核对。
 - 每次 UI 开发后至少跑：`npm run sync:tokens && npm run lint && npm run build`。
