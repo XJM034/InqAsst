@@ -89,7 +89,7 @@
 - 浏览器端请求逻辑在 `lib/services/http-core.ts`：
   - 有 `NEXT_PUBLIC_API_BASE_URL` 且 mode 非 proxy 时会 direct 请求 `${API_BASE_URL}${path}`。
   - 无 public API base 且 mode 为 proxy 时，浏览器请求会落到 same-origin `/api/*`。
-- 当前本地 review 修复选择 direct mode：Vercel 设置 `NEXT_PUBLIC_API_BASE_URL`，不要在 `vercel.json` 写死 shared dev rewrite。
+- 后续线上登录发现 `Failed to fetch`：后端对 `https://adrastea-one.vercel.app` 的 CORS 预检返回 `403 Invalid CORS request`。因此当前修复改为 Vercel `/api/*` external rewrite + `NEXT_PUBLIC_API_REQUEST_MODE=proxy`，避免浏览器 direct mode。
 - Vercel Git 集成口径已用 Context7 查证：production branch 通常是 `main`；非 production 分支 push 生成 Preview，合并或推送到 production branch 才生成 Production。项目文档已改为 `origin/main` 是正式 Production 来源。
 - `lib/services/http-core.ts` 原来会对 `/api/admin/me` 和 `/api/admin/home/summary` 打完整 `payload` 到 console，这是 P2 风险；本地已改为 production 不启用 debug，并移除完整 payload。
 - 根路由 `/` 和 `/role-select` 不能用 `next/navigation redirect()`；static export 下会生成 `__next_error__` HTML。当前已用 client-side full page redirect 修复。

@@ -8,7 +8,7 @@
 - Tailwind CSS + shadcn/ui + Lucide 图标
 - ESLint + Vitest + Playwright
 - 静态导出：构建态 `next.config.ts` 开启 `output: "export"`，交付物以 `out/` 为准
-- Vercel 静态部署：正式 Production 内容来源是 GitHub `origin/main`；`vercel.json` 指向 `npm run build` 和 `out`，后端地址由 `NEXT_PUBLIC_API_BASE_URL` 决定
+- Vercel 静态部署：正式 Production 内容来源是 GitHub `origin/main`；`vercel.json` 指向 `npm run build` 和 `out`，并用 external rewrite 把 `/api/*` 同源代理到 shared dev 后端
 - 设计 token：`../design.pen` -> `../scripts/sync-pencil-tokens.mjs` -> `../app/pencil-tokens.css`
 
 ## 顶层目录
@@ -54,7 +54,8 @@
 
 - 本地开发默认：`next dev` 同源 proxy 到 `https://daoleme-dev.jxare.cn`。
 - `next.config.ts` 根据 `API_BASE_URL` / `NEXT_PUBLIC_API_BASE_URL` 和 `API_REQUEST_MODE` / `NEXT_PUBLIC_API_REQUEST_MODE` 决定 dev proxy；开发态不设置静态导出 output，构建态仍输出 `out/`。
-- Vercel 静态部署不使用固定 `/api/*` rewrite；部署环境必须设置 `NEXT_PUBLIC_API_BASE_URL`，浏览器端 direct mode 请求对应后端，避免生产域名误连 shared dev。
+- Vercel 静态部署当前使用 `/api/*` external rewrite 到 `https://daoleme-dev.jxare.cn/api/*`。原因是 shared dev 后端没有允许 Vercel 域名 CORS，浏览器 direct mode 会在登录页报 `Failed to fetch`。
+- Vercel Production 环境仍需设置 `NEXT_PUBLIC_API_BASE_URL=https://daoleme-dev.jxare.cn` 和 `NEXT_PUBLIC_API_REQUEST_MODE=proxy`；前者用于构建保护和后续环境切换，后者确保浏览器请求 same-origin `/api/*`。
 - Vercel Production 部署必须由 GitHub `origin/main` 触发；功能分支部署只作为 Preview / smoke，不能作为最终上线内容来源。
 - 浏览器端和服务端 HTTP 逻辑集中在 `lib/services/http-*`。
 - shared dev 结论用于开发复现和诊断，不等同于真实内测 / 线上环境结论。

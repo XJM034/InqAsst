@@ -116,7 +116,7 @@
 - 内测 / 线上环境结论：来自真实内测或线上环境。
 - 本机 shared dev 结论：来自 `next dev` + proxy 到 `https://daoleme-dev.jxare.cn`，用于开发复现和诊断。
 - 静态导出结论：来自 `npm run build` 生成的 `out/` 或等价静态部署环境。
-- Vercel Production 结论：来自 GitHub `origin/main` 触发的 Production Deployment；功能分支或本机 CLI production deploy 只能记为 Preview / smoke 证据。
+- Vercel Production 结论：来自 GitHub `origin/main` 触发的 Production Deployment；功能分支或本机 CLI production deploy 只能记为 Preview / smoke 证据。当前线上 API 通过 Vercel `/api/*` external rewrite 代理到 shared dev 后端，避免后端 CORS 导致登录 `Failed to fetch`。
 - 代码静态判断：只能说明实现形态，不能替代真实环境验证。
 
 以上四类证据不能混写。
