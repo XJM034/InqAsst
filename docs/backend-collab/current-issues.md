@@ -1,6 +1,6 @@
 # 后端协同当前问题
 
-更新日期：2026-04-29
+更新日期：2026-04-30
 
 ## 1. 教师端点名补录临时学生
 
@@ -71,7 +71,27 @@
 - 浏览器 direct 直打 shared dev 可能遇到 CORS，不作为当前默认验收口径。
 - 需要区分 shared dev 抖动、前端超时保护、真实内测 / 线上问题。
 
-## 6. Swagger / 离线文档与实际 controller 一致性
+## 6. 登录验证码接口泛化 500
+
+2026-04-30 Vercel Production same-origin `/api/*` proxy smoke 已确认前端请求能到达后端，`POST /api/auth/send-code` 不再是浏览器 CORS `Failed to fetch` 传输失败。
+
+当前残留现象：
+
+- 测试手机号触发后端返回 `{"code":1,"message":"Server internal error"}`。
+- 这属于后端认证 / 业务处理结果，不是前端同源代理失效。
+
+前端处理：
+
+- 已把该泛化英文错误归一为中文认证接口异常提示，避免把 `Server internal error` 裸展示给用户。
+- 前端不新增 mock 或本地兜底验证码来伪造发送成功。
+
+需要后端确认：
+
+- `POST /api/auth/send-code` 对测试手机号和真实内测手机号的业务校验口径。
+- 失败时返回可区分的结构化错误，例如手机号不存在、短信服务异常、频控命中或环境配置缺失。
+- 不再用泛化 `Server internal error` 覆盖可定位原因。
+
+## 7. Swagger / 离线文档与实际 controller 一致性
 
 需要后端维护：
 

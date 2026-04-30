@@ -148,6 +148,16 @@ function normalizeApiMessage(message?: string | null) {
   return messageMap[normalized] ?? message;
 }
 
+function normalizeLoginMessage(message?: string | null) {
+  const normalized = message?.trim().toLowerCase();
+
+  if (normalized === "server internal error") {
+    return "认证接口暂时异常，请稍后重试；如果多次出现，请联系后端确认登录验证码接口";
+  }
+
+  return normalizeApiMessage(message);
+}
+
 function normalizeStudentUpsertMessage(message?: string | null) {
   const normalized = message?.trim().toLowerCase();
 
@@ -331,7 +341,7 @@ function normalizeLookupError(error: unknown, fallbackMessage: string) {
 
 function normalizeLoginError(error: unknown) {
   if (error instanceof ApiRequestError || error instanceof Error) {
-    return new Error(normalizeApiMessage(error.message));
+    return new Error(normalizeLoginMessage(error.message));
   }
 
   return new Error("登录失败，请稍后重试");
@@ -404,7 +414,7 @@ export async function sendLoginCode(phone: string) {
     });
 
     if (typeof payload.code === "number" && payload.code !== 0) {
-      throw new Error(normalizeApiMessage(payload.message));
+      throw new Error(normalizeLoginMessage(payload.message));
     }
 
     return payload.message ?? "验证码已发送";
