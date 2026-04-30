@@ -1,6 +1,6 @@
-# InqAsst
+# 到了么
 
-InqAsst 是一个移动优先的课后服务管理应用，当前 v1 聚焦两条主线：
+到了么是一个移动优先的课后服务管理应用，当前 v1 聚焦两条主线：
 
 - 老师端点名
 - 管理端现场总控与应急设置
@@ -68,7 +68,7 @@ npm run lint
 npm run build
 ```
 
-如果后续继续开发且仓库中存在最新 `./*-handoff.md`，可先将其作为补充上下文阅读，但仍应以代码和本文档为准。
+如果后续继续开发且仓库中存在最新 `./handoff/*-handoff.md`，可先将其作为补充上下文阅读，但仍应以代码和本文档为准。
 
 默认本地地址：
 
@@ -80,14 +80,19 @@ npm run build
 - `components/ui/`: shadcn/ui 基础组件
 - `components/app/`: 业务组件
 - `lib/domain/`: 领域类型与规则
-- `lib/services/`: service 层
-- `lib/mocks/`: mock 数据
+- `lib/services/`: service 层，当前默认接 shared dev / 后端数据
 - `scripts/sync-pencil-tokens.mjs`: Pencil token 生成脚本
+
+当前前端默认已接入后端数据，不维护常规 `lib/mocks/` 目录；若接口字段缺失或联调不通，优先补 service 适配或更新协作文档，不要新增 mock 数据冒充“已接通”。
 
 ## 设计与规划文档
 
-- [design.pen](/Users/minxian/Documents/alex_project/InqAsst/design.pen)
-- [设计文档_v1.9_开发指导.md](/Users/minxian/Documents/alex_project/InqAsst/设计文档_v1.9_开发指导.md)
-- [移动端开发计划_v1.md](/Users/minxian/Documents/alex_project/InqAsst/移动端开发计划_v1.md)
-- [CLAUDE.md](/Users/minxian/Documents/alex_project/InqAsst/CLAUDE.md)
-- [AGENTS.md](/Users/minxian/Documents/alex_project/InqAsst/AGENTS.md)
+- [docs/README.md](docs/README.md)
+- [docs/TOOLING.md](docs/TOOLING.md)
+- [docs/PRODUCT.md](docs/PRODUCT.md)
+- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
+- [design.pen](design.pen)
+- [设计文档_v1.9_开发指导.md](设计文档_v1.9_开发指导.md)
+- [移动端开发计划_v1.md](移动端开发计划_v1.md)
+- [CLAUDE.md](CLAUDE.md)
+- [AGENTS.md](AGENTS.md)
