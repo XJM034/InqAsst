@@ -34,24 +34,17 @@
 - `npm run build`：通过，生成 41 个静态页面，产物目录为 `out/`。
 - Vercel 生产部署：通过。
   - 稳定生产别名：`https://adrastea-alex-xiangs-projects.vercel.app`
-  - 本次部署 URL：`https://adrastea-ia3vq610b-alex-xiangs-projects.vercel.app`
-  - Vercel deployment id：`dpl_8DLVyYqssULLxs7xss41h4jchEfT`
-- 下一次生产部署后，需要重新验证稳定生产别名是否已经切到真实 API-backed 版本。
+  - Vercel alias：`https://adrastea-one.vercel.app`
+  - 本次部署 URL：`https://adrastea-5szttjkan-alex-xiangs-projects.vercel.app`
+  - Vercel deployment id：`dpl_HtYuSq1yCCrHbZJPju9r3CqjdfpD`
+- 部署后 HTTP smoke：`/`、`/role-select`、`/login`、`/teacher/home`、`/admin/home`、`/admin/course-settings/_/students` 均 200，且 HTML 不含 `__next_error__`。
+- 部署后 API smoke：`/api/me` 返回后端 JSON `40101 Missing or invalid Authorization header`，说明 Vercel `/api/*` rewrite 已生效，不是静态 404。
 
 ## 4. 下一步
 
-1. 提交并推送当前分支到 GitHub。
-2. 使用 Vercel CLI 重新生产部署：
-   - `vercel deploy --prod -y --scope alex-xiangs-projects`
-3. 拿到部署 URL 后，至少验证：
-   - `/login`
-   - `/teacher/home`
-   - `/teacher/attendance/demo?day=wed&course=substitute`
-   - `/admin/home`
-   - `/admin/course-settings/featured-course/students`
-   - `/api/me` 预期在未登录时返回后端鉴权响应，而不是 Vercel 静态 404。
-4. 打开浏览器网络面板或用部署后 QA 确认没有 `?_rsc=` / `__next.*.txt` 404。
-5. 用真实账号重新登录验证“登录账号”和页面展示账号一致；如果后端返回身份不一致，再记录接口响应交给后端协同。
+1. 用真实账号重新登录验证“登录账号”和页面展示账号一致。
+2. 如果登录后仍显示错人，记录账号、时间、页面、接口响应，再交给后端协同。
+3. 打开浏览器网络面板或用部署后 QA 继续确认没有 `?_rsc=` / `__next.*.txt` 404。
 
 ## 6. Vercel 构建记录
 
@@ -61,6 +54,8 @@
 - 第三次部署 `dpl_8DLVyYqssULLxs7xss41h4jchEfT` 成功，状态 Ready。
 - 发现问题：该部署仍是早期 mock prototype，页面展示账号来自 `lib/mocks/mobile-data.ts`，没有连真实后端。
 - 已从 `bordeaux` 只读复制真实 API-backed 前端源码到当前 `adrastea`；未修改 `/Users/minxian/conductor/workspaces/inqasst/bordeaux`。
+- 第四次部署 `dpl_2kf89iVbR6BJVq7s2qTyos1d71jJ` 成功，恢复真实接口链路和 `/api/*` rewrite；发现 `/` 静态 HTML 仍是 Next error shell。
+- 第五次部署 `dpl_HtYuSq1yCCrHbZJPju9r3CqjdfpD` 成功，修复 `/` 与 `/role-select` 静态导出入口，最终 smoke 通过。
 - Vercel SSO Deployment Protection 已关闭：`ssoProtection: null`。Git fork protection 仍开启。
 - HTTP smoke 结果：
   - `https://adrastea-alex-xiangs-projects.vercel.app/login` -> 200
