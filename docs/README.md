@@ -47,7 +47,7 @@
 
 - `docs/TOOLING.md`
 
-面向 agent 的可执行地图：package scripts、CI、Playwright、lint、静态导出、GitHub 同步、本机文档防误推、配置入口、已有守卫和缺口。命令、测试、CI、反馈环、GitHub 推送规则或 guardrail 变化时更新这里。
+面向 agent 的可执行地图：package scripts、CI、Playwright、lint、静态导出、GitHub 同步、Vercel 部署源、本机文档防误推、配置入口、已有守卫和缺口。命令、测试、CI、反馈环、GitHub / Vercel 推送部署规则或 guardrail 变化时更新这里。
 
 ### 内测质量状态层
 
@@ -72,7 +72,7 @@
 - `docs/static-export-navigation-rsc-fix_20260417.md`
 - `docs/static-export-delivery-constraint_20260418.md`
 
-解释 `output: "export"`、`out/` 静态产物、站内导航约束、`_rsc` / `__next.*.txt` 404 背景和部署注意事项。涉及导航、登录跳转、保存后回流、动态详情页或部署配置时必须对照。
+解释 `output: "export"`、`out/` 静态产物、Vercel Production 依赖 GitHub `origin/main` 的部署源、站内导航约束、`_rsc` / `__next.*.txt` 404 背景和部署注意事项。涉及导航、登录跳转、保存后回流、动态详情页或部署配置时必须对照。
 
 ### 专项证据层
 
@@ -104,7 +104,7 @@
 - 产品范围、角色、内测反馈口径变了：更新 `docs/PRODUCT.md`。
 - 架构、路由、数据流、静态导出、测试分层变了：更新 `docs/ARCHITECTURE.md`。
 - 命令、CI、测试、反馈环或 guardrail 变了：更新 `docs/TOOLING.md`。
-- GitHub 远端、PR 流程、本机文档防误推或备份规则变了：更新 `docs/TOOLING.md`。
+- GitHub 远端、PR 流程、Vercel 部署源、本机文档防误推或备份规则变了：更新 `docs/TOOLING.md`。
 - 门禁、回归清单、人工验收项变了：更新 `docs/quality/regression-checklist.md`。
 - 需要后端配合、接口口径、稳定性问题变了：更新 `docs/backend-collab/`。
 - 静态导出、部署、导航约束变了：更新静态导出相关文档。
@@ -116,6 +116,7 @@
 - 内测 / 线上环境结论：来自真实内测或线上环境。
 - 本机 shared dev 结论：来自 `next dev` + proxy 到 `https://daoleme-dev.jxare.cn`，用于开发复现和诊断。
 - 静态导出结论：来自 `npm run build` 生成的 `out/` 或等价静态部署环境。
+- Vercel Production 结论：来自 GitHub `origin/main` 触发的 Production Deployment；功能分支或本机 CLI production deploy 只能记为 Preview / smoke 证据。
 - 代码静态判断：只能说明实现形态，不能替代真实环境验证。
 
 以上四类证据不能混写。

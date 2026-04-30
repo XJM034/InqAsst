@@ -6,6 +6,7 @@
 - 部署模式已确认：Next.js 静态导出 `out/`，通过当前 GitHub 远端 `https://github.com/XJM034/InqAsst` 推送。
 - 已安装 Vercel 部署 skill：`~/.agents/skills/deploy-to-vercel`。
 - 2026-04-30 追加修复：当前分支已从只读来源 `/Users/minxian/conductor/workspaces/inqasst/bordeaux` 迁回真实后端接口版本；不要再把本分支当 mock prototype。
+- 2026-04-30 部署源修正：Vercel 正式 Production 内容必须依赖 GitHub `origin/main`；当前功能分支部署只作为 Preview / smoke，不作为最终上线来源。
 
 ## 2. 已完成
 
@@ -15,7 +16,7 @@
   - `cleanUrls`: `true`
   - `buildCommand`: `npm run build`
   - `outputDirectory`: `out`
-  - `rewrites`: `/api/:path*` -> `https://daoleme-dev.jxare.cn/api/:path*`
+- 2026-04-30 review 修正：`vercel.json` 不再固定 `/api/*` rewrite 到 shared dev；Vercel 静态部署必须配置 `NEXT_PUBLIC_API_BASE_URL`，由浏览器 direct mode 请求对应后端。
 - 已恢复真实 service / adapter / auth session / API client 代码路径：
   - 登录走 `sendLoginCode` / `loginWithCode` / `selectCampusAfterLogin`。
   - 页面数据走 `lib/services/mobile-app.ts` -> `mobile-api.ts` -> 后端接口。
@@ -24,7 +25,7 @@
   - `/` 与 `/role-select` 改为客户端整页跳转到 `/login`。
   - 动态管理端路由补齐 `generateStaticParams()`。
   - 老师端点名 / 名单 query 读取下沉到 client 组件，避免服务端 `searchParams` 阻塞静态导出。
-- 文档已同步到当前 GitHub + Vercel 静态部署口径。
+- 文档已同步到当前 GitHub + Vercel 静态部署口径；正式 Production 源头是 `origin/main`。
 
 ## 3. 验证结果
 
@@ -38,13 +39,14 @@
   - 本次部署 URL：`https://adrastea-5szttjkan-alex-xiangs-projects.vercel.app`
   - Vercel deployment id：`dpl_HtYuSq1yCCrHbZJPju9r3CqjdfpD`
 - 部署后 HTTP smoke：`/`、`/role-select`、`/login`、`/teacher/home`、`/admin/home`、`/admin/course-settings/_/students` 均 200，且 HTML 不含 `__next_error__`。
-- 部署后 API smoke：`/api/me` 返回后端 JSON `40101 Missing or invalid Authorization header`，说明 Vercel `/api/*` rewrite 已生效，不是静态 404。
+- 部署后 API smoke：旧结论基于固定 `/api/*` rewrite；review 后已移除该 rewrite，下一次部署需先设置 `NEXT_PUBLIC_API_BASE_URL`，再以浏览器网络请求确认 API 直连目标环境。
 
 ## 4. 下一步
 
 1. 用真实账号重新登录验证“登录账号”和页面展示账号一致。
 2. 如果登录后仍显示错人，记录账号、时间、页面、接口响应，再交给后端协同。
-3. 打开浏览器网络面板或用部署后 QA 继续确认没有 `?_rsc=` / `__next.*.txt` 404。
+3. 当前功能分支修复验证通过后，合并到 `origin/main`，由 Vercel Git integration 触发正式 Production。
+4. 打开浏览器网络面板或用部署后 QA 继续确认没有 `?_rsc=` / `__next.*.txt` 404。
 
 ## 6. Vercel 构建记录
 
@@ -54,8 +56,10 @@
 - 第三次部署 `dpl_8DLVyYqssULLxs7xss41h4jchEfT` 成功，状态 Ready。
 - 发现问题：该部署仍是早期 mock prototype，页面展示账号来自 `lib/mocks/mobile-data.ts`，没有连真实后端。
 - 已从 `bordeaux` 只读复制真实 API-backed 前端源码到当前 `adrastea`；未修改 `/Users/minxian/conductor/workspaces/inqasst/bordeaux`。
-- 第四次部署 `dpl_2kf89iVbR6BJVq7s2qTyos1d71jJ` 成功，恢复真实接口链路和 `/api/*` rewrite；发现 `/` 静态 HTML 仍是 Next error shell。
+- 第四次部署 `dpl_2kf89iVbR6BJVq7s2qTyos1d71jJ` 成功，恢复真实接口链路和当时的 `/api/*` rewrite；发现 `/` 静态 HTML 仍是 Next error shell。
 - 第五次部署 `dpl_HtYuSq1yCCrHbZJPju9r3CqjdfpD` 成功，修复 `/` 与 `/role-select` 静态导出入口，最终 smoke 通过。
+- 2026-04-30 review 后待重新部署：移除固定 shared dev rewrite；Vercel 环境必须设置 `NEXT_PUBLIC_API_BASE_URL`，否则构建会被 `next.config.ts` 阻止。
+- 2026-04-30 部署源口径：不要再用功能分支 CLI production deploy 作为最终上线；正式 Vercel Production 以 GitHub `origin/main` 为部署内容来源。
 - Vercel SSO Deployment Protection 已关闭：`ssoProtection: null`。Git fork protection 仍开启。
 - HTTP smoke 结果：
   - `https://adrastea-alex-xiangs-projects.vercel.app/login` -> 200

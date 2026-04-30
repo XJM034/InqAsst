@@ -3,11 +3,5 @@
   "framework": null,
   "cleanUrls": true,
   "buildCommand": "npm run build",
-  "outputDirectory": "out",
-  "rewrites": [
-    {
-      "source": "/api/:path*",
-      "destination": "https://daoleme-dev.jxare.cn/api/:path*"
-    }
-  ]
+  "outputDirectory": "out"
 }

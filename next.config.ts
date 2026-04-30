@@ -6,6 +6,7 @@ const proxyTarget = normalizeApiBaseUrl(
     process.env.NEXT_PUBLIC_API_BASE_URL ??
     "https://daoleme-dev.jxare.cn",
 );
+const publicApiBaseUrl = normalizeApiBaseUrl(process.env.NEXT_PUBLIC_API_BASE_URL);
 const apiRequestMode =
   process.env.API_REQUEST_MODE ??
   process.env.NEXT_PUBLIC_API_REQUEST_MODE ??
@@ -25,6 +26,12 @@ const nextConfig: NextConfig = {
 
 if (!isDevelopment) {
   nextConfig.output = "export";
+}
+
+if (!isDevelopment && process.env.VERCEL === "1" && !publicApiBaseUrl) {
+  throw new Error(
+    "Vercel static builds require NEXT_PUBLIC_API_BASE_URL so browser API requests do not fall back to same-origin /api.",
+  );
 }
 
 if (enableDevProxy) {

@@ -32,7 +32,7 @@
 - 本地默认：`next dev` 同源 proxy 到 `https://daoleme-dev.jxare.cn`。
 - API 配置入口：`API_BASE_URL`、`NEXT_PUBLIC_API_BASE_URL`、`API_REQUEST_MODE`、`NEXT_PUBLIC_API_REQUEST_MODE`。
 - dev proxy：`next.config.ts`；开发态不设置 `output: "export"`，避免 Next.js 静态导出与 rewrites/proxy 互斥警告。
-- Vercel 静态部署：`vercel.json` 将 `/api/:path*` rewrite 到 `https://daoleme-dev.jxare.cn/api/:path*`，保证部署后的浏览器端服务请求仍走后端接口。
+- Vercel 静态部署：`vercel.json` 只发布 `out/` 静态产物，不再固定 rewrite 到 shared dev；Vercel 构建必须配置 `NEXT_PUBLIC_API_BASE_URL`，浏览器端以 direct mode 请求对应后端。
 - API base 归一化：`lib/services/api-base-url.ts`。
 - HTTP 基础能力：`lib/services/http-core.ts`、`http-client.ts`、`http-server.ts`。
 
@@ -48,6 +48,15 @@
 - 默认允许推送后端协同：`docs/backend-collab/**`、`docs/后端协同说明_20260414.md`。
 - 确认要发布受保护文档时才临时放行：`DAOLME_ALLOW_DOCS=1 git commit ...`、`DAOLME_ALLOW_DOCS=1 git push ...`。
 
+## Vercel 部署源
+
+- Vercel 正式 Production 部署必须依赖 GitHub `origin/main`，不要把本地 worktree 或功能分支 CLI production deploy 当成最终上线来源。
+- 功能分支如 `XJM034/vercel-deploy-skills` 只用于 Preview / 验证 / PR；通过验证后合并到 `origin/main`，由 GitHub integration 触发 Production。
+- Vercel Git 集成口径：production branch 通常是 `main`；非 production 分支 push 生成 Preview Deployment，合并或推送到 production branch 才生成 Production Deployment。
+- 手动 CLI production deploy 只能作为临时排障或 smoke，不得替代 `origin/main` 作为正式部署内容来源；若临时使用，必须在 handoff 里标明“非最终上线来源”。
+- Production 环境变量必须在 Vercel 项目 Production scope 配置，当前关键项是 `NEXT_PUBLIC_API_BASE_URL`。
+- 修改部署配置、环境变量、production branch、GitHub integration 或静态导出模式时，同步更新本文件、`docs/ARCHITECTURE.md`、`docs/static-export-delivery-constraint_20260418.md` 和最新 handoff。
+
 ## 代码地图
 
 - 路由：`app/`，主干为 `/login`、`/teacher/*`、`/admin/*`，`/role-select` 仅兼容跳转。
@@ -62,7 +71,7 @@
 
 - 构建态 `next.config.ts` 开启 `output: "export"`。
 - `out/` 是静态交付产物，不要只看 `next dev` 行为。
-- Vercel 静态部署配置在 `vercel.json`：`framework` 为 `null`，`cleanUrls` 为 `true`，`buildCommand` 为 `npm run build`，`outputDirectory` 为 `out`，并 rewrite `/api/:path*` 到 shared dev 后端。
+- Vercel 静态部署配置在 `vercel.json`：`framework` 为 `null`，`cleanUrls` 为 `true`，`buildCommand` 为 `npm run build`，`outputDirectory` 为 `out`；部署环境必须设置 `NEXT_PUBLIC_API_BASE_URL`，否则 Vercel 构建会失败。
 - 导航、登录跳转、保存后回流、动态详情页变更必须对照：
   - `docs/static-export-navigation-rsc-fix_20260417.md`
   - `docs/static-export-delivery-constraint_20260418.md`

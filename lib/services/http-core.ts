@@ -110,7 +110,10 @@ function delay(ms: number) {
 }
 
 function shouldDebugAdminHomeRequest(path: string) {
-  return path.includes("/api/admin/me") || path.includes("/api/admin/home/summary");
+  return (
+    process.env.NODE_ENV !== "production" &&
+    (path.includes("/api/admin/me") || path.includes("/api/admin/home/summary"))
+  );
 }
 
 function debugAdminHomeRequest(event: string, payload?: unknown) {
@@ -366,7 +369,6 @@ export async function requestJson<T>(path: string, options: ApiRequestOptions = 
         attempt,
         status: response.status,
         ok: response.ok,
-        payload,
         payloadSummary: summarizeDebugPayload(payload),
       });
     }

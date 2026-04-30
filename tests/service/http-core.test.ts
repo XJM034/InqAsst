@@ -116,4 +116,39 @@ describe("http-core transport behavior", () => {
       expect.any(Object),
     );
   });
+
+  it("does not write full admin response payloads to debug logs", async () => {
+    const fetchMock = vi.fn().mockResolvedValue(
+      new Response(JSON.stringify({ code: 0, data: { secret: "hidden" } }), { status: 200 }),
+    );
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    global.fetch = fetchMock as typeof fetch;
+    global.window = {} as Window & typeof globalThis;
+
+    try {
+      await expect(
+        requestJson<{ code: number; data: { secret: string } }>("/api/admin/me"),
+      ).resolves.toEqual({
+        code: 0,
+        data: {
+          secret: "hidden",
+        },
+      });
+
+      const responseLog = logSpy.mock.calls.find(([event]) =>
+        String(event).includes("http.request.response"),
+      );
+      expect(responseLog?.[1]).toEqual(
+        expect.objectContaining({
+          payloadSummary: expect.objectContaining({
+            hasData: true,
+            dataType: "object",
+          }),
+        }),
+      );
+      expect(responseLog?.[1]).not.toHaveProperty("payload");
+    } finally {
+      logSpy.mockRestore();
+    }
+  });
 });

@@ -55,6 +55,7 @@
 - 页面数据走 `lib/services/`；领域规则在 `lib/domain/`；默认已接后端数据。
 - 本地复现默认 `next dev` proxy 到 `https://daoleme-dev.jxare.cn`；内测 / 线上结论必须和 shared dev 诊断分开。
 - 当前 workspace 默认代码同步通道是 GitHub：`origin` -> `https://github.com/XJM034/InqAsst`，默认分支约定是 `main`。
+- Vercel 正式 Production 部署内容必须依赖 GitHub `origin/main`；功能分支部署仅作 Preview / smoke，不作为最终上线来源。
 - GitHub 推送、PR、本机文档防误推和备份规则见 `docs/TOOLING.md`；推送前核对当前分支、upstream 与目标远端。
 
 ## Work Rules
