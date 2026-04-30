@@ -42,6 +42,7 @@ import {
   logoutCurrentUser,
   searchAdminCampusStudents,
   selectCampusAfterLogin,
+  sendLoginCode,
   switchAdminCampus,
   updateStudent,
 } from "@/lib/services/mobile-client";
@@ -142,6 +143,18 @@ describe("mobile-client service behaviors", () => {
     });
 
     await expect(loginWithCode("13800138000", "000000")).rejects.toThrow("验证码错误");
+  });
+
+  it("normalizes auth server errors returned inside success envelopes", async () => {
+    browserRequestJson.mockResolvedValue({
+      code: 1,
+      message: "Server internal error",
+      data: null,
+    });
+
+    await expect(sendLoginCode("13800138000")).rejects.toThrow(
+      "认证接口暂时异常，请稍后重试；如果多次出现，请联系后端确认登录验证码接口",
+    );
   });
 
   it("maps local proxy 500s to a local backend startup hint", async () => {

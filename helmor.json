@@ -1,0 +1,7 @@
+{
+  "scripts": {
+    "setup": "cd \"$HELMOR_WORKSPACE_PATH\" && npm ci && npm run sync:tokens",
+    "run": "cd \"$HELMOR_WORKSPACE_PATH\" && npm run dev -- --port \"${HELMOR_PORT:-3000}\"",
+    "archive": "sh -lc 'set -eu; cd \"${HELMOR_WORKSPACE_PATH:?}\"; mkdir -p .context; latest_handoff=$(ls -1t handoff/*-handoff.md 2>/dev/null | head -n 1 || true); { echo \"# Helmor Archive Context\"; echo; echo \"- Workspace: ${HELMOR_WORKSPACE_NAME:-unknown}\"; echo \"- Workspace path: ${HELMOR_WORKSPACE_PATH:-$(pwd)}\"; echo \"- Root path: ${HELMOR_ROOT_PATH:-unknown}\"; echo \"- Default branch: ${HELMOR_DEFAULT_BRANCH:-unknown}\"; echo \"- Archived at: $(date -u +%Y-%m-%dT%H:%M:%SZ)\"; echo \"- Current branch: $(git branch --show-current 2>/dev/null || true)\"; echo \"- HEAD: $(git rev-parse --short HEAD 2>/dev/null || true)\"; echo; echo \"## Git Status\"; git status --short --branch 2>/dev/null || true; echo; echo \"## Latest Handoff\"; if [ -n \"$latest_handoff\" ]; then echo \"- File: $latest_handoff\"; echo; sed -n \"1,80p\" \"$latest_handoff\"; else echo \"No handoff file found.\"; fi; } > .context/helmor-archive.md; echo \"Wrote .context/helmor-archive.md\"'"
+  }
+}

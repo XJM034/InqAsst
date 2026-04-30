@@ -17,6 +17,7 @@
   - `buildCommand`: `npm run build`
   - `outputDirectory`: `out`
 - 2026-04-30 review 修正：`vercel.json` 不再固定 `/api/*` rewrite 到 shared dev；Vercel 静态部署必须配置 `NEXT_PUBLIC_API_BASE_URL`，由浏览器 direct mode 请求对应后端。
+- 2026-04-30 review 后优化：`POST /api/auth/send-code` 若后端返回 `code:1` + `Server internal error`，前端已归一为中文认证接口异常提示；后端协同问题已记录到 `docs/backend-collab/current-issues.md`。
 - 已恢复真实 service / adapter / auth session / API client 代码路径：
   - 登录走 `sendLoginCode` / `loginWithCode` / `selectCampusAfterLogin`。
   - 页面数据走 `lib/services/mobile-app.ts` -> `mobile-api.ts` -> 后端接口。
@@ -44,9 +45,10 @@
 ## 4. 下一步
 
 1. 用真实账号重新登录验证“登录账号”和页面展示账号一致。
-2. 如果登录后仍显示错人，记录账号、时间、页面、接口响应，再交给后端协同。
-3. 当前功能分支修复验证通过后，合并到 `origin/main`，由 Vercel Git integration 触发正式 Production。
-4. 打开浏览器网络面板或用部署后 QA 继续确认没有 `?_rsc=` / `__next.*.txt` 404。
+2. 继续用真实内测手机号复测 `POST /api/auth/send-code`；若仍返回泛化 `Server internal error`，按 `docs/backend-collab/current-issues.md` 的认证接口问题交给后端确认。
+3. 如果登录后仍显示错人，记录账号、时间、页面、接口响应，再交给后端协同。
+4. 当前功能分支修复验证通过后，合并到 `origin/main`，由 Vercel Git integration 触发正式 Production。
+5. 打开浏览器网络面板或用部署后 QA 继续确认没有 `?_rsc=` / `__next.*.txt` 404。
 
 ## 6. Vercel 构建记录
 
