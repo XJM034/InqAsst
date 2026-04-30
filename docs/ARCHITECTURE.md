@@ -6,9 +6,9 @@
 
 - Next.js App Router + TypeScript
 - Tailwind CSS + shadcn/ui + Lucide 图标
-- ESLint
+- ESLint + Vitest + Playwright
 - 静态导出：构建态 `next.config.ts` 开启 `output: "export"`，交付物以 `out/` 为准
-- Vercel 静态部署：`vercel.json` 指向 `npm run build` 和 `out`
+- Vercel 静态部署：`vercel.json` 指向 `npm run build` 和 `out`，并将 `/api/*` rewrite 到 shared dev 后端
 - 设计 token：`../design.pen` -> `../scripts/sync-pencil-tokens.mjs` -> `../app/pencil-tokens.css`
 
 ## 顶层目录
@@ -54,6 +54,7 @@
 
 - 本地开发默认：`next dev` 同源 proxy 到 `https://daoleme-dev.jxare.cn`。
 - `next.config.ts` 根据 `API_BASE_URL` / `NEXT_PUBLIC_API_BASE_URL` 和 `API_REQUEST_MODE` / `NEXT_PUBLIC_API_REQUEST_MODE` 决定 dev proxy；开发态不设置静态导出 output，构建态仍输出 `out/`。
+- Vercel 静态部署由 `vercel.json` 负责 `/api/:path*` -> `https://daoleme-dev.jxare.cn/api/:path*`，部署后的浏览器端数据请求仍使用真实后端接口。
 - 浏览器端和服务端 HTTP 逻辑集中在 `lib/services/http-*`。
 - shared dev 结论用于开发复现和诊断，不等同于真实内测 / 线上环境结论。
 
@@ -74,8 +75,10 @@
 ## 测试分层
 
 - `npm run lint`：代码规范。
+- `npm test`：Vitest unit / service / contract 基础门禁。
+- `npm run test:e2e:smoke`：Playwright mobile smoke，排除真实写入。
+- `npm run test:e2e:write-live`：真实写链专项，执行前确认环境和写入影响。
 - `npm run build`：静态导出产物验证。
-- 当前分支没有 `npm test` / e2e 脚本；恢复测试工程前，发布门禁以 lint、build 和部署后人工验收为准。
 - 涉及真实内测反馈时，还必须记录真实环境复现结果；若只完成本机复现，必须写清边界。
 
 ## 文档同步边界

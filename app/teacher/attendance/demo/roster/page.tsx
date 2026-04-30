@@ -1,19 +1,37 @@
 "use client";
 
 import { useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 
-import Link from "next/link";
+import { PageLoading } from "@/components/app/page-loading";
+import { SearchParamsSuspense } from "@/components/app/search-params-suspense";
+import { navigateTo } from "@/lib/static-navigation";
 
 export default function LegacyTeacherAttendanceRosterPage() {
-  useEffect(() => {
-    window.location.replace(`/teacher/home/roster${window.location.search}`);
-  }, []);
-
   return (
-    <main className="flex min-h-dvh items-center justify-center bg-[var(--jp-bg)] px-6 text-center">
-      <Link className="text-sm font-semibold text-[var(--jp-accent)]" href="/teacher/home/roster">
-        前往学生名单
-      </Link>
-    </main>
+    <SearchParamsSuspense>
+      <LegacyTeacherAttendanceRosterPageInner />
+    </SearchParamsSuspense>
   );
+}
+
+function LegacyTeacherAttendanceRosterPageInner() {
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const query = new URLSearchParams();
+    const keys = ["day", "course", "courseId", "sessionId", "courseSessionId"] as const;
+
+    for (const key of keys) {
+      const value = searchParams.get(key);
+      if (value) {
+        query.set(key, value);
+      }
+    }
+
+    const suffix = query.toString() ? `?${query.toString()}` : "";
+    navigateTo(`/teacher/home/roster${suffix}`, { replace: true });
+  }, [searchParams]);
+
+  return <PageLoading />;
 }

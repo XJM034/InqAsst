@@ -1,6 +1,6 @@
 export type Role = "teacher" | "admin";
 
-export type AttendanceStatus = "present" | "absent" | "leave";
+export type AttendanceStatus = "unmarked" | "present" | "absent" | "leave";
 
 export type TimeWindowState = "upcoming" | "active" | "late";
 
@@ -31,31 +31,34 @@ export type WeekCalendarItem = {
   hasClass?: boolean;
 };
 
-export type TeacherHomePrimaryCourse = {
-  campus: string;
+export type TeacherHomeCourseCard = {
+  campus?: string;
+  kind?: "substitute" | "other" | "merge";
+  badge?: string;
   title: string;
-  time: string;
-  locationTrail: string;
+  time?: string;
+  referenceSessionStartAt?: string;
+  referenceSessionEndAt?: string;
+  rollCallStartAt?: string;
+  rollCallDeadlineAt?: string;
+  locationTrail?: string;
+  description?: string;
+  expectedLabel?: string;
   actionHref: string;
   rosterHref: string;
   actionLabel: string;
   attendanceWindowState: "active" | "inactive";
 };
 
+export type TeacherHomePrimaryCourse = TeacherHomeCourseCard;
+
+export type TeacherHomeSecondaryCourse = TeacherHomeCourseCard;
+
 export type TeacherHomeDaySchedule = {
   dayKey: string;
   dateLabel: string;
   primaryCourse: TeacherHomePrimaryCourse;
-  substituteCourse?: {
-    badge: string;
-    title: string;
-    description: string;
-    expectedLabel: string;
-    actionLabel: string;
-    actionHref: string;
-    rosterHref: string;
-    attendanceWindowState: "active" | "inactive";
-  };
+  substituteCourse?: TeacherHomeSecondaryCourse;
 };
 
 export type TeacherHomeData = {
@@ -63,34 +66,106 @@ export type TeacherHomeData = {
   defaultDayKey: string;
   weekCalendar: WeekCalendarItem[];
   daySchedules: TeacherHomeDaySchedule[];
-  tomorrowTrip: string;
+  noClassMessage?: string;
 };
 
 export type AttendanceStudent = {
   id: string;
+  externalStudentId?: string;
   name: string;
   homeroomClass: string;
+  homeroomClassId?: number;
   status: AttendanceStatus;
   managerUpdated?: boolean;
   overrideLabel?: string;
 };
 
+export type TemporaryStudentHomeroomClass = {
+  id: number;
+  name: string;
+};
+
+export type TeacherTemporaryStudentConfig = {
+  homeroomClasses: TemporaryStudentHomeroomClass[];
+  disabledReason?: string;
+};
+
 export type AttendanceSession = {
   id: string;
+  courseId?: string;
+  courseSessionId?: string;
   pageTitle: string;
+  campusLabel?: string;
   dateLabel: string;
+  sessionTimeLabel?: string;
+  referenceSessionStartAt?: string;
+  referenceSessionEndAt?: string;
+  rollCallStartAt?: string;
+  rollCallDeadlineAt?: string;
   courseTitle: string;
   courseInfo: string;
   deadlineHint: string;
   tapHint: string;
   submitLabel: string;
+  submitDisabled?: boolean;
+  submitDisabledReason?: string;
+  attendanceWindowActive?: boolean;
+  hasSubmittedToday?: boolean;
+  latestAttendanceRecordId?: string;
+  latestSubmittedAt?: string;
+  draftNotice?: string;
+  temporaryStudent?: TeacherTemporaryStudentConfig;
   students: AttendanceStudent[];
+};
+
+export type AttendanceGroupStudent = AttendanceStudent & {
+  courseSessionId: string;
+  courseTitle: string;
+};
+
+export type AttendanceGroupClass = {
+  courseId: string;
+  courseSessionId: string;
+  title: string;
+  meta: string;
+  temporaryStudent?: TeacherTemporaryStudentConfig;
+  students: AttendanceGroupStudent[];
+};
+
+export type AttendanceGroup = {
+  id: string;
+  pageTitle: string;
+  campusLabel?: string;
+  dateLabel: string;
+  sessionTimeLabel?: string;
+  title: string;
+  info: string;
+  submitLabel: string;
+  submitDisabled?: boolean;
+  submitDisabledReason?: string;
+  attendanceWindowActive?: boolean;
+  classes: AttendanceGroupClass[];
 };
 
 export type TeacherProfile = {
   name: string;
   phone: string;
   roleLabel: string;
+};
+
+export type AdminCampusOption = {
+  id: string;
+  label: string;
+  shortLabel: string;
+  adminUserId?: number;
+};
+
+export type AdminProfile = {
+  name: string;
+  phone: string;
+  roleLabel: string;
+  activeCampusId?: string;
+  campusOptions: AdminCampusOption[];
 };
 
 export type AdminAction = {
@@ -100,21 +175,25 @@ export type AdminAction = {
 };
 
 export type AdminHomeData = {
+  campusLabel: string;
   title: string;
   ruleDateLabel: string;
   effectiveRules: Array<{
     label: string;
     value: string;
+    meta?: string;
     tone: "neutral" | "warning" | "success";
   }>;
   heroDescription: string;
   heroPrimaryHref: string;
-  heroSecondaryHref: string;
   entryCards: Array<{
     href: string;
     title: string;
+    description: string;
     badge: string;
-    tone: "success" | "info" | "neutral";
+    icon: "clock" | "users";
+    iconTone: "success" | "info";
+    badgeTone: "success" | "info" | "neutral";
   }>;
 };
 
@@ -124,31 +203,64 @@ export type AdminCourseTeachersData = {
   days: Array<{
     key: string;
     label: string;
+    courseCount?: number;
+    active?: boolean;
   }>;
   defaultDayKey: string;
+  selectedDayKey?: AdminEmergencyDayKey;
   teachers: Array<{
     id: string;
     dayKey: string;
     label: string;
     note: string;
+    teacherName?: string;
+    teacherPhone?: string | null;
+    courseLabel?: string;
+    locationLabel?: string;
+    statusLabel?: string;
     tone?: "default" | "substitute";
   }>;
+  teachersPage?: {
+    page: number;
+    size: number;
+    totalPages: number;
+    totalElements: number;
+    hasNextPage: boolean;
+    hasPrevPage: boolean;
+  };
 };
 
 export type AdminClassStatus = {
   id: string;
   name: string;
   teacher: string;
+  kind?: "course" | "merge";
+  badge?: string;
+  description?: string;
+  groupSize?: number;
   progressLabel: string;
   completion: number;
   state: "pending" | "partial" | "done";
+  shouldAttendCount: number;
+  presentCount: number;
+  leaveCount: number;
+  absentCount: number;
   href: string;
 };
 
 export type AdminControlData = {
+  campusLabel: string;
   dateLabel: string;
+  referenceSessionStartAt?: string;
+  pollingEnabled: boolean;
   finishedCount: number;
   unfinishedCount: number;
+  totals: {
+    shouldAttend: number;
+    present: number;
+    leave: number;
+    absent: number;
+  };
   classes: AdminClassStatus[];
 };
 
@@ -156,6 +268,7 @@ export type AdminClassAttendanceStudent = {
   id: string;
   name: string;
   homeroomClass: string;
+  homeroomClassId?: number;
   status: AttendanceStatus;
   managerUpdated?: boolean;
   overrideLabel?: string;
@@ -163,14 +276,22 @@ export type AdminClassAttendanceStudent = {
 
 export type AdminClassAttendanceData = {
   classId: string;
+  courseId?: string;
+  courseSessionId?: string;
   title: string;
   students: AdminClassAttendanceStudent[];
 };
 
 export type AdminUnarrivedGroupStudent = {
   id: string;
+  studentId: string;
   name: string;
-  course: string;
+  courseId?: string;
+  courseSessionId?: string;
+  courseName?: string;
+  homeroomClassId?: number;
+  homeroomClass: string;
+  note: string;
   status: AttendanceStatus;
   managerUpdated?: boolean;
   overrideLabel?: string;
@@ -178,38 +299,82 @@ export type AdminUnarrivedGroupStudent = {
 
 export type AdminUnarrivedGroup = {
   id: string;
+  courseId?: string;
+  courseSessionId?: string;
   label: string;
+  meta: string;
   students: AdminUnarrivedGroupStudent[];
+  roster?: AdminClassAttendanceStudent[];
 };
 
 export type AdminUnarrivedData = {
+  campusLabel: string;
   dateLabel: string;
+  referenceSessionStartAt?: string;
   totals: {
     expected: number;
     present: number;
+    unmarked: number;
     leave: number;
     absent: number;
   };
   groups: AdminUnarrivedGroup[];
 };
 
+export type AdminEmergencyDayKey =
+  | "mon"
+  | "tue"
+  | "wed"
+  | "thu"
+  | "fri"
+  | "sat"
+  | "sun";
+
 export type AdminEmergencyDay = {
+  key: AdminEmergencyDayKey;
   label: string;
+  date?: string;
+  courseCount?: number;
+  changedCourseCount?: number;
   active?: boolean;
 };
 
 export type AdminEmergencyCourse = {
-  id: string;
+  courseId: string;
+  sessionId: string;
   title: string;
   meta: string;
   href: string;
+  sessionDate?: string;
+  sessionStartAt?: string;
+  sessionEndAt?: string;
+  locationLabel?: string;
+  sessionTimeLabel?: string;
+  currentTeacherId?: string;
+  currentTeacherName?: string;
+  currentTeacherPhone?: string | null;
+  currentTeacherExternal?: boolean;
+  defaultTeacherId?: string;
+  defaultTeacherName?: string;
+  defaultTeacherPhone?: string | null;
+  teacherChanged?: boolean;
+  temporaryTeacherAssigned?: boolean;
 };
 
 export type AdminEmergencyData = {
   days: AdminEmergencyDay[];
+  selectedDayKey: AdminEmergencyDayKey;
   featuredDateLabel: string;
-  featuredCourse: AdminEmergencyCourse;
-  allCourses: AdminEmergencyCourse[];
+  featuredCourses: AdminEmergencyCourse[];
+  courses: {
+    items: AdminEmergencyCourse[];
+    page: number;
+    size: number;
+    totalPages: number;
+    totalElements: number;
+    hasNextPage: boolean;
+    hasPrevPage: boolean;
+  };
 };
 
 export type AdminTeacherSettingsData = AdminEmergencyData;
@@ -227,76 +392,203 @@ export type AdminTeacherSelectionData = {
   courseId: string;
   courseTitle: string;
   courseMeta: string;
+  sessionDate?: string;
+  currentTeacherId?: string;
+  currentTeacherSource?: "internal" | "external";
+  currentTeacherLabel?: string;
   defaultTeacherLabel: string;
+  teacherType?: "INTERNAL" | "EXTERNAL" | "ALL";
+  teacherQuery?: string;
+  currentPage?: number;
+  pageSize?: number;
+  totalPages?: number;
+  totalElements?: number;
+  hasNextPage?: boolean;
   teachers: Array<{
     id: string;
     label: string;
+    name?: string;
+    phone?: string | null;
     note?: string;
     selected?: boolean;
+    source?: "internal" | "external";
+    manual?: boolean;
+    badges?: string[];
+    swapTargets?: Array<{
+      courseId: string;
+      courseSessionId: string;
+      courseTitle: string;
+      dayLabel?: string;
+      sessionTimeLabel: string;
+      locationLabel?: string;
+      currentTeacherLabel: string;
+    }>;
   }>;
+};
+
+export type AdminRollCallTeacherBatchConflictSource = "group" | "outside-group";
+
+export type AdminRollCallTeacherBatchConflict = {
+  courseSessionId: string;
+  teacherId: string;
+  teacherName: string;
+  conflictDate: string;
+  conflictTimeRange: string;
+  conflictSource: AdminRollCallTeacherBatchConflictSource;
+  message: string;
+};
+
+export type AdminRollCallTeacherBatchTeacherOption = {
+  id: string;
+  label: string;
+  name?: string;
+  phone?: string | null;
+  note?: string;
+  defaultTeacher?: boolean;
+  selected?: boolean;
+};
+
+export type AdminRollCallTeacherBatchCourse = {
+  courseId: string;
+  sessionId: string;
+  courseTitle: string;
+  courseMeta: string;
+  sessionDate: string;
+  sessionTimeLabel: string;
+  locationLabel: string;
+  currentTeacherLabel: string;
+  defaultTeacherLabel: string;
+  currentTeacherId?: string;
+  currentTeacherExternal?: boolean;
+  defaultTeacherId?: string;
+  temporaryTeacherAssigned?: boolean;
+  initialTargetTeacherId?: string;
+  teacherOptions: AdminRollCallTeacherBatchTeacherOption[];
+};
+
+export type AdminRollCallTeacherBatchData = {
+  sessionDate: string;
+  courseCount: number;
+  courses: AdminRollCallTeacherBatchCourse[];
 };
 
 export type AdminExternalTeacherData = {
   courseId: string;
   courseTitle: string;
   courseMeta: string;
+  currentTeacherLabel?: string;
 };
 
 export type AdminTimeSettingsData = {
-  days: AdminEmergencyDay[];
-  actualClassTime: string;
-  attendanceWindow: string;
-  actualHref: string;
-  attendanceHref: string;
+  title: string;
+  targetDate: string;
+  days: Array<{
+    key: string;
+    label: string;
+    date: string;
+    active?: boolean;
+    readonly?: boolean;
+    href?: string;
+  }>;
+  defaultDayKey: string;
+  searchPlaceholder: string;
+  cards: Array<{
+    id: "class-time" | "attendance-window";
+    title: string;
+    currentLabel: string;
+    href?: string;
+  }>;
 };
 
 export type AdminTimeSettingDetailData = {
+  courseSessionId: string;
+  settingKey: "class-time" | "attendance-window";
+  campusId: string;
+  targetDate: string;
+  kind: "actual" | "roll-call";
   title: string;
-  subtitle: string;
+  introTitle: string;
+  introPrimaryText: string;
+  introSecondaryText: string;
+  sectionTitle: string;
   currentRange: string;
-  helperText: string;
-  defaultLogicText: string;
+  referenceStartTime?: string;
+  startTime: string;
+  endTime: string;
+  defaultBeforeStartMinutes?: number;
+  defaultAfterStartMinutes?: number;
   pickerHref: string;
-  saveLabel: string;
+  highlightText: string;
   resetLabel: string;
+  saveLabel: string;
+  editable: boolean;
 };
 
 export type AdminTimePickerData = {
+  settingKey: "class-time" | "attendance-window";
+  courseSessionId: string;
+  campusId: string;
+  targetDate: string;
+  kind: "actual" | "roll-call";
   title: string;
   badge: string;
-  contextTitle: string;
-  contextSubtitle: string;
+  backHref: string;
+  introTitle: string;
+  introSubtitle: string;
   currentRange: string;
-  primaryLabel: string;
-  secondaryLabel: string;
+  referenceStartTime?: string;
+  startTime: string;
+  endTime: string;
+  cancelLabel: string;
   confirmLabel: string;
+  editable: boolean;
 };
 
 export type AdminCourseRuleMode = {
   id: string;
   label: string;
   active?: boolean;
+  disabled?: boolean;
+  href?: string;
 };
 
 export type AdminCourseSettingsCourse = {
   id: string;
+  courseId: string;
+  sessionId: string;
   title: string;
   meta: string;
   badgeLabel: string;
   badgeTone: "today" | "temporary";
   rosterHref: string;
+  editHref?: string;
+  timeLabel?: string;
+  locationLabel?: string;
+  teacherLabel?: string;
+  studentCount?: number;
+  sourceType?: "live" | "temporary" | "makeup";
+  canRemoveFromToday?: boolean;
   secondaryActionLabel: string;
   secondaryActionTone: "outline" | "accent";
+  secondaryActionHref?: string;
+  secondaryActionDisabled?: boolean;
+  secondaryActionKind?: "remove" | "edit";
 };
 
 export type AdminCourseSettingsData = {
   title: string;
+  effectiveCourseCount: number;
+  effectiveCourseCountLabel: string;
   ruleTitle: string;
   modes: AdminCourseRuleMode[];
   searchPlaceholder: string;
   sectionTitle: string;
   temporaryActionLabel: string;
+  temporaryActionHref?: string;
+  temporaryActionDisabled?: boolean;
   saveLabel: string;
+  saveDisabled?: boolean;
+  saveDescription?: string;
   courses: AdminCourseSettingsCourse[];
 };
 
@@ -323,6 +615,8 @@ export type AdminCourseRosterData = {
 
 export type AdminCourseStudentFormData = {
   courseId: string;
+  studentId?: string;
+  courseCampusId?: number | null;
   title: string;
   badge: string;
   courseTitle: string;
@@ -330,10 +624,16 @@ export type AdminCourseStudentFormData = {
   submitLabel: string;
   nameValue: string;
   namePlaceholder?: string;
-  studentCodeValue: string;
-  studentCodePlaceholder?: string;
+  studentIdValue: string;
+  studentIdPlaceholder?: string;
+  homeroomClassId?: number | null;
+  homeroomClasses?: Array<{
+    id: number;
+    name: string;
+  }>;
   homeroomClassValue: string;
   homeroomClassPlaceholder?: string;
+  localDraft?: boolean;
 };
 
 export type AdminCourseStudentImportData = {

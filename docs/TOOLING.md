@@ -13,11 +13,18 @@
 | 启动本地开发 | `npm run dev` | 会先执行 `predev` 同步 Pencil tokens，再启动 Next dev |
 | 同步设计 token | `npm run sync:tokens` | 从 `../design.pen` 生成 `../app/pencil-tokens.css`；不要手改生成文件 |
 | lint | `npm run lint` | ESLint flat config |
+| 单元 / service / contract 测试 | `npm test` | 等价于 `npm run test:phase0` |
+| unit 测试 | `npm run test:unit` | Vitest，覆盖 `tests/unit` |
+| service 测试 | `npm run test:service` | Vitest，覆盖 `tests/service` |
+| contract 测试 | `npm run test:contract` | Vitest，覆盖 `tests/contract` |
+| mobile smoke | `npm run test:e2e:smoke` | Playwright mobile smoke，排除 `@write-live` |
+| 真实写链专项 | `npm run test:e2e:write-live` | Playwright `@write-live`，执行前确认真实写入影响 |
 | 静态导出 build | `npm run build` | 会先执行 `prebuild` 同步 token；交付物以 `out/` 为准 |
 
 ## 已有反馈环
 
-- 当前分支未配置 `npm test` / Vitest / Playwright 脚本；上线前自动化门禁以 `npm run lint` 与 `npm run build` 为准。
+- Vitest：`tests/unit`、`tests/service`、`tests/contract`，`npm test` 作为基础门禁。
+- Playwright：`tests/e2e`，默认 smoke 排除真实写入；`@write-live` 专项需要确认环境和写入影响。
 - ESLint：`eslint.config.mjs` 使用 Next core-web-vitals 和 TypeScript 规则。
 
 ## 运行时与环境
@@ -25,6 +32,7 @@
 - 本地默认：`next dev` 同源 proxy 到 `https://daoleme-dev.jxare.cn`。
 - API 配置入口：`API_BASE_URL`、`NEXT_PUBLIC_API_BASE_URL`、`API_REQUEST_MODE`、`NEXT_PUBLIC_API_REQUEST_MODE`。
 - dev proxy：`next.config.ts`；开发态不设置 `output: "export"`，避免 Next.js 静态导出与 rewrites/proxy 互斥警告。
+- Vercel 静态部署：`vercel.json` 将 `/api/:path*` rewrite 到 `https://daoleme-dev.jxare.cn/api/:path*`，保证部署后的浏览器端服务请求仍走后端接口。
 - API base 归一化：`lib/services/api-base-url.ts`。
 - HTTP 基础能力：`lib/services/http-core.ts`、`http-client.ts`、`http-server.ts`。
 
@@ -54,7 +62,7 @@
 
 - 构建态 `next.config.ts` 开启 `output: "export"`。
 - `out/` 是静态交付产物，不要只看 `next dev` 行为。
-- Vercel 静态部署配置在 `vercel.json`：`framework` 为 `null`，`cleanUrls` 为 `true`，`buildCommand` 为 `npm run build`，`outputDirectory` 为 `out`。
+- Vercel 静态部署配置在 `vercel.json`：`framework` 为 `null`，`cleanUrls` 为 `true`，`buildCommand` 为 `npm run build`，`outputDirectory` 为 `out`，并 rewrite `/api/:path*` 到 shared dev 后端。
 - 导航、登录跳转、保存后回流、动态详情页变更必须对照：
   - `docs/static-export-navigation-rsc-fix_20260417.md`
   - `docs/static-export-delivery-constraint_20260418.md`
@@ -64,6 +72,7 @@
 ### 已有守卫
 
 - token 同步：`predev` / `prebuild`
+- 基础测试：`npm test`
 - lint：`npm run lint`
 - 静态导出 build：`npm run build`
 - 本机 GitHub 文档防误推：`.codex/git-guards/hooks`
@@ -73,7 +82,6 @@
 - “不要新增 mock 数据冒充后端接通”主要依赖文档和 review，尚无专门 lint / structure test。
 - “静态部署主路径不要使用 `next/link` / `router.push` / `router.refresh`”主要依赖 review 和历史文档，尚无自动扫描脚本。
 - 当前没有 docs link checker；文档重构后用 `rg` / 人工检查关键路径。
-- 当前没有自动化 test / e2e 脚本；恢复测试工程前，不要把旧文档里的 `npm test` 当成当前门禁。
 - 当前没有生产观测、日志、指标或 tracing 文档；内测问题需要手动记录环境、账号、路径、接口表现。
 - 本机文档防误推 hook 不等于云端备份；它只保证本机备份和提交 / 推送拦截，不防电脑磁盘损坏。
 

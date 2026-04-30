@@ -31,12 +31,19 @@ export function AttendanceStudentCard({
         badge: "bg-[var(--jp-surface-muted)] text-[var(--jp-text-secondary)]",
         label: "",
       }
-    : managerUpdated && overrideLabel
-      ? {
-          card: "border border-[#E59A52] bg-[#FFFDF8] shadow-[0_8px_18px_rgba(196,106,26,0.05)]",
-          badge: "bg-[#FFF4EA] text-[#9A5A1F]",
-          label: status === "present" ? "已到" : status === "leave" ? "请假" : "未到",
-        }
+      : managerUpdated && overrideLabel
+        ? {
+            card: "border border-[#E59A52] bg-[#FFFDF8] shadow-[0_8px_18px_rgba(196,106,26,0.05)]",
+            badge: "bg-[#FFF4EA] text-[#9A5A1F]",
+            label:
+              status === "present"
+                ? "已到"
+                : status === "leave"
+                  ? "请假"
+                  : status === "unmarked"
+                    ? "未点名"
+                    : "未到",
+          }
       : status === "present"
         ? {
             card: "border border-[#D9E8DD] bg-[#F7FBF8]",
@@ -49,6 +56,12 @@ export function AttendanceStudentCard({
               badge: "bg-[#ECE8E1] text-[#1C1C1C]",
               label: "请假",
             }
+          : status === "unmarked"
+            ? {
+                card: "border border-[#E4EAF1] bg-[#F7FAFD]",
+                badge: "bg-[#EDF3F8] text-[#4C6177]",
+                label: "未点名",
+              }
           : {
               card: "border border-[#F0D2D2] bg-[#FFF8F8]",
               badge: "bg-[#FCEBEC] text-[#D32F2F]",
