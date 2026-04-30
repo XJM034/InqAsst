@@ -1,15 +1,11 @@
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 
-import { AttendanceSessionClient } from "@/components/app/attendance-session-client";
+import { TeacherAttendanceRouteClient } from "@/components/app/teacher-attendance-route-client";
 import { getAttendanceSession, getTeacherHomeData } from "@/lib/services/mobile-app";
 
-export default async function TeacherAttendanceDemoPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ day?: string; course?: string }>;
-}) {
-  const [{ day, course }, session, home] = await Promise.all([
-    searchParams,
+export default async function TeacherAttendanceDemoPage() {
+  const [session, home] = await Promise.all([
     getAttendanceSession("demo"),
     getTeacherHomeData(),
   ]);
@@ -18,26 +14,9 @@ export default async function TeacherAttendanceDemoPage({
     notFound();
   }
 
-  const selectedSchedule =
-    home.daySchedules.find((item) => item.dayKey === day) ??
-    home.daySchedules.find((item) => item.dayKey === home.defaultDayKey);
-
-  const displayMeta =
-    selectedSchedule && course === "substitute" && selectedSchedule.substituteCourse
-      ? {
-          pageTitle: "点名",
-          dateLabel: selectedSchedule.dateLabel,
-          courseTitle: selectedSchedule.substituteCourse.title,
-          courseInfo: selectedSchedule.substituteCourse.description,
-        }
-      : undefined;
-
   return (
-    <AttendanceSessionClient
-      session={session}
-      displayMeta={displayMeta}
-      backHref="/teacher/home"
-      backLabel="返回主页"
-    />
+    <Suspense>
+      <TeacherAttendanceRouteClient session={session} home={home} />
+    </Suspense>
   );
 }

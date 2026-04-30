@@ -5,7 +5,12 @@ import { notFound } from "next/navigation";
 import { AdminSubpageHeader } from "@/components/app/admin-subpage-header";
 import { MobileTabBar } from "@/components/app/mobile-tab-bar";
 import { PageShell } from "@/components/app/page-shell";
+import { adminTeacherSelections } from "@/lib/mocks/mobile-data";
 import { getAdminTeacherSelection } from "@/lib/services/mobile-app";
+
+export function generateStaticParams() {
+  return Object.keys(adminTeacherSelections).map((courseId) => ({ courseId }));
+}
 
 export default async function AdminTeacherSelectionPage({
   params,

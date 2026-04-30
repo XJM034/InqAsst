@@ -1,13 +1,14 @@
 # 到了么技术架构
 
-更新日期：2026-04-29
+更新日期：2026-04-30
 
 ## 技术栈
 
 - Next.js App Router + TypeScript
 - Tailwind CSS + shadcn/ui + Lucide 图标
-- Vitest + Playwright
+- ESLint
 - 静态导出：构建态 `next.config.ts` 开启 `output: "export"`，交付物以 `out/` 为准
+- Vercel 静态部署：`vercel.json` 指向 `npm run build` 和 `out`
 - 设计 token：`../design.pen` -> `../scripts/sync-pencil-tokens.mjs` -> `../app/pencil-tokens.css`
 
 ## 顶层目录
@@ -18,7 +19,6 @@
 - `lib/domain/`：领域类型与规则。
 - `lib/services/`：API client、schema、adapter、session、auth、HTTP 基础能力。
 - `lib/static-navigation.ts`：静态导出兼容跳转。
-- `tests/`：`unit`、`service`、`contract`、`e2e` 分层测试。
 - `docs/`：项目文档、内测质量、后端协同、静态导出约束与历史归档。
 
 ## 路由边界
@@ -73,10 +73,9 @@
 
 ## 测试分层
 
-- `npm test`：unit / service / contract 基线。
 - `npm run lint`：代码规范。
 - `npm run build`：静态导出产物验证。
-- `npm run test:e2e:smoke`：shared dev 读链路 smoke。
+- 当前分支没有 `npm test` / e2e 脚本；恢复测试工程前，发布门禁以 lint、build 和部署后人工验收为准。
 - 涉及真实内测反馈时，还必须记录真实环境复现结果；若只完成本机复现，必须写清边界。
 
 ## 文档同步边界

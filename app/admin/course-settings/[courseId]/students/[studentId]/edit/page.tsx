@@ -7,7 +7,17 @@ import { MobileTabBar } from "@/components/app/mobile-tab-bar";
 import { PageShell } from "@/components/app/page-shell";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { adminCourseStudentForms } from "@/lib/mocks/mobile-data";
 import { getAdminCourseStudentForm } from "@/lib/services/mobile-app";
+
+export function generateStaticParams() {
+  return Object.keys(adminCourseStudentForms)
+    .map((key) => {
+      const [courseId, studentId] = key.split(":");
+      return { courseId, studentId };
+    })
+    .filter(({ studentId }) => studentId !== "new");
+}
 
 export default async function AdminCourseStudentEditPage({
   params,

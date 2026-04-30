@@ -6,7 +6,12 @@ import { MobileTabBar } from "@/components/app/mobile-tab-bar";
 import { PageShell } from "@/components/app/page-shell";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { adminExternalTeacherForms } from "@/lib/mocks/mobile-data";
 import { getAdminExternalTeacherForm } from "@/lib/services/mobile-app";
+
+export function generateStaticParams() {
+  return Object.keys(adminExternalTeacherForms).map((courseId) => ({ courseId }));
+}
 
 export default async function AdminExternalTeacherPage({
   params,

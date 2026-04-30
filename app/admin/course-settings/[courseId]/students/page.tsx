@@ -6,8 +6,13 @@ import { AdminSubpageHeader } from "@/components/app/admin-subpage-header";
 import { MobileTabBar } from "@/components/app/mobile-tab-bar";
 import { PageShell } from "@/components/app/page-shell";
 import { Button } from "@/components/ui/button";
+import { adminCourseRosters } from "@/lib/mocks/mobile-data";
 import { getAdminCourseRoster } from "@/lib/services/mobile-app";
 import { cn } from "@/lib/utils";
+
+export function generateStaticParams() {
+  return Object.keys(adminCourseRosters).map((courseId) => ({ courseId }));
+}
 
 export default async function AdminCourseRosterPage({
   params,

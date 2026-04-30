@@ -14,6 +14,7 @@
 4. 代码和静态导出相关内容可以按本地版本正常提交，但前提是不影响现有部署配置。
 5. 提交时直接使用最简单的 Git 流程即可：`git add`、`git commit`、`git push`。
 6. 当前前端仓库与目标仓库不一致时，以本文档指定的目标仓库和目标分支为准。
+7. Vercel 静态部署使用 `vercel.json` 的 `framework: null`、`cleanUrls: true` 与 `outputDirectory: "out"`，不要改成 Next server 托管模式，除非先同步更新根文档和架构文档。
 
-仓库：`https://codeup.aliyun.com/jia1edu/cd/daoleme-client.git`
-分支：`test`
+仓库：`https://github.com/XJM034/InqAsst`
+分支：`main`

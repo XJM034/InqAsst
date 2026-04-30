@@ -1,7 +1,12 @@
 import { notFound } from "next/navigation";
 
 import { AdminClassAttendanceClient } from "@/components/app/admin-class-attendance-client";
+import { adminClassAttendanceData } from "@/lib/mocks/mobile-data";
 import { getAdminClassAttendanceData } from "@/lib/services/mobile-app";
+
+export function generateStaticParams() {
+  return Object.keys(adminClassAttendanceData).map((classId) => ({ classId }));
+}
 
 export default async function AdminClassDetailPage({
   params,

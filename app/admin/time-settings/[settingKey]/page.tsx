@@ -7,7 +7,12 @@ import { AdminSubpageHeader } from "@/components/app/admin-subpage-header";
 import { MobileTabBar } from "@/components/app/mobile-tab-bar";
 import { PageShell } from "@/components/app/page-shell";
 import { Button } from "@/components/ui/button";
+import { adminTimeSettingDetails } from "@/lib/mocks/mobile-data";
 import { getAdminTimeSettingDetail } from "@/lib/services/mobile-app";
+
+export function generateStaticParams() {
+  return Object.keys(adminTimeSettingDetails).map((settingKey) => ({ settingKey }));
+}
 
 export default async function AdminTimeSettingDetailPage({
   params,

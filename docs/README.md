@@ -47,7 +47,7 @@
 
 - `docs/TOOLING.md`
 
-面向 agent 的可执行地图：package scripts、CI、Playwright、lint、静态导出、Codeup 同步、本机文档防误推、配置入口、已有守卫和缺口。命令、测试、CI、反馈环、Codeup 规则或 guardrail 变化时更新这里。
+面向 agent 的可执行地图：package scripts、CI、Playwright、lint、静态导出、GitHub 同步、本机文档防误推、配置入口、已有守卫和缺口。命令、测试、CI、反馈环、GitHub 推送规则或 guardrail 变化时更新这里。
 
 ### 内测质量状态层
 
@@ -104,7 +104,7 @@
 - 产品范围、角色、内测反馈口径变了：更新 `docs/PRODUCT.md`。
 - 架构、路由、数据流、静态导出、测试分层变了：更新 `docs/ARCHITECTURE.md`。
 - 命令、CI、测试、反馈环或 guardrail 变了：更新 `docs/TOOLING.md`。
-- Codeup 远端、org_id、MR 流程、本机文档防误推或备份规则变了：更新 `docs/TOOLING.md`。
+- GitHub 远端、PR 流程、本机文档防误推或备份规则变了：更新 `docs/TOOLING.md`。
 - 门禁、回归清单、人工验收项变了：更新 `docs/quality/regression-checklist.md`。
 - 需要后端配合、接口口径、稳定性问题变了：更新 `docs/backend-collab/`。
 - 静态导出、部署、导航约束变了：更新静态导出相关文档。

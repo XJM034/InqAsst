@@ -1,21 +1,19 @@
-import { redirect } from "next/navigation";
+"use client";
 
-export default async function LegacyTeacherAttendanceRosterPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ day?: string; course?: string }>;
-}) {
-  const params = await searchParams;
-  const query = new URLSearchParams();
+import { useEffect } from "react";
 
-  if (params.day) {
-    query.set("day", params.day);
-  }
+import Link from "next/link";
 
-  if (params.course) {
-    query.set("course", params.course);
-  }
+export default function LegacyTeacherAttendanceRosterPage() {
+  useEffect(() => {
+    window.location.replace(`/teacher/home/roster${window.location.search}`);
+  }, []);
 
-  const suffix = query.toString() ? `?${query.toString()}` : "";
-  redirect(`/teacher/home/roster${suffix}`);
+  return (
+    <main className="flex min-h-dvh items-center justify-center bg-[var(--jp-bg)] px-6 text-center">
+      <Link className="text-sm font-semibold text-[var(--jp-accent)]" href="/teacher/home/roster">
+        前往学生名单
+      </Link>
+    </main>
+  );
 }

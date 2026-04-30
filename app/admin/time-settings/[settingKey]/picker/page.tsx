@@ -4,7 +4,12 @@ import { notFound } from "next/navigation";
 import { AdminSubpageHeader } from "@/components/app/admin-subpage-header";
 import { MobileTabBar } from "@/components/app/mobile-tab-bar";
 import { PageShell } from "@/components/app/page-shell";
+import { adminTimePickerData } from "@/lib/mocks/mobile-data";
 import { getAdminTimePicker } from "@/lib/services/mobile-app";
+
+export function generateStaticParams() {
+  return Object.keys(adminTimePickerData).map((settingKey) => ({ settingKey }));
+}
 
 export default async function AdminTimePickerPage({
   params,

@@ -5,7 +5,12 @@ import { AdminSubpageHeader } from "@/components/app/admin-subpage-header";
 import { MobileTabBar } from "@/components/app/mobile-tab-bar";
 import { PageShell } from "@/components/app/page-shell";
 import { Button } from "@/components/ui/button";
+import { adminCourseStudentImports } from "@/lib/mocks/mobile-data";
 import { getAdminCourseStudentImport } from "@/lib/services/mobile-app";
+
+export function generateStaticParams() {
+  return Object.keys(adminCourseStudentImports).map((courseId) => ({ courseId }));
+}
 
 export default async function AdminCourseStudentImportPage({
   params,
