@@ -54,8 +54,9 @@
 - session 通过 `inqasst_*` cookies 持久化；多校区管理员先选校区再进 `/admin/*`。
 - 页面数据走 `lib/services/`；领域规则在 `lib/domain/`；默认已接后端数据。
 - 本地复现默认 `next dev` proxy 到 `https://daoleme-dev.jxare.cn`；内测 / 线上结论必须和 shared dev 诊断分开。
-- 默认代码同步通道是云效 Codeup，默认分支约定是 `master`。
-- Codeup 推送、MR、org_id、本机文档防误推和备份规则见 `docs/TOOLING.md`；访问令牌只通过 `YUNXIAO_ACCESS_TOKEN` 本机环境变量提供，不写入仓库文档。
+- 当前 workspace 默认代码同步通道是 GitHub：`origin` -> `https://github.com/XJM034/InqAsst`，默认分支约定是 `main`。
+- Vercel 正式 Production 部署内容必须依赖 GitHub `origin/main`；功能分支部署仅作 Preview / smoke，不作为最终上线来源。
+- GitHub 推送、PR、本机文档防误推和备份规则见 `docs/TOOLING.md`；推送前核对当前分支、upstream 与目标远端。
 
 ## Work Rules
 
@@ -64,14 +65,14 @@
 - 接口缺口、字段错配、权限或稳定性问题先补 service 适配或后端协作文档，不用 mock 冒充接通。
 - 静态部署主路径不要重新引入 `next/link`、`router.push`、`router.replace`、`router.refresh`；优先复用静态导出兼容方案。
 - 前端和后端分开提交、分开推送；不要把后端改动混进前端仓库。
-- 本机前端 / AI 协作文档默认不推 Codeup；后端协同文档 `docs/backend-collab/**` 与 `docs/后端协同说明_20260414.md` 默认允许推送。
+- 本机前端 / AI 协作文档默认不推远端；后端协同文档 `docs/backend-collab/**` 与 `docs/后端协同说明_20260414.md` 默认允许推送。
 
 ## Update Rules
 
 - 产品边界变了：更新 `docs/PRODUCT.md`
 - 架构、路由、数据流变了：更新 `docs/ARCHITECTURE.md`
 - 命令、CI、测试、guardrail 变了：更新 `docs/TOOLING.md`
-- Codeup 同步规则、本机文档防误推或备份规则变了：更新 `docs/TOOLING.md`
+- GitHub 同步规则、本机文档防误推或备份规则变了：更新 `docs/TOOLING.md`
 - 质量状态、回归结论、验证口径、阶段判断变了：更新 `docs/quality/` 或新增 dated 文档
 - 发布门禁、回归清单、人工验收项变了：更新 `docs/quality/regression-checklist.md`
 - 后端接口、字段、权限、稳定性问题变了：更新 `docs/backend-collab/`

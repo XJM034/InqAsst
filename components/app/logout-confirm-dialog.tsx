@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -12,6 +12,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { logoutCurrentUser } from "@/lib/services/mobile-client";
+import { navigateTo } from "@/lib/static-navigation";
 
 type LogoutConfirmDialogProps = {
   triggerLabel?: string;
@@ -22,6 +24,19 @@ export function LogoutConfirmDialog({
   triggerLabel = "退出登录",
   triggerClassName,
 }: LogoutConfirmDialogProps) {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  async function handleLogout() {
+    setIsSubmitting(true);
+
+    try {
+      await logoutCurrentUser();
+      navigateTo("/login", { replace: true });
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -52,10 +67,12 @@ export function LogoutConfirmDialog({
             </Button>
           </DialogClose>
           <Button
-            asChild
+            type="button"
+            disabled={isSubmitting}
+            onClick={handleLogout}
             className="h-11 rounded-[12px] bg-[var(--jp-accent)] text-[15px] font-semibold text-white hover:bg-[var(--jp-accent)]/90"
           >
-            <Link href="/login">确认退出</Link>
+            {isSubmitting ? "退出中" : "确认退出"}
           </Button>
         </div>
       </DialogContent>

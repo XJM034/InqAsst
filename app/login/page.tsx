@@ -5,7 +5,6 @@ export default function LoginPage() {
   return (
     <PageShell>
       <LoginForm />
-      <div className="h-[60px]" />
     </PageShell>
   );
 }

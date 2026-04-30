@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 
+import { SessionExpiredDialog } from "@/components/app/session-expired-dialog";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "InqAsst",
-  description: "嘉祥素质教育课后服务系统移动端",
+  title: "到了么",
+  description: "到了么移动端",
 };
 
 export default function RootLayout({
@@ -13,8 +14,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="zh-CN" suppressHydrationWarning className="antialiased">
-      <body>{children}</body>
+    <html
+      lang="zh-CN"
+      suppressHydrationWarning
+      className="antialiased"
+      data-scroll-behavior="smooth"
+    >
+      <body suppressHydrationWarning>
+        {children}
+        <SessionExpiredDialog />
+      </body>
     </html>
   );
 }

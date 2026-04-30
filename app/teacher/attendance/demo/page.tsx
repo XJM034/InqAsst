@@ -1,43 +1,45 @@
-import { notFound } from "next/navigation";
+"use client";
 
-import { AttendanceSessionClient } from "@/components/app/attendance-session-client";
-import { getAttendanceSession, getTeacherHomeData } from "@/lib/services/mobile-app";
+import { useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 
-export default async function TeacherAttendanceDemoPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ day?: string; course?: string }>;
-}) {
-  const [{ day, course }, session, home] = await Promise.all([
-    searchParams,
-    getAttendanceSession("demo"),
-    getTeacherHomeData(),
-  ]);
+import { PageLoading } from "@/components/app/page-loading";
+import { SearchParamsSuspense } from "@/components/app/search-params-suspense";
+import { navigateTo } from "@/lib/static-navigation";
 
-  if (!session) {
-    notFound();
-  }
-
-  const selectedSchedule =
-    home.daySchedules.find((item) => item.dayKey === day) ??
-    home.daySchedules.find((item) => item.dayKey === home.defaultDayKey);
-
-  const displayMeta =
-    selectedSchedule && course === "substitute" && selectedSchedule.substituteCourse
-      ? {
-          pageTitle: "点名",
-          dateLabel: selectedSchedule.dateLabel,
-          courseTitle: selectedSchedule.substituteCourse.title,
-          courseInfo: selectedSchedule.substituteCourse.description,
-        }
-      : undefined;
-
+export default function LegacyTeacherAttendanceDemoPage() {
   return (
-    <AttendanceSessionClient
-      session={session}
-      displayMeta={displayMeta}
-      backHref="/teacher/home"
-      backLabel="返回主页"
-    />
+    <SearchParamsSuspense>
+      <LegacyTeacherAttendanceDemoPageInner />
+    </SearchParamsSuspense>
   );
+}
+
+function LegacyTeacherAttendanceDemoPageInner() {
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const query = new URLSearchParams();
+    const courseId = searchParams.get("courseId");
+    const sessionId = searchParams.get("sessionId");
+    const courseSessionId = searchParams.get("courseSessionId");
+
+    if (courseId) {
+      query.set("courseId", courseId);
+    }
+    if (sessionId) {
+      query.set("sessionId", sessionId);
+    }
+    if (courseSessionId) {
+      query.set("courseSessionId", courseSessionId);
+    }
+
+    const suffix = query.toString() ? `?${query.toString()}` : "";
+    const targetHref = courseId
+      ? `/teacher/attendance/session${suffix}`
+      : "/teacher/attendance";
+    navigateTo(targetHref, { replace: true });
+  }, [searchParams]);
+
+  return <PageLoading />;
 }

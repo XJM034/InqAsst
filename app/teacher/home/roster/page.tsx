@@ -1,54 +1,112 @@
-import { notFound } from "next/navigation";
+"use client";
+
+import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 
 import { AttendanceSessionClient } from "@/components/app/attendance-session-client";
-import { getAttendanceSession, getTeacherHomeData } from "@/lib/services/mobile-app";
+import { PageLoading } from "@/components/app/page-loading";
+import { SearchParamsSuspense } from "@/components/app/search-params-suspense";
+import type { AttendanceSession } from "@/lib/domain/types";
+import { getAttendanceSession } from "@/lib/services/mobile-app";
 
-export default async function TeacherHomeRosterPage({
-  searchParams,
+const EMPTY_ROSTER_SESSION: AttendanceSession = {
+  id: "teacher-home-roster-empty",
+  pageTitle: "学生名单",
+  dateLabel: "课程待确认",
+  courseTitle: "课程待确认",
+  courseInfo: "上课地点待定",
+  deadlineHint: "",
+  tapHint: "",
+  submitLabel: "",
+  students: [],
+};
+
+function buildRosterDisplayMeta(session: AttendanceSession) {
+  return {
+    pageTitle: "学生名单",
+    dateLabel: session.dateLabel,
+    courseTitle: session.courseTitle,
+    courseInfo: session.courseInfo,
+  };
+}
+
+export default function TeacherHomeRosterPage() {
+  return (
+    <SearchParamsSuspense>
+      <TeacherHomeRosterPageInner />
+    </SearchParamsSuspense>
+  );
+}
+
+function TeacherHomeRosterPageInner() {
+  const searchParams = useSearchParams();
+  const courseId = searchParams.get("courseId") ?? undefined;
+  const sessionId = searchParams.get("sessionId") ?? undefined;
+  const courseSessionId = searchParams.get("courseSessionId") ?? undefined;
+
+  return (
+    <TeacherHomeRosterSessionLoader
+      key={`${courseId ?? "empty"}:${courseSessionId ?? sessionId ?? ""}`}
+      courseId={courseId}
+      sessionId={sessionId}
+      courseSessionId={courseSessionId}
+    />
+  );
+}
+
+function TeacherHomeRosterSessionLoader({
+  courseId,
+  sessionId,
+  courseSessionId,
 }: {
-  searchParams: Promise<{ day?: string; course?: string }>;
+  courseId?: string;
+  sessionId?: string;
+  courseSessionId?: string;
 }) {
-  const [{ day, course }, session, home] = await Promise.all([
-    searchParams,
-    getAttendanceSession("demo"),
-    getTeacherHomeData(),
-  ]);
+  const [session, setSession] = useState<AttendanceSession | null>(null);
+  const [loading, setLoading] = useState(Boolean(courseId));
 
-  if (!session) {
-    notFound();
-  }
+  useEffect(() => {
+    let cancelled = false;
 
-  const selectedSchedule =
-    home.daySchedules.find((item) => item.dayKey === day) ??
-    home.daySchedules.find((item) => item.dayKey === home.defaultDayKey);
+    if (!courseId) {
+      return () => {
+        cancelled = true;
+      };
+    }
 
-  if (!selectedSchedule) {
-    notFound();
-  }
-
-  const displayMeta =
-    course === "substitute" && selectedSchedule.substituteCourse
-      ? {
-          pageTitle: "学生名单",
-          dateLabel: selectedSchedule.dateLabel,
-          courseTitle: selectedSchedule.substituteCourse.title,
-          courseInfo: selectedSchedule.substituteCourse.description,
+    getAttendanceSession(courseId, courseSessionId ?? sessionId)
+      .then((data) => {
+        if (!cancelled) {
+          setSession(data);
+          setLoading(false);
         }
-      : {
-          pageTitle: "学生名单",
-          dateLabel: selectedSchedule.dateLabel,
-          courseTitle: selectedSchedule.primaryCourse.title,
-          courseInfo: `${selectedSchedule.primaryCourse.campus} | ${selectedSchedule.primaryCourse.locationTrail} | ${selectedSchedule.primaryCourse.time}`,
-        };
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setSession(null);
+          setLoading(false);
+        }
+      });
 
-  const rosterNotice =
-    course === "substitute" && selectedSchedule.substituteCourse
-      ? `${selectedSchedule.substituteCourse.title} 当前不在点名时间，可先查看学生名单。`
-      : `${selectedSchedule.primaryCourse.title} 当前不在点名时间，可先查看学生名单。`;
+    return () => {
+      cancelled = true;
+    };
+  }, [courseId, sessionId, courseSessionId]);
+
+  if (loading) {
+    return <PageLoading />;
+  }
+
+  const resolvedSession = session ?? EMPTY_ROSTER_SESSION;
+  const displayMeta = buildRosterDisplayMeta(resolvedSession);
+  const rosterNotice = session
+    ? `${resolvedSession.courseTitle} 当前不在点名时间，可先查看学生名单。`
+    : "当前课程还没有可查看的学生名单，请先返回首页确认课节。";
 
   return (
     <AttendanceSessionClient
-      session={session}
+      session={resolvedSession}
       mode="roster"
       displayMeta={displayMeta}
       rosterNotice={rosterNotice}

@@ -1,112 +1,251 @@
-import Link from "next/link";
-import { ChevronRight, Search, UserCheck } from "lucide-react";
+"use client";
 
+import { useEffect, useRef, useState } from "react";
+import { useSearchParams } from "next/navigation";
+
+import { buildAdminTabItems, normalizeAdminCampus, withCampusQuery } from "@/lib/admin-campus";
+import { buildEmergencyRefreshFailureData } from "@/lib/admin-refresh-state";
+import {
+  AdminEmergencyClient,
+  withSelectedEmergencyDay,
+} from "@/components/app/admin-emergency-client";
 import { AdminSubpageHeader } from "@/components/app/admin-subpage-header";
 import { MobileTabBar } from "@/components/app/mobile-tab-bar";
 import { PageShell } from "@/components/app/page-shell";
-import { getAdminEmergencyData } from "@/lib/services/mobile-app";
+import { PageStatus } from "@/components/app/page-status";
+import { SearchParamsSuspense } from "@/components/app/search-params-suspense";
+import type { AdminEmergencyData, AdminEmergencyDayKey } from "@/lib/domain/types";
+import { getAdminEmergencyWeeklyData } from "@/lib/services/mobile-app";
 
-export default async function AdminEmergencyPage() {
-  const data = await getAdminEmergencyData();
+const PAGE_SIZE = 20;
+
+function getShanghaiTodayDayKey(): AdminEmergencyDayKey {
+  const dayKeys = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"] as const;
+  const shanghaiNow = new Date(
+    new Date().toLocaleString("en-US", { timeZone: "Asia/Shanghai" }),
+  );
+  return dayKeys[shanghaiNow.getDay()] ?? "mon";
+}
+
+function getShanghaiWeekStart() {
+  const shanghaiNow = new Date(
+    new Date().toLocaleString("en-US", { timeZone: "Asia/Shanghai" }),
+  );
+  const day = shanghaiNow.getDay();
+  const mondayOffset = day === 0 ? -6 : 1 - day;
+  shanghaiNow.setDate(shanghaiNow.getDate() + mondayOffset);
+  const y = shanghaiNow.getFullYear();
+  const m = String(shanghaiNow.getMonth() + 1).padStart(2, "0");
+  const d = String(shanghaiNow.getDate()).padStart(2, "0");
+  return `${y}-${m}-${d}`;
+}
+
+const EMPTY_DAY_KEY = getShanghaiTodayDayKey();
+
+const EMPTY_EMERGENCY_DATA: AdminEmergencyData = {
+  days: [
+    { key: "mon", label: "周一", active: EMPTY_DAY_KEY === "mon" },
+    { key: "tue", label: "周二", active: EMPTY_DAY_KEY === "tue" },
+    { key: "wed", label: "周三", active: EMPTY_DAY_KEY === "wed" },
+    { key: "thu", label: "周四", active: EMPTY_DAY_KEY === "thu" },
+    { key: "fri", label: "周五", active: EMPTY_DAY_KEY === "fri" },
+    { key: "sat", label: "周六", active: EMPTY_DAY_KEY === "sat" },
+    { key: "sun", label: "周日", active: EMPTY_DAY_KEY === "sun" },
+  ],
+  selectedDayKey: EMPTY_DAY_KEY,
+  featuredDateLabel: "今日代课课程",
+  featuredCourses: [],
+  courses: {
+    items: [],
+    page: 0,
+    size: PAGE_SIZE,
+    totalPages: 0,
+    totalElements: 0,
+    hasNextPage: false,
+    hasPrevPage: false,
+  },
+};
+
+function paginateEmergencyData(
+  data: AdminEmergencyData,
+  page: number,
+  size: number,
+): AdminEmergencyData {
+  const totalElements = data.courses.items.length;
+  const totalPages = totalElements === 0 ? 0 : Math.ceil(totalElements / size);
+  const resolvedPage = totalPages === 0 ? 0 : Math.min(page, totalPages - 1);
+  const start = resolvedPage * size;
+
+  return {
+    ...data,
+    courses: {
+      items: data.courses.items.slice(start, start + size),
+      page: resolvedPage,
+      size,
+      totalPages,
+      totalElements,
+      hasNextPage: resolvedPage + 1 < totalPages,
+      hasPrevPage: resolvedPage > 0,
+    },
+  };
+}
+
+export default function AdminEmergencyPage() {
+  return (
+    <SearchParamsSuspense>
+      <AdminEmergencyPageInner />
+    </SearchParamsSuspense>
+  );
+}
+
+function AdminEmergencyPageInner() {
+  const searchParams = useSearchParams();
+  const campus = searchParams.get("campus") ?? undefined;
+  const activeCampus = normalizeAdminCampus(campus);
+
+  const [weekStart] = useState(getShanghaiWeekStart);
+  const [selectedDayKey, setSelectedDayKey] = useState<AdminEmergencyDayKey>(EMPTY_DAY_KEY);
+  const [requestDayKey, setRequestDayKey] = useState<AdminEmergencyDayKey | undefined>(undefined);
+  const [searchInput, setSearchInput] = useState("");
+  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState("");
+  const [page, setPage] = useState(0);
+  const [data, setData] = useState<AdminEmergencyData>(EMPTY_EMERGENCY_DATA);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [hasLoadedOnce, setHasLoadedOnce] = useState(false);
+  const requestKey = JSON.stringify({
+    weekStart,
+    dayKey: requestDayKey ?? "",
+    q: debouncedSearchQuery,
+  });
+  const [resolvedRequestKey, setResolvedRequestKey] = useState<string | null>(null);
+
+  const requestVersionRef = useRef(0);
+  const hasLoadedRef = useRef(false);
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      if (hasLoadedRef.current) {
+        setIsRefreshing(true);
+      }
+      setDebouncedSearchQuery(searchInput.trim());
+    }, 300);
+
+    return () => clearTimeout(timeoutId);
+  }, [searchInput]);
+
+  useEffect(() => {
+    const requestVersion = requestVersionRef.current + 1;
+    requestVersionRef.current = requestVersion;
+    const isInitialLoad = !hasLoadedRef.current;
+
+    getAdminEmergencyWeeklyData({
+      weekStart,
+      dayKey: requestDayKey,
+      q: debouncedSearchQuery || undefined,
+    })
+      .then((nextData) => {
+        if (requestVersionRef.current !== requestVersion) {
+          return;
+        }
+
+        hasLoadedRef.current = true;
+        setHasLoadedOnce(true);
+        setData(nextData);
+        setSelectedDayKey(nextData.selectedDayKey);
+        setError("");
+        setLoading(false);
+        setIsRefreshing(false);
+        setResolvedRequestKey(requestKey);
+      })
+      .catch((err) => {
+        if (requestVersionRef.current !== requestVersion) {
+          return;
+        }
+
+        setError(err instanceof Error ? err.message : "老师设置加载失败，请稍后重试");
+        if (isInitialLoad) {
+          setData(EMPTY_EMERGENCY_DATA);
+          setSelectedDayKey(EMPTY_DAY_KEY);
+          setLoading(false);
+        }
+        setIsRefreshing(false);
+        setResolvedRequestKey(requestKey);
+      });
+  }, [debouncedSearchQuery, requestDayKey, requestKey, weekStart]);
+
+  const pagedData = paginateEmergencyData(data, page, PAGE_SIZE);
+  const currentError = resolvedRequestKey === requestKey ? error : "";
+  const renderedData =
+    currentError && hasLoadedOnce
+      ? buildEmergencyRefreshFailureData(withSelectedEmergencyDay(pagedData, selectedDayKey))
+      : withSelectedEmergencyDay(pagedData, selectedDayKey);
+
+  function handleDayChange(dayKey: AdminEmergencyDayKey) {
+    if (hasLoadedRef.current) {
+      setIsRefreshing(true);
+    }
+    setSelectedDayKey(dayKey);
+    setRequestDayKey(dayKey);
+    setPage(0);
+  }
+
+  function handleSearchChange(value: string) {
+    setSearchInput(value);
+    setPage(0);
+  }
+
+  function handlePrevPage() {
+    if (!pagedData.courses.hasPrevPage) {
+      return;
+    }
+
+    setPage((currentPage) => Math.max(currentPage - 1, 0));
+  }
+
+  function handleNextPage() {
+    if (!pagedData.courses.hasNextPage) {
+      return;
+    }
+
+    setPage((currentPage) => currentPage + 1);
+  }
+
+  if (!loading && currentError && !hasLoadedOnce) {
+    return (
+      <PageStatus
+        title="老师设置加载失败"
+        description={currentError || "当前无法读取老师设置列表。"}
+        secondaryActionLabel="返回首页"
+        secondaryActionHref={withCampusQuery("/admin/home", activeCampus)}
+        primaryActionLabel="重新加载"
+        onPrimaryAction={() => window.location.reload()}
+      />
+    );
+  }
 
   return (
     <PageShell>
       <div className="app-screen">
         <div className="app-scroll pb-4">
-          <AdminSubpageHeader title="老师设置" backHref="/admin/home" />
-
-          <section className="mx-5 mt-2.5 rounded-[16px] border border-[#E8E5E0] bg-white p-3.5 shadow-[0_10px_22px_rgba(28,28,28,0.04)]">
-            <div className="flex flex-wrap gap-2">
-              {data.days.map((day) => (
-                <div
-                  key={day.label}
-                  className={`flex h-9 min-w-[60px] items-center justify-center rounded-full border px-4 text-xs font-semibold ${
-                    day.active
-                      ? "border-transparent bg-[#1E3A5F] text-white"
-                      : "border-[#E8E5E0] bg-[#F5F3F0] text-[var(--jp-text)]"
-                  }`}
-                >
-                  {day.label}
-                </div>
-              ))}
-            </div>
-
-            <div className="mt-3 flex h-[42px] items-center gap-2 rounded-[12px] border border-[#E8E5E0] bg-white px-3.5 text-xs text-[var(--jp-text-muted)] shadow-[0_8px_18px_rgba(28,28,28,0.03)]">
-              <Search className="size-4" />
-              <span>搜索课程名 / 默认负责老师</span>
-            </div>
-          </section>
-
-          <section className="mx-5 mt-2.5 rounded-[16px] border border-[#F2DEC2] bg-[#FFF7EA] p-3 shadow-[0_10px_22px_rgba(196,106,26,0.08)]">
-            <div className="space-y-1">
-              <h1 className="text-base font-bold text-[var(--jp-text)]">
-                {data.featuredDateLabel}
-              </h1>
-            </div>
-            <Link
-              href={data.featuredCourse.href}
-              className="mt-3 flex items-center justify-between rounded-[14px] border border-[#F2DEC2] bg-white p-3 shadow-[0_8px_18px_rgba(28,28,28,0.03)]"
-            >
-              <div className="flex min-w-0 items-start gap-2.5">
-                <div className="mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-full bg-[#FFF3E0] text-[#A55B14]">
-                  <UserCheck className="size-4" />
-                </div>
-                <div className="space-y-1">
-                  <p className="text-sm font-semibold text-[var(--jp-text)]">
-                    {data.featuredCourse.title}
-                  </p>
-                  <p className="text-xs text-[var(--jp-text-secondary)]">
-                    {data.featuredCourse.meta}
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-center gap-1 text-xs font-semibold text-[#1E3A5F]">
-                <span>老师设置</span>
-                <ChevronRight className="size-3.5" />
-              </div>
-            </Link>
-          </section>
-
-          <section className="mx-5 mt-3 rounded-[16px] border border-[#E8E5E0] bg-white p-3 shadow-[0_10px_22px_rgba(28,28,28,0.04)]">
-            <h2 className="text-[15px] font-bold text-[var(--jp-text)]">全部课程</h2>
-            <div className="mt-3 space-y-3">
-              {data.allCourses.map((course) => (
-                <Link
-                  key={course.id}
-                  href={course.href}
-                  className="flex items-center justify-between rounded-[14px] border border-[#E8E5E0] bg-white p-3 shadow-[0_8px_18px_rgba(28,28,28,0.03)]"
-                >
-                  <div className="flex min-w-0 items-start gap-2.5 pr-3">
-                    <div className="mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-full bg-[#EEF4FA] text-[#1E3A5F]">
-                      <UserCheck className="size-4" />
-                    </div>
-                    <div className="space-y-1">
-                      <p className="text-sm font-semibold text-[var(--jp-text)]">
-                        {course.title}
-                      </p>
-                      <p className="text-xs text-[var(--jp-text-secondary)]">
-                        {course.meta}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex shrink-0 items-center gap-1 text-xs font-semibold text-[#1E3A5F]">
-                    <span>老师设置</span>
-                    <ChevronRight className="size-3.5" />
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </section>
+          <AdminSubpageHeader
+            title="老师设置"
+            backHref={withCampusQuery("/admin/home", activeCampus)}
+          />
+          <AdminEmergencyClient
+            data={renderedData}
+            loading={loading}
+            isRefreshing={isRefreshing}
+            refreshError={currentError && hasLoadedOnce ? currentError : ""}
+            searchQuery={searchInput}
+            onSearchQueryChange={handleSearchChange}
+            onDayChange={handleDayChange}
+            onPrevPage={handlePrevPage}
+            onNextPage={handleNextPage}
+          />
         </div>
-
-        <MobileTabBar
-          active="home"
-          items={[
-            { key: "home", href: "/admin/home" },
-            { key: "attendance", href: "/admin/control" },
-            { key: "profile", href: "/admin/me" },
-          ]}
-        />
+        <MobileTabBar active="home" items={buildAdminTabItems(activeCampus)} />
       </div>
     </PageShell>
   );

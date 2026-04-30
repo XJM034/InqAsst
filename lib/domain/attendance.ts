@@ -7,6 +7,10 @@ import type {
 export function cycleAttendanceStatus(
   current: AttendanceStatus,
 ): AttendanceStatus {
+  if (current === "unmarked") {
+    return "absent";
+  }
+
   if (current === "present") {
     return "absent";
   }
@@ -25,6 +29,8 @@ export function getAttendanceSummary(students: AttendanceStudent[]) {
         summary.present += 1;
       } else if (student.status === "leave") {
         summary.leave += 1;
+      } else if (student.status === "unmarked") {
+        summary.unmarked += 1;
       } else {
         summary.absent += 1;
       }
@@ -39,6 +45,7 @@ export function getAttendanceSummary(students: AttendanceStudent[]) {
       expected: students.length,
       present: 0,
       leave: 0,
+      unmarked: 0,
       absent: 0,
       managerUpdated: 0,
     },

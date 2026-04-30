@@ -1,13 +1,14 @@
 # 到了么技术架构
 
-更新日期：2026-04-29
+更新日期：2026-04-30
 
 ## 技术栈
 
 - Next.js App Router + TypeScript
 - Tailwind CSS + shadcn/ui + Lucide 图标
-- Vitest + Playwright
+- ESLint + Vitest + Playwright
 - 静态导出：构建态 `next.config.ts` 开启 `output: "export"`，交付物以 `out/` 为准
+- Vercel 静态部署：正式 Production 内容来源是 GitHub `origin/main`；`vercel.json` 指向 `npm run build` 和 `out`，后端地址由 `NEXT_PUBLIC_API_BASE_URL` 决定
 - 设计 token：`../design.pen` -> `../scripts/sync-pencil-tokens.mjs` -> `../app/pencil-tokens.css`
 
 ## 顶层目录
@@ -18,7 +19,6 @@
 - `lib/domain/`：领域类型与规则。
 - `lib/services/`：API client、schema、adapter、session、auth、HTTP 基础能力。
 - `lib/static-navigation.ts`：静态导出兼容跳转。
-- `tests/`：`unit`、`service`、`contract`、`e2e` 分层测试。
 - `docs/`：项目文档、内测质量、后端协同、静态导出约束与历史归档。
 
 ## 路由边界
@@ -54,6 +54,8 @@
 
 - 本地开发默认：`next dev` 同源 proxy 到 `https://daoleme-dev.jxare.cn`。
 - `next.config.ts` 根据 `API_BASE_URL` / `NEXT_PUBLIC_API_BASE_URL` 和 `API_REQUEST_MODE` / `NEXT_PUBLIC_API_REQUEST_MODE` 决定 dev proxy；开发态不设置静态导出 output，构建态仍输出 `out/`。
+- Vercel 静态部署不使用固定 `/api/*` rewrite；部署环境必须设置 `NEXT_PUBLIC_API_BASE_URL`，浏览器端 direct mode 请求对应后端，避免生产域名误连 shared dev。
+- Vercel Production 部署必须由 GitHub `origin/main` 触发；功能分支部署只作为 Preview / smoke，不能作为最终上线内容来源。
 - 浏览器端和服务端 HTTP 逻辑集中在 `lib/services/http-*`。
 - shared dev 结论用于开发复现和诊断，不等同于真实内测 / 线上环境结论。
 
@@ -73,10 +75,11 @@
 
 ## 测试分层
 
-- `npm test`：unit / service / contract 基线。
 - `npm run lint`：代码规范。
+- `npm test`：Vitest unit / service / contract 基础门禁。
+- `npm run test:e2e:smoke`：Playwright mobile smoke，排除真实写入。
+- `npm run test:e2e:write-live`：真实写链专项，执行前确认环境和写入影响。
 - `npm run build`：静态导出产物验证。
-- `npm run test:e2e:smoke`：shared dev 读链路 smoke。
 - 涉及真实内测反馈时，还必须记录真实环境复现结果；若只完成本机复现，必须写清边界。
 
 ## 文档同步边界

@@ -1,7 +1,7 @@
-import Link from "next/link";
 import type { LucideIcon } from "lucide-react";
 import { ClipboardCheck, House, User } from "lucide-react";
 
+import { StaticLink } from "@/components/app/static-link";
 import { cn } from "@/lib/utils";
 
 type TabKey = "home" | "attendance" | "profile";
@@ -48,7 +48,7 @@ export function MobileTabBar({ items, active }: MobileTabBarProps) {
           const isActive = item.key === active;
 
           return (
-            <Link
+            <StaticLink
               key={item.key}
               href={item.href}
               className={cn(
@@ -60,7 +60,7 @@ export function MobileTabBar({ items, active }: MobileTabBarProps) {
             >
               <Icon className="size-5" strokeWidth={2.1} />
               <span>{item.label ?? config.label}</span>
-            </Link>
+            </StaticLink>
           );
         })}
       </nav>

@@ -1,19 +1,14 @@
-import { notFound } from "next/navigation";
+import { AdminClassDetailClient } from "./client";
+import { SearchParamsSuspense } from "@/components/app/search-params-suspense";
 
-import { AdminClassAttendanceClient } from "@/components/app/admin-class-attendance-client";
-import { getAdminClassAttendanceData } from "@/lib/services/mobile-app";
+export function generateStaticParams() {
+  return [{ classId: "_" }];
+}
 
-export default async function AdminClassDetailPage({
-  params,
-}: {
-  params: Promise<{ classId: string }>;
-}) {
-  const { classId } = await params;
-  const data = await getAdminClassAttendanceData(classId);
-
-  if (!data) {
-    notFound();
-  }
-
-  return <AdminClassAttendanceClient data={data} />;
+export default function AdminClassDetailPage() {
+  return (
+    <SearchParamsSuspense>
+      <AdminClassDetailClient />
+    </SearchParamsSuspense>
+  );
 }

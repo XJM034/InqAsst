@@ -1,8 +1,8 @@
-import Link from "next/link";
 import { CalendarDays } from "lucide-react";
 
 import { MobileTabBar } from "@/components/app/mobile-tab-bar";
 import { PageShell } from "@/components/app/page-shell";
+import { StaticLink } from "@/components/app/static-link";
 import { Button } from "@/components/ui/button";
 
 export default function TeacherNoClassPage() {
@@ -26,13 +26,13 @@ export default function TeacherNoClassPage() {
 
             <div className="mt-5 grid grid-cols-2 gap-3">
               <Button variant="outline" className="h-11 rounded-[12px]" asChild>
-                <Link href="/login">返回登录</Link>
+                <StaticLink href="/login">返回登录</StaticLink>
               </Button>
               <Button
                 className="h-11 rounded-[12px] bg-[var(--jp-accent)] text-[var(--jp-bg)] hover:bg-[var(--jp-accent)]/90"
                 asChild
               >
-                <Link href="/teacher/home">查看有课态示例</Link>
+                <StaticLink href="/teacher/home">查看有课态示例</StaticLink>
               </Button>
             </div>
           </section>
@@ -42,7 +42,7 @@ export default function TeacherNoClassPage() {
           active="home"
           items={[
             { key: "home", href: "/teacher/home" },
-            { key: "attendance", href: "/teacher/attendance/demo" },
+            { key: "attendance", href: "/teacher/attendance" },
             { key: "profile", href: "/teacher/me" },
           ]}
         />

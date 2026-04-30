@@ -9,7 +9,14 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test:unit": "vitest run tests/unit",
+    "test:service": "vitest run tests/service",
+    "test:contract": "vitest run tests/contract",
+    "test:phase0": "npm run test:unit && npm run test:service && npm run test:contract",
+    "test:e2e:smoke": "playwright test --project=mobile-smoke-chromium --grep-invert @write-live",
+    "test:e2e:write-live": "playwright test --project=mobile-smoke-chromium --grep @write-live",
+    "test": "npm run test:phase0"
   },
   "dependencies": {
     "class-variance-authority": "^0.7.1",
@@ -24,13 +31,16 @@
     "tw-animate-css": "^1.4.0"
   },
   "devDependencies": {
+    "@playwright/test": "^1.59.1",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.2.2",
+    "jsdom": "^27.0.1",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^3.2.4"
   }
 }

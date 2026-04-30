@@ -1,14 +1,16 @@
 "use client";
 
-import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Check, ChevronLeft, Info, MapPin, Navigation } from "lucide-react";
 
+import { AdminAttendanceHeaderTicker } from "@/components/app/admin-attendance-header-ticker";
 import { getAttendanceSummary } from "@/lib/domain/attendance";
 import type { AttendanceSession, AttendanceStudent } from "@/lib/domain/types";
 import { AttendanceStudentCard } from "@/components/app/attendance-student-card";
 import { MobileTabBar } from "@/components/app/mobile-tab-bar";
 import { PageShell } from "@/components/app/page-shell";
+import { StaticLink } from "@/components/app/static-link";
+import { TeacherTemporaryStudentForm } from "@/components/app/teacher-temporary-student-form";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -18,6 +20,15 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  fetchTeacherAttendanceStatus,
+  submitTeacherAttendance,
+} from "@/lib/services/mobile-client";
+import { navigateTo, reloadPage } from "@/lib/static-navigation";
+import {
+  buildTeacherAttendanceSubtitle,
+  formatAttendanceClockLabel,
+} from "@/lib/admin-attendance-header";
 
 type AttendanceSessionClientProps = {
   session: AttendanceSession;
@@ -44,22 +55,91 @@ export function AttendanceSessionClient({
   rosterNotice,
 }: AttendanceSessionClientProps) {
   const [students, setStudents] = useState<AttendanceStudent[]>(session.students);
+  const [submitError, setSubmitError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [now, setNow] = useState(() => new Date());
   const courseInfoParts = (displayMeta?.courseInfo ?? session.courseInfo)
     .split(" | ")
-    .map((item) => item.trim());
-  const [campusLabel, locationLabel, timeLabel] = courseInfoParts;
+    .map((item) => item.trim())
+    .filter(Boolean);
+  const [parsedCampusLabel, locationLabel, parsedTimeLabel] =
+    courseInfoParts.length >= 3
+      ? courseInfoParts
+      : [undefined, courseInfoParts[0], courseInfoParts[1]];
+  const campusLabel = session.campusLabel ?? parsedCampusLabel;
+  const timeLabel = session.sessionTimeLabel ?? parsedTimeLabel;
   const dateLabel = displayMeta?.dateLabel ?? session.dateLabel;
-  const datePillLabel = dateLabel.replace(/\s*·\s*当前.*$/, "");
+  const displayCourseTitle = displayMeta?.courseTitle ?? session.courseTitle;
   const summary = getAttendanceSummary(students);
+  const syncKey = useMemo(
+    () => students.map((student) => `${student.id}:${student.status}`).join("|"),
+    [students],
+  );
+  const initialSyncKeyRef = useRef(syncKey);
+  const latestAttendanceRecordIdRef = useRef(session.latestAttendanceRecordId ?? "");
+  const latestSubmittedAtRef = useRef(session.latestSubmittedAt ?? "");
   const absentStudents = students.filter((student) => student.status === "absent");
   const leaveStudents = students.filter((student) => student.status === "leave");
   const hasAnyException = absentStudents.length > 0 || leaveStudents.length > 0;
-  const statusLabel = absentStudents.length > 0 ? "未到" : "请假";
-  const statusToneClass =
-    absentStudents.length > 0 ? "text-[#D32F2F]" : "text-[var(--jp-text)]";
-  const statusNames = (absentStudents.length > 0 ? absentStudents : leaveStudents)
-    .map((student) => student.name)
-    .join("、");
+  const primarySummaryItems = [
+    { label: "应到", value: summary.expected, tone: "info" as const },
+    { label: "已到", value: summary.present, tone: "success" as const },
+    { label: "未到", value: summary.absent, tone: "danger" as const },
+  ];
+  const secondarySummaryItems = [
+    summary.leave > 0
+      ? { label: "请假", value: summary.leave, tone: "neutral" as const }
+      : null,
+    summary.unmarked > 0
+      ? { label: "未点名", value: summary.unmarked, tone: "muted" as const }
+      : null,
+  ].filter(Boolean) as Array<{
+    label: string;
+    value: number;
+    tone: "neutral" | "muted";
+  }>;
+  const attendanceTickerText = useMemo(
+    () =>
+      mode === "attendance"
+        ? buildTeacherAttendanceSubtitle(
+            {
+              campusLabel: session.campusLabel,
+              courseTitle: displayCourseTitle,
+              dateLabel: session.dateLabel,
+              sessionTimeLabel: session.sessionTimeLabel,
+              referenceSessionStartAt: session.referenceSessionStartAt,
+              rollCallDeadlineAt: session.rollCallDeadlineAt,
+            },
+            now,
+          )
+        : "",
+    [displayCourseTitle, mode, now, session],
+  );
+  const attendanceDeadlineHighlight = useMemo(() => {
+    if (mode !== "attendance") {
+      return undefined;
+    }
+
+    const deadlineClockLabel = formatAttendanceClockLabel(session.rollCallDeadlineAt);
+
+    return deadlineClockLabel ? `${deadlineClockLabel} 前完成点名` : undefined;
+  }, [mode, session.rollCallDeadlineAt]);
+  const [tapHintPrimary, tapHintSecondary] = useMemo(() => {
+    const lines = session.tapHint
+      .split("\n")
+      .map((item) => item.trim())
+      .filter(Boolean);
+
+    if (lines.length === 0) {
+      return ["", ""];
+    }
+
+    if (lines.length === 1) {
+      return ["", lines[0] ?? ""];
+    }
+
+    return [lines[0]?.replace(/[；;]+$/, "") ?? "", lines.slice(1).join(" ")];
+  }, [session.tapHint]);
 
   function handleToggleStudentStatus(studentId: string) {
     setStudents((current) =>
@@ -74,6 +154,114 @@ export function AttendanceSessionClient({
     );
   }
 
+  function handleTemporaryStudentCreated(student: AttendanceStudent) {
+    setStudents((current) =>
+      current.some((item) => item.id === student.id) ? current : [...current, student],
+    );
+  }
+
+  async function handleSubmitAttendance() {
+    if (session.submitDisabled) {
+      setSubmitError(session.submitDisabledReason ?? "当前不在点名时间内");
+      return;
+    }
+
+    if (!session.courseId) {
+      navigateTo("/teacher/home");
+      return;
+    }
+
+    setSubmitError("");
+    setIsSubmitting(true);
+
+    try {
+      await submitTeacherAttendance({
+        courseId: session.courseId,
+        courseSessionId: session.courseSessionId,
+        students,
+      });
+      navigateTo("/teacher/home");
+    } catch (error) {
+      if (error instanceof Error) {
+        setSubmitError(error.message);
+      } else {
+        setSubmitError("点名提交失败，请稍后重试");
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
+
+  useEffect(() => {
+    initialSyncKeyRef.current = syncKey;
+  }, [syncKey]);
+
+  useEffect(() => {
+    latestAttendanceRecordIdRef.current = session.latestAttendanceRecordId ?? "";
+    latestSubmittedAtRef.current = session.latestSubmittedAt ?? "";
+  }, [session.latestAttendanceRecordId, session.latestSubmittedAt]);
+
+  useEffect(() => {
+    if (mode !== "attendance") {
+      return;
+    }
+
+    const intervalId = window.setInterval(() => {
+      setNow(new Date());
+    }, 60_000);
+
+    return () => {
+      window.clearInterval(intervalId);
+    };
+  }, [mode]);
+
+  useEffect(() => {
+    if (
+      mode !== "attendance" ||
+      !session.courseId ||
+      !session.courseSessionId ||
+      !session.attendanceWindowActive
+    ) {
+      return;
+    }
+
+    let cancelled = false;
+    const intervalId = window.setInterval(async () => {
+      try {
+        const status = await fetchTeacherAttendanceStatus({
+          courseId: session.courseId!,
+          courseSessionId: session.courseSessionId,
+        });
+        if (cancelled) {
+          return;
+        }
+
+        const nextRecordId =
+          typeof status.attendanceRecordId === "number"
+            ? String(status.attendanceRecordId)
+            : "";
+        const nextSubmittedAt = status.submittedAt ?? "";
+        const hasRemoteUpdate =
+          nextRecordId !== latestAttendanceRecordIdRef.current ||
+          nextSubmittedAt !== latestSubmittedAtRef.current;
+        const hasLocalChanges = syncKey !== initialSyncKeyRef.current;
+
+        if (hasRemoteUpdate && !hasLocalChanges) {
+          latestAttendanceRecordIdRef.current = nextRecordId;
+          latestSubmittedAtRef.current = nextSubmittedAt;
+          reloadPage();
+        }
+      } catch {
+        // Keep polling non-blocking; the next cycle will retry automatically.
+      }
+    }, 10_000);
+
+    return () => {
+      cancelled = true;
+      window.clearInterval(intervalId);
+    };
+  }, [mode, session.attendanceWindowActive, session.courseId, session.courseSessionId, syncKey]);
+
   return (
     <PageShell>
       <Dialog>
@@ -86,112 +274,195 @@ export function AttendanceSessionClient({
                   variant="outline"
                   className="h-9 rounded-full border-[color:var(--jp-border)] bg-white px-3 text-[13px] font-medium text-[var(--jp-text)] hover:bg-white"
                 >
-                  <Link className="inline-flex items-center gap-1.5" href={backHref}>
+                  <StaticLink className="inline-flex items-center gap-1.5" href={backHref}>
                     <ChevronLeft className="size-4" />
                     {backLabel}
-                  </Link>
+                  </StaticLink>
                 </Button>
               </div>
             ) : null}
 
-            <section
-              className={`${backHref ? "mt-2.5" : "mt-0"} overflow-hidden rounded-[16px] border border-[#E8E5E0] shadow-[0_12px_26px_rgba(28,28,28,0.05)]`}
-            >
-              <div className="flex items-center gap-2 bg-[#2C2C2C] px-3.5 py-3 text-white">
-                <MapPin className="size-4" />
-                <p className="text-base font-semibold">{campusLabel ?? "上课校区"}</p>
-              </div>
-
-              <div className="space-y-2.5 bg-[var(--jp-surface)] px-3.5 py-3.5">
-                <div className="space-y-1.5">
-                  <div className="flex items-center justify-between gap-3">
-                    {timeLabel ? (
-                      <p className="text-[19px] font-medium tracking-[-0.03em] text-[var(--jp-text)]">
-                        {timeLabel}
-                      </p>
-                    ) : (
-                      <div />
-                    )}
-                    <MetaPill tone="neutral" className="shrink-0">
-                      {datePillLabel}
-                    </MetaPill>
-                  </div>
-                  <h2 className="text-[16px] font-medium tracking-[-0.02em] text-[var(--jp-text)]">
-                    {displayMeta?.courseTitle ?? session.courseTitle}
-                  </h2>
-                </div>
-
-                {locationLabel ? (
-                  <div className="flex items-center justify-between rounded-[12px] border border-[color:var(--jp-border)] bg-white px-3.5 py-2.5">
-                    <p className="text-[15px] font-semibold tracking-[-0.02em] text-[var(--jp-text)]">
-                      {locationLabel}
-                    </p>
-                    <NavigationIcon />
-                  </div>
-                ) : null}
-
-                {mode === "attendance" ? (
-                  <div className="rounded-[12px] bg-[#FFF3E8] px-3 py-2.5 text-xs font-medium text-[#C46A1A]">
-                    {session.deadlineHint}
-                  </div>
-                ) : rosterNotice ? (
-                  <div className="flex items-start gap-2 rounded-[12px] bg-[#FCF7EE] px-3 py-2 text-[#7B5C1E] ring-1 ring-[#F0E1BD]/80">
-                    <Info className="mt-0.5 size-3 shrink-0" />
-                    <div className="space-y-0.5">
-                      <p className="text-[11px] font-medium leading-5">{rosterNotice}</p>
-                      <p className="text-[10px] font-medium leading-4 text-[#8C6B28]">
-                        {datePillLabel}
-                      </p>
-                    </div>
-                  </div>
-                ) : null}
-              </div>
-            </section>
-
-            {mode === "attendance" ? (
-              <>
-                <div className="mt-3.5 flex flex-wrap gap-2">
-                  <SummaryChip label="应到" value={summary.expected} tone="info" />
-                  <SummaryChip label="已到" value={summary.present} tone="success" />
-                  <SummaryChip label="请假" value={summary.leave} tone="neutral" />
-                  <SummaryChip label="未到" value={summary.absent} tone="danger" />
-                </div>
-
-                <div className="mt-3.5 flex items-start gap-2 rounded-[16px] bg-[#E8F0FB] px-3.5 py-3 text-[#1E3A5F]">
-                  <Info className="mt-0.5 size-3.5 shrink-0" />
-                  <p className="text-[11px] font-medium leading-5">{session.tapHint}</p>
-                </div>
-              </>
+            {attendanceTickerText ? (
+              <header className={backHref ? "pt-2.5 pb-0.5" : "pb-0.5"}>
+                <AdminAttendanceHeaderTicker
+                  text={attendanceTickerText}
+                  highlightText={attendanceDeadlineHighlight}
+                />
+              </header>
             ) : null}
 
-            <div className="mt-3.5 grid grid-cols-3 gap-2 pb-6">
-              {students.map((student) => (
-                <AttendanceStudentCard
-                  key={student.id}
-                  name={student.name}
-                  homeroomClass={student.homeroomClass}
-                  status={student.status}
-                  managerUpdated={student.managerUpdated}
-                  overrideLabel={student.overrideLabel}
-                  editable={
-                    mode === "attendance" &&
-                    !student.managerUpdated &&
-                    student.status !== "leave"
-                  }
-                  hideStatus={mode === "roster"}
-                  onToggle={() => handleToggleStudentStatus(student.id)}
-                />
-              ))}
-            </div>
+            {mode === "roster" ? (
+              <section
+                className={`${
+                  backHref || attendanceTickerText ? "mt-2.5" : "mt-0"
+                } overflow-hidden rounded-[16px] border border-[#E8E5E0] shadow-[0_12px_26px_rgba(28,28,28,0.05)]`}
+              >
+                {campusLabel ? (
+                  <div className="flex items-center gap-2 bg-[#2C2C2C] px-3.5 py-3 text-white">
+                    <MapPin className="size-4" />
+                    <p className="text-base font-semibold">{campusLabel}</p>
+                  </div>
+                ) : null}
+
+                <div className="space-y-2.5 bg-[var(--jp-surface)] px-3.5 py-3.5">
+                  <div className="space-y-1.5">
+                    <div className="flex items-center justify-between gap-3">
+                      {timeLabel ? (
+                        <p className="text-[19px] font-medium tracking-[-0.03em] text-[var(--jp-text)]">
+                          {timeLabel}
+                        </p>
+                      ) : (
+                        <div />
+                      )}
+                      <MetaPill tone="neutral" className="shrink-0">
+                        {dateLabel}
+                      </MetaPill>
+                    </div>
+                    <h2 className="text-[16px] font-medium tracking-[-0.02em] text-[var(--jp-text)]">
+                      {displayMeta?.courseTitle ?? session.courseTitle}
+                    </h2>
+                  </div>
+
+                  {locationLabel ? (
+                    <div className="flex items-center justify-between rounded-[12px] border border-[color:var(--jp-border)] bg-white px-3.5 py-2.5">
+                      <p className="text-[15px] font-semibold tracking-[-0.02em] text-[var(--jp-text)]">
+                        {locationLabel}
+                      </p>
+                      <NavigationIcon />
+                    </div>
+                  ) : null}
+
+                  {rosterNotice ? (
+                    <div className="flex items-start gap-2 rounded-[12px] bg-[#FCF7EE] px-3 py-2 text-[#7B5C1E] ring-1 ring-[#F0E1BD]/80">
+                      <Info className="mt-0.5 size-3 shrink-0" />
+                      <div className="space-y-0.5">
+                        <p className="text-[11px] font-medium leading-5">{rosterNotice}</p>
+                        <p className="text-[10px] font-medium leading-4 text-[#8C6B28]">
+                          {dateLabel}
+                        </p>
+                      </div>
+                    </div>
+                  ) : null}
+                </div>
+              </section>
+            ) : (
+              <section
+                className={`${
+                  attendanceTickerText ? "mt-2.5" : "mt-0"
+                } rounded-[16px] border border-[#E8E5E0] bg-white px-3.5 py-3.5 shadow-[0_10px_22px_rgba(28,28,28,0.04)]`}
+              >
+                <div className="grid grid-cols-3 gap-2">
+                  {primarySummaryItems.map((item) => (
+                    <SummaryChip
+                      key={item.label}
+                      label={item.label}
+                      value={item.value}
+                      tone={item.tone}
+                      variant="stretch"
+                    />
+                  ))}
+                </div>
+                {secondarySummaryItems.length > 0 ? (
+                  <div className="mt-2 flex flex-wrap justify-center gap-2">
+                    {secondarySummaryItems.map((item) => (
+                      <SummaryChip
+                        key={item.label}
+                        label={item.label}
+                        value={item.value}
+                        tone={item.tone}
+                      />
+                    ))}
+                  </div>
+                ) : null}
+
+              </section>
+            )}
+
+            {mode === "attendance" ? (
+              <TeacherTemporaryStudentForm
+                courseId={session.courseId}
+                courseSessionId={session.courseSessionId}
+                homeroomClasses={session.temporaryStudent?.homeroomClasses ?? []}
+                disabled={session.submitDisabled}
+                disabledReason={
+                  session.submitDisabled
+                    ? session.submitDisabledReason
+                    : session.temporaryStudent?.disabledReason
+                }
+                className="mt-3"
+                onCreated={handleTemporaryStudentCreated}
+              />
+            ) : null}
+
+            {students.length === 0 ? (
+              <div className="mt-3.5 rounded-[16px] border border-dashed border-[#D8D5D0] bg-white px-4 py-8 text-center text-[13px] text-[var(--jp-text-muted)]">
+                当前课节还没有学生名单
+              </div>
+            ) : (
+              <>
+                {tapHintPrimary ? (
+                  <p className="mt-3 px-1 text-[11px] font-semibold tracking-[-0.01em] text-[#36557D]">
+                    {tapHintPrimary}
+                  </p>
+                ) : null}
+                {tapHintSecondary ? (
+                  <div className="mt-1.5 rounded-[12px] border border-[#F1DFB4] bg-[#FFF8E8] px-3 py-2 text-[10px] font-medium leading-4 text-[#8A6018]">
+                    {tapHintSecondary}
+                  </div>
+                ) : null}
+                <div
+                  className={`${
+                    tapHintPrimary || tapHintSecondary ? "mt-2.5" : "mt-3.5"
+                  } grid grid-cols-3 gap-2 ${
+                  mode === "attendance"
+                    ? "pb-[calc(var(--mobile-tabbar-total-height)+68px)]"
+                    : "pb-6"
+                  }`}
+                >
+                  {students.map((student) => (
+                    <AttendanceStudentCard
+                      key={student.id}
+                      name={student.name}
+                      homeroomClass={student.homeroomClass}
+                      status={student.status}
+                      managerUpdated={student.managerUpdated}
+                      overrideLabel={student.overrideLabel}
+                      // 教师端只允许已到/未到互切；请假状态仅展示，不开放点击修改。
+                      editable={
+                        mode === "attendance" &&
+                        !student.managerUpdated &&
+                        student.status !== "leave"
+                      }
+                      hideStatus={mode === "roster"}
+                      onToggle={() => handleToggleStudentStatus(student.id)}
+                    />
+                  ))}
+                </div>
+              </>
+            )}
           </div>
 
           {mode === "attendance" ? (
-            <div className="app-bottom-safe bg-[var(--jp-surface)] px-4 py-3 shadow-[0_-12px_24px_rgba(28,28,28,0.06)]">
-              <DialogTrigger asChild>
-                <Button className="h-11 w-full rounded-[12px] bg-[var(--jp-accent)] text-[var(--jp-bg)] hover:bg-[var(--jp-accent)]/90">
-                  {session.submitLabel}
-                </Button>
-              </DialogTrigger>
+            <div className="pointer-events-none fixed inset-x-0 bottom-[calc(var(--mobile-tabbar-total-height)+10px)] z-40 mx-auto w-full max-w-[402px] px-4">
+              <div className="pointer-events-auto">
+                {submitError ? (
+                  <p className="mb-2 px-2 text-center text-[12px] font-medium text-[#D32F2F]">
+                    {submitError}
+                  </p>
+                ) : session.submitDisabled && session.submitDisabledReason ? (
+                  <p className="mb-2 px-2 text-center text-[12px] font-medium text-[#D32F2F]">
+                    {session.submitDisabledReason}
+                  </p>
+                ) : null}
+                <DialogTrigger asChild>
+                  <Button
+                    disabled={session.submitDisabled}
+                    className="h-12 w-full rounded-[16px] bg-[var(--jp-accent)] text-[15px] font-semibold text-[var(--jp-bg)] shadow-[0_16px_32px_rgba(30,58,95,0.24)] hover:bg-[var(--jp-accent)]/90 disabled:opacity-60"
+                  >
+                    {session.submitLabel}
+                  </Button>
+                </DialogTrigger>
+              </div>
             </div>
           ) : null}
 
@@ -199,7 +470,7 @@ export function AttendanceSessionClient({
             active={tabActive}
             items={[
               { key: "home", href: "/teacher/home" },
-              { key: "attendance", href: "/teacher/attendance/demo" },
+              { key: "attendance", href: "/teacher/attendance" },
               { key: "profile", href: "/teacher/me" },
             ]}
           />
@@ -217,13 +488,46 @@ export function AttendanceSessionClient({
                   <DialogTitle className="text-[18px] font-semibold text-[#1E3A5F]">
                     确认提交点名
                   </DialogTitle>
-                  <p className={`text-sm font-semibold ${statusToneClass}`}>
-                    {statusLabel} ({absentStudents.length > 0 ? summary.absent : summary.leave}人)
-                  </p>
                   <DialogDescription className="text-sm leading-6 text-[#666666]">
-                    {statusNames}
+                    {`本节课应到 ${summary.expected} 人，确认后会按当前结果同步到管理端。`}
                   </DialogDescription>
                 </div>
+
+                {absentStudents.length > 0 ? (
+                  <div className="space-y-2 rounded-[12px] bg-[#FFF8F8] px-3.5 py-3">
+                    <p className="text-sm font-semibold text-[#D32F2F]">
+                      {`未到学生（${summary.absent}人）`}
+                    </p>
+                    <div className="space-y-1.5">
+                      {absentStudents.map((student) => (
+                        <p
+                          key={student.id}
+                          className="text-[12px] leading-5 text-[#7A3940]"
+                        >
+                          {`${student.name} · ${student.homeroomClass}`}
+                        </p>
+                      ))}
+                    </div>
+                  </div>
+                ) : null}
+
+                {leaveStudents.length > 0 ? (
+                  <div className="space-y-2 rounded-[12px] bg-[#F5F3F0] px-3.5 py-3">
+                    <p className="text-sm font-semibold text-[var(--jp-text)]">
+                      {`请假学生（${summary.leave}人）`}
+                    </p>
+                    <div className="space-y-1.5">
+                      {leaveStudents.map((student) => (
+                        <p
+                          key={student.id}
+                          className="text-[12px] leading-5 text-[var(--jp-text-secondary)]"
+                        >
+                          {`${student.name} · ${student.homeroomClass}`}
+                        </p>
+                      ))}
+                    </div>
+                  </div>
+                ) : null}
 
                 <div className="grid grid-cols-2 gap-3 pt-1">
                   <DialogClose asChild>
@@ -235,10 +539,12 @@ export function AttendanceSessionClient({
                     </Button>
                   </DialogClose>
                   <Button
-                    asChild
+                    type="button"
+                    disabled={isSubmitting}
+                    onClick={handleSubmitAttendance}
                     className="h-11 rounded-[8px] bg-[#1E3A5F] text-[15px] font-semibold text-white hover:bg-[#1E3A5F]/90"
                   >
-                    <Link href="/teacher/home">确认提交</Link>
+                    {isSubmitting ? "提交中" : "确认提交"}
                   </Button>
                 </div>
               </>
@@ -250,10 +556,10 @@ export function AttendanceSessionClient({
                   </div>
                   <div className="space-y-2.5">
                     <DialogTitle className="text-[18px] font-semibold text-[#1E3A5F]">
-                      班级全勤
+                      确认提交点名
                     </DialogTitle>
                     <DialogDescription className="text-sm leading-6 text-[#666666]">
-                      本节课应到{summary.expected}人，实到{summary.present}人
+                      {`本节课应到 ${summary.expected} 人，确认全部已到后提交。`}
                     </DialogDescription>
                   </div>
                 </div>
@@ -268,10 +574,12 @@ export function AttendanceSessionClient({
                     </Button>
                   </DialogClose>
                   <Button
-                    asChild
+                    type="button"
+                    disabled={isSubmitting}
+                    onClick={handleSubmitAttendance}
                     className="h-11 rounded-[8px] bg-[#1E3A5F] text-[15px] font-semibold text-white hover:bg-[#1E3A5F]/90"
                   >
-                    <Link href="/teacher/home">完成点名</Link>
+                    {isSubmitting ? "提交中" : "完成点名"}
                   </Button>
                 </div>
               </>
@@ -287,20 +595,47 @@ function SummaryChip({
   label,
   value,
   tone,
+  variant = "pill",
 }: {
   label: string;
   value: number;
-  tone: "info" | "success" | "neutral" | "danger";
+  tone: "info" | "success" | "neutral" | "muted" | "danger";
+  variant?: "pill" | "stretch";
 }) {
   const toneClass = {
-    info: "bg-[#1E3A5F10] text-[#1E3A5F]",
-    success: "bg-[#3d6b4f1a] text-[#3D6B4F]",
-    neutral: "bg-[#1C1C1C12] text-[#1C1C1C]",
-    danger: "bg-[#d52f2f1a] text-[#D32F2F]",
+    info: {
+      pill: "bg-[#1E3A5F10] text-[#1E3A5F]",
+      stretch: "bg-[#EEF4FA] text-[#1E3A5F] ring-1 ring-[#D9E5F1]",
+    },
+    success: {
+      pill: "bg-[#3d6b4f1a] text-[#3D6B4F]",
+      stretch: "bg-[#EEF6F1] text-[#3D6B4F] ring-1 ring-[#D7E6DC]",
+    },
+    neutral: {
+      pill: "bg-[#1C1C1C12] text-[#1C1C1C]",
+      stretch: "bg-[#F3F0EB] text-[#1C1C1C] ring-1 ring-[#E5E0D7]",
+    },
+    muted: {
+      pill: "bg-[#EDF3F8] text-[#4C6177]",
+      stretch: "bg-[#EDF3F8] text-[#4C6177] ring-1 ring-[#DCE7F0]",
+    },
+    danger: {
+      pill: "bg-[#d52f2f1a] text-[#D32F2F]",
+      stretch: "bg-[#FFF1F1] text-[#D32F2F] ring-1 ring-[#F2D7D8]",
+    },
   }[tone];
 
+  if (variant === "stretch") {
+    return (
+      <div className={`flex h-10 w-full items-center justify-center gap-1.5 rounded-full px-2 ${toneClass.stretch}`}>
+        <span className="truncate text-[12px] font-medium tracking-[-0.01em]">{label}</span>
+        <span className="text-[16px] font-semibold tracking-[-0.02em]">{value}</span>
+      </div>
+    );
+  }
+
   return (
-    <div className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 ${toneClass}`}>
+    <div className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 ${toneClass.pill}`}>
       <span className="text-[13px] font-medium">{label}</span>
       <span className="text-[13px] font-bold">{value}</span>
     </div>
