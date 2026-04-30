@@ -1,0 +1,152 @@
+# InqAsst Docs Backup
+
+- Source: /Users/minxian/conductor/workspaces/inqasst/bordeaux
+- Source branch: XJM034/resume-0427
+- Created: 2026-04-30 Asia/Shanghai
+- File count: 137
+
+## Scope
+
+Included current document files by extension: .md, .mdx, .rst, .adoc, .txt, .pdf, .docx, .xlsx, .pptx.
+
+Excluded generated/runtime/local-control directories: .git, node_modules, .next, out, test-results, coverage, .codex.
+
+## File List
+
+- .context/plans/findings.md
+- .context/todos.md
+- .context/notes.md
+- .context/attachments/Summary of Review workspace changes.md
+- .context/attachments/Review request.md
+- handoff/260421-handoff.md
+- handoff/260424-handoff.md
+- handoff/260414-handoff.md
+- handoff/260423-handoff.md
+- handoff/260422-local-dev-proxy-handoff.md
+- handoff/260428-handoff.md
+- handoff/260420-handoff.md
+- handoff/260417-handoff.md
+- handoff/260427-handoff.md
+- handoff/260417-static-export-handoff.md
+- handoff/260415-handoff.md
+- handoff/260422-handoff.md
+- 移动端开发计划_v1.md
+- backend/FRONTEND_BUSINESS_RULES_20260410.md
+- backend/FRONTEND_API_CHANGES_20260410.md
+- backend/API_FIELD_GLOSSARY.md
+- backend/AUTH_LOGIN_CAMPUS_SELECTION.md
+- docs/backend-collab/current-issues.md
+- docs/backend-collab/README.md
+- docs/backend-collab/history/README.md
+- docs/backend-collab/history/2026-04-29-backend-collab-source.md
+- docs/核心跨角色主链验证_20260417.md
+- docs/课程设置空白课程创建协同_20260421.md
+- docs/PRODUCT.md
+- docs/测试链路通俗说明_20260416.md
+- docs/TOOLING.md
+- docs/ARCHITECTURE.md
+- docs/后端协同说明_20260414.md
+- docs/archive/背景及需求.md
+- docs/archive/前端原型设计开发说明.md
+- docs/archive/backend-change-request-20260410.md
+- docs/archive/前端联调待办_20260413.md
+- docs/archive/本机-daoleme-联调工作流归档_20260422.md
+- docs/archive/design-20260323-121337.md
+- docs/archive/产品原型交互与开发说明_v1.7.md
+- docs/archive/CLAUDE_20260415_pre_bootstrap.md
+- docs/archive/设计文档_v1.9_第二次矫正说明.md
+- docs/archive/设计文档_v1.8_开发指导.md
+- docs/archive/设计思路.md
+- docs/archive/前后端联调冲突梳理_20260413.md
+- docs/archive/设计文档_v1.9_矫正说明.md
+- docs/archive/backend-integration-gap-report.md
+- docs/archive/AGENTS_20260415_pre_bootstrap.md
+- docs/quality/regression-checklist.md
+- docs/quality/README.md
+- docs/quality/history/2026-04-29-quality-source.md
+- docs/quality/history/2026-04-29-regression-source.md
+- docs/quality/history/README.md
+- docs/课程设置页面设计差异报告_20260416.md
+- docs/weekend-business-regression-checklist_20260421.md
+- docs/最终页面对比报告_XJM034_check-push-rules_20260416.md
+- docs/课程设置页面开发计划_20260416.md
+- docs/QUALITY.md
+- docs/static-export-delivery-constraint_20260418.md
+- docs/系统外老师手机号提示验证_20260427.md
+- docs/业务闭环E2E验证_20260422.md
+- docs/REGRESSION_CHECKLIST.md
+- docs/README.md
+- docs/static-export-navigation-rsc-fix_20260417.md
+- docs/页面对比报告/14_admin-time-settings-detail.md
+- docs/页面对比报告/25_route-root.md
+- docs/页面对比报告/27_route-teacher-attendance-demo-roster.md
+- docs/页面对比报告/03_admin-course-settings.md
+- docs/页面对比报告/19_teacher-home.md
+- docs/页面对比报告/24_teacher-no-class.md
+- docs/页面对比报告/26_route-role-select.md
+- docs/页面对比报告/12_admin-emergency-external-teacher.md
+- docs/页面对比报告/21_teacher-attendance-demo.md
+- docs/页面对比报告/17_admin-control-class-detail.md
+- docs/页面对比报告/11_admin-emergency-select-teacher.md
+- docs/页面对比报告/13_admin-time-settings.md
+- docs/页面对比报告/16_admin-control.md
+- docs/页面对比报告/04_admin-course-settings-students.md
+- docs/页面对比报告/08_admin-course-teachers.md
+- docs/页面对比报告/10_admin-emergency-course.md
+- docs/页面对比报告/20_teacher-attendance-entry.md
+- docs/页面对比报告/07_admin-course-settings-students-import.md
+- docs/页面对比报告/README.md
+- docs/页面对比报告/18_admin-unarrived.md
+- docs/页面对比报告/02_admin-home.md
+- docs/页面对比报告/01_login.md
+- docs/页面对比报告/23_teacher-attendance-no-class.md
+- docs/页面对比报告/05_admin-course-settings-students-new.md
+- docs/页面对比报告/15_admin-time-settings-picker.md
+- docs/页面对比报告/09_admin-emergency.md
+- docs/页面对比报告/22_teacher-home-roster.md
+- docs/页面对比报告/06_admin-course-settings-students-edit.md
+- docs/账号角色校区一致性验证_20260415.md
+- docs/静态数据转真实/全部页面静态数据转真实清单.md
+- docs/静态数据转真实/静态数据转真实工作流.md
+- docs/test-coverage-audit-20260416.md
+- docs/写流程联调与测试方案_20260416.md
+- docs/superpowers/specs/2026-03-17-inqasst-v2-design.md
+- docs/接口与mock冲突报告/14_admin-time-settings-detail.md
+- docs/接口与mock冲突报告/25_route-root.md
+- docs/接口与mock冲突报告/27_route-teacher-attendance-demo-roster.md
+- docs/接口与mock冲突报告/03_admin-course-settings.md
+- docs/接口与mock冲突报告/19_teacher-home.md
+- docs/接口与mock冲突报告/24_teacher-no-class.md
+- docs/接口与mock冲突报告/26_route-role-select.md
+- docs/接口与mock冲突报告/12_admin-emergency-external-teacher.md
+- docs/接口与mock冲突报告/21_teacher-attendance-demo.md
+- docs/接口与mock冲突报告/17_admin-control-class-detail.md
+- docs/接口与mock冲突报告/11_admin-emergency-select-teacher.md
+- docs/接口与mock冲突报告/13_admin-time-settings.md
+- docs/接口与mock冲突报告/16_admin-control.md
+- docs/接口与mock冲突报告/04_admin-course-settings-students.md
+- docs/接口与mock冲突报告/00_推演事故防呆补充.md
+- docs/接口与mock冲突报告/08_admin-course-teachers.md
+- docs/接口与mock冲突报告/10_admin-emergency-course.md
+- docs/接口与mock冲突报告/20_teacher-attendance-entry.md
+- docs/接口与mock冲突报告/07_admin-course-settings-students-import.md
+- docs/接口与mock冲突报告/README.md
+- docs/接口与mock冲突报告/18_admin-unarrived.md
+- docs/接口与mock冲突报告/02_admin-home.md
+- docs/接口与mock冲突报告/01_login.md
+- docs/接口与mock冲突报告/23_teacher-attendance-no-class.md
+- docs/接口与mock冲突报告/05_admin-course-settings-students-new.md
+- docs/接口与mock冲突报告/00_页面对齐工作流.md
+- docs/接口与mock冲突报告/15_admin-time-settings-picker.md
+- docs/接口与mock冲突报告/09_admin-emergency.md
+- docs/接口与mock冲突报告/00_复核标准工作流.md
+- docs/接口与mock冲突报告/22_teacher-home-roster.md
+- docs/接口与mock冲突报告/06_admin-course-settings-students-edit.md
+- docs/最终页面对齐执行计划_XJM034_check-push-rules_20260416.md
+- docs/课程学生新增方案切换_20260420.md
+- README.md
+- 设计文档_v1.9_开发指导.md
+- AGENTS.md
+- .impeccable.md
+- pencil_docs.md
+- CLAUDE.md
